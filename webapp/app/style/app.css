@@ -1,0 +1,11 @@
+/* app css stylesheet */
+
+#menu{
+  color: #FEFFFE;
+  background: #6FC2F4;
+}
+aside[class^="col-"] > div{
+  border: 1px solid #6FC2F4;
+  padding: 15px;
+  margin: 15px 0;
+}
