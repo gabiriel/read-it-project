@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr" ng-aa>
+<head>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular.js"></script>
+    <script src="../js/directive.js"></script>
+    <script src="../js/service.js"></script>
+    <script src="../js/UserInscription.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="../lib/ui-bootstrap-tpls-0.13.0.min.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <meta charset="UTF-8">
+    <title>MyForm</title>
+
+</head>
+
+<body ng-app="readIt" ng-controller="NewUserController">
+<div class="row" id="navBar">
+    <div  class="col-md-7 col-md-offset-1 header-branding" >
+        <a class="brand navbar-brand" href="link">
+            <img width="117" height="20" class="logo" alt="Link to Homepage" ng-src="img" src="../img">
+        </a>
+        <ul class="nav navbar-nav">
+            <li class="divider-vertical"></li>
+            <li><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
+            <li class="divider-vertical"></li>
+            <li class="dropdown ng-isolate-scope">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="icon-eye-open icon-white"></i> Blogs <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="linkTo">option 1</a></li>
+                    <li><a href="linkTo">option 2</a></li>
+                    <li><a href="linkTo">option 3</a></li>
+
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+    <form ng-class="{focus:focus}" class="navbar-search col-md-3 docs-search ng-pristine ng-valid" ng-submit="submit()" id="searchBar">
+        <span class="glyphicon glyphicon-search search-icon col-md-1"></span>
+        <input id ="searchTxt" type="text" name="as_q" class="search-query ng-pristine ng-untouched ng-valid col-md-9" placeholder="Click or press / to search" ng-focus="focus=true" ng-blur="focus=false" ng-change="search(q)" ng-model="q" docs-search-input="" autocomplete="off">
+    </form>
+</div><!-- /angled-navbar -->
+
+<div>
+    <h3><a href="index.html">Acceuil</a></h3>
+</div>
+<div class="container">
+    <legend>Inscription :</legend>
+    <!-- Form -->
+    <form name="userForm" method="POST" novalidate="" data-ng-submit="submitForm()">
+        <!-- Nom -->
+        <div class="form-group" data-ng-class="{'has-error':!userForm.nom.$valid && userForm.nom.$dirty }">
+            <label for="nom">Nom :</label>
+            <input type="text" class="form-control" id="nom" name="nom" placeholder="Saisie Nom" ng-minlength="2" ng-maxlength="25" ng-model="user.nom" required="">
+            <span class="help-block" data-ng-show="userForm.nom.$error.required">This is required.</span>
+            <span ng-show="!userForm.nom.$error.required && (userForm.nom.$error.minlength || userForm.nom.$error.maxlength) && userForm.nom.$dirty">Name must be between 8 and 20 characters.</span>
+        </div>
+
+        <!-- Prenom -->
+        <div class="form-group" ng-class="{'has-error':userForm.prenom.$invalid && userForm.prenom.$dirty }">
+            <label for="prenom" class="control-label">Prenom :</label>
+            <input type="text" ng-minlength="2" class="form-control" id="prenom" name="prenom" placeholder="Saisie Prenom" ng-model="user.prenom" required minlength="2" maxlength="25">
+            <span class="help-block" data-ng-show="userForm.prenom.$error.required">This is required.</span>
+            <span class="help-block" data-ng-show="userForm.prenom.$error.maxlength">Name is too short.</span>
+            <span class="help-block" data-ng-show="userForm.presnom.$error.minlength">Name is too long.</span>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group" ng-class="{'has-error':userForm.email.$invalid && userForm.email.$dirty }" >
+            <label for="email" class="control-label">Email :</label>
+            <input type="Email" class="form-control" id="email" name="email" placeholder="Saisie Email" ng-model="user.email" required>
+            <span ng-show="userForm.email.$error.required">Tell us your email.</span>
+            <span ng-show="userForm.email.$error.email">This is not a valid email.</span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group" ng-class="{'has-error':userForm.password.$invalid && userForm.password.$dirty }">
+            <label class="control-label" for="password">Password :</label>
+            <input class="form-control" type="password" id="password" name="password" ng-model="user.password" ng-minlength="8" ng-maxlength="20" required  />
+            <span ng-show="myForm.password.$error.required && myForm.password.$dirty">this is required</span>
+            <span ng-show="!myForm.password.$error.required && (myForm.password.$error.minlength || myForm.password.$error.maxlength) && myForm.password.$dirty">Passwords must be between 8 and 20 characters.</span>
+        </div>
+
+        <!-- confirmpassword -->
+        <div class="form-group" ng-class="{'has-error':userForm.confirmpassword.$invalid && userForm.confirmpassword.$dirty }">
+            <label class="form-label" for="password_conf">Confirm Password :</label>
+            <input class="form-control" type="password" id="password_conf" name="password_conf" ng-model="user.password_conf" valid-password-c required  />
+            <span ng-show="userForm.password_c.$error.required && userForm.password_conf.$dirty">Please confirm your password.</span>
+            <span ng-show="!userForm.password_conf.$error.required && userForm.password_conf.$error.noMatch && userForm.password.$dirty">Passwords do not match.</span>
+
+
+        </div>
+
+        <!-- check agree -->
+        <div>
+            <input type="checkbox" name="checkagree" ng-model="user.checkagree" >
+            <label>I agree <a href="#">term and condition</a></label>
+        </div>
+
+        <!-- Valider -->
+        <button ng-click="save()" class="btn btn-primary" >Valider</button>
+
+        <!-- Reset -->
+        <button ng-click="reset()" class="btn btn-default" >Reset</button>
+    </form>
+</div>
+</body>
+</html>
