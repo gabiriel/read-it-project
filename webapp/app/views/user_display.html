@@ -1,0 +1,36 @@
+<div class="container" ng-controller='UserPage'>
+    <div class="row">
+        <div class="col-m-10">
+            <aside class="col-sm-3"> <!-- left Column -->
+                <div>
+                    <div id="userName"> {{user}} </div>
+                    <img  ng-src="{{imgSource}}" alt="Photo_de_profil" style="width:200px;height:200px;">
+                    <div>
+                        <a href="#"><i class="glyphicon glyphicon-envelope"></i></a>
+                        <a href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                        <a href="#"><i class="glyphicon glyphicon-off"></i></a>
+                    </div>
+                </div>
+                <div>
+                    Avancement Etat
+                </div>
+                <div>
+                    Administrateur
+                </div>
+            </aside>
+            <aside class="col-sm-6"> <!-- Center Column -->
+                <div id="activite" ng-model="activite">
+                    Activité
+                </div>
+            </aside>
+            <aside class="col-sm-3"> <!-- Right Column -->
+                <div id="sondage" ng-model="sondage">
+                    Sondage
+                </div>
+                <div id="recommendation" ng-model="recommendation">
+                    Recommendation
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>

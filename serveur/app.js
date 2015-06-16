@@ -14,7 +14,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({secret:'secret'}));
-app.use(express.static('../webapp'));
+app.use(express.static('../webapp/app'));
 
 http.createServer(app).listen(app.get('port'), function(req,res){
     console.log('Express server listening on port ' + app.get('port'));

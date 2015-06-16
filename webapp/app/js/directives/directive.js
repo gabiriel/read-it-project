@@ -1,7 +1,7 @@
 /**
  * Created by macbookpro on 13/06/15.
  */
-var readIt = angular.module('readIt',[]);
+var readIt = angular.module('readIt');
 readIt.directive('validPasswordC', function () {
     return {
         require: 'ngModel',

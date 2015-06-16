@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app lang="fr">
+<html ng-app="readIt" lang="fr">
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,9 +11,18 @@
 <link rel="stylesheet" href="style/app.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="https://code.angularjs.org/angular-1.0.0rc3.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script src="controller/mainController.js"></script>
+
+<script src="https://code.angularjs.org/1.4.0/angular.min.js"></script>
+<script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
+<script src="app.js"></script>
+
+<script src="js/controllers/UserInscription.js"></script>
+<script src="js/controllers/UserDisplay.js"></script>
+<script src="js/services/services.js"></script>
+<script src="js/directives/directive.js"></script>
+
+<script src="js/read_it_design.js"></script>
 
 <title>Read-it : Manga, Comics, BD</title>
 </head>
@@ -30,17 +39,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">Read-it</a>
+      <a class="navbar-brand" ui-sref="home">Read-it</a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li class="active"><a  ui-sref="home">Home</a></li>
+        <li><a ui-sref="about">About</a></li>
+        <li><a ui-sref="contact">Contact</a></li>
       </ul>
 
-      <div class="col-sm-3 col-md-3 pull-right">
-        <form class="navbar-form" role="search">
+      <div class="col-sm-4 pull-right">
+        <form class="navbar-form col-sm-3" role="search">
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
             <div class="input-group-btn">
@@ -48,49 +57,14 @@
             </div>
           </div>
         </form>
+        <a id="btn_login" class="navbar-btn btn btn-default" ui-sref="login"><i class="glyphicon glyphicon-user"></i> Login</a>
       </div>
     </div><!--/.nav-collapse -->
   </div>
 </nav>
 <!-- END MENU -->
 <!-- MAIN -->
-<main id="content" class="container" ng-controller="MainController">
-  <div class="row">
-    <div class="col-m-10">
-      <aside class="col-sm-3">
-        <div>
-          Image <br>
-          Shop / Favoris<br>
-        </div>
-        <div>
-          Avancement Etat
-        </div>
-        <div>
-          Administrateur
-        </div>
-      </aside>
-      <aside class="col-sm-6">
-        <div>
-          <h1>Oeuvre / Description</h1>
-        </div>
-        <div>
-          <h2>Avancement de chapitre</h2>
-        </div>
-        <div>
-          <h3>Commentaires</h3>
-        </div>
-      </aside>
-      <aside class="col-sm-3">
-        <div>
-          Sondage
-        </div>
-        <div>
-          Recommandations
-        </div>
-      </aside>
-    </div>
-  </div>
-</main>
+<main id="content" ui-view></main>
 <!-- END MAIN -->
 <!-- FOOTER -->
 <footer class="col-xs-12">
