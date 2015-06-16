@@ -5,16 +5,19 @@
 angular.module('readIt', ['ui.router'])
     .config(function($stateProvider, $urlRouterProvider) {
     // For any unmatched url, redirect to /index
-    // $urlRouterProvider.otherwise("/index");
+    $urlRouterProvider.otherwise('/');
     // Now set up the states
     $stateProvider
-        .state('index', {
-            url: "/index",
+        .state('/', {
+            url: '/',
             templateUrl: "views/home.html"
-
+        })
+        .state('index', {
+            url: '/',
+            templateUrl: "views/home.html"
         })
         .state('home', {
-            url: "/index",
+            url: '/',
             templateUrl: "views/home.html"
         })
         .state('login', {
