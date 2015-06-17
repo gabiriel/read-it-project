@@ -4,5 +4,5 @@
  */
 
 $(document).ready(function(){
-    $("main").css( "marginTop", $(this).find(".navbar").css("height" ) );
+    $("#content").css( 'marginTop', $("#menu").css("height") );
 });
