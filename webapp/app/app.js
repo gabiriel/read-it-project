@@ -47,5 +47,8 @@ angular.module('readIt', ['ui.router'])
         .state('termsAndConditions', {
             url: "/terms",
             templateUrl: "views/terms_and_conditions.html"
+        }).state('import', {
+            url : '/import',
+            templateUrl : '/views/import.html'
         })
     });

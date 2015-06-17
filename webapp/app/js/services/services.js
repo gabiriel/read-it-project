@@ -7,5 +7,13 @@ app.factory('serviceDetails', ['$http',function($http){
     Details.newUser = function(userDetail){
         return $http.post("/",userDetail);
     };
+    Details.importCsv = function(file,fileName) {
+        var fd = new FormData();
+        fd.append(fileName, file);
+        return $http.post("/import", fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        });
+    };
     return Details;
 }]);

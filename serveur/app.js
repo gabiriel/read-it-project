@@ -5,16 +5,21 @@ var session = require('express-session');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var tsvimport = require("./import_tsv");
+var multer = require('multer');
 
 var app = express();
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.use(logger('dev'));
+app.use(multer({ dest: './uploads/'}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({secret:'secret'}));
 app.use(express.static('../webapp/app'));
+app.use('/import', tsvimport);
+
 
 http.createServer(app).listen(app.get('port'), function(req,res){
     console.log('Express server listening on port ' + app.get('port'));
@@ -45,9 +50,7 @@ app.post('/',function(req,res) {
     dataToSave.save(function (err) {
             if (err) { throw err;}
             console.log('Commentaire ajouté avec succees !');
-            res.end("succes");
         });
-    res.end("succes");
-
+    res.end();
 });
 

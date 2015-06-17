@@ -7,7 +7,7 @@ ReadIT.controller('NewUserController',['$scope','serviceDetails',function($scope
                   lastName : $scope.user.prenom,
                   mail : $scope.user.email,
                   password : $scope.user.password
-        }
+            };
             serviceDetails.newUser(userDetails).success(function(data){
                     if(data=='succes') alert('user saved');
                 else alert("non Valide");
