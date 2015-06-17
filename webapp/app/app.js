@@ -28,6 +28,10 @@ angular.module('readIt', ['ui.router'])
             url: "/inscription",
             templateUrl: "views/signin.html"
         })
+        .state('forgotpassword', {
+            url: "/forgotpassword",
+            templateUrl: "views/forgotpassword.html"
+        })
         .state('userDisplay', {
             url: "/user/display",
             templateUrl: "views/user_display.html"

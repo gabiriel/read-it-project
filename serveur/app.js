@@ -21,7 +21,9 @@ http.createServer(app).listen(app.get('port'), function(req,res){
 });
 mongoose.connect('mongodb://localhost/users', function(err) {
     console.log('Trying to connect to Mongodb');
- if (err) { throw err; }
+ if (err)
+     console.log("'Connection to MongoDB [ERROR] :"+err);
+ else
     console.log('Connection to MongoDB [SUCCESS]');
 });
 
