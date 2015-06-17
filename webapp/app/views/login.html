@@ -1,7 +1,7 @@
-<div class="container">
+<div id="login_view" class="container">
 
-        <form class="form-signin" name="userform"novalidate="">
-            <legend><h2 class="form-signin-heading">Log in</h2></legend>
+        <form class="form-login" name="userform" novalidate="">
+            <legend><h2 class="form-login-heading">Log in</h2></legend>
 
             <!-- Email -->
             <div class="form-group"  ng-class="{'has-error':userform.email.$invalid && userform.email.$dirty }" >
@@ -16,19 +16,18 @@
                 <span class="help-block" ng-show="userform.password.$error.required && userform.password.$dirty">this is required</span>
                 <span class="help-block" ng-show="!userform.password.$error.required && (userform.password.$error.minlength || userform.password.$error.maxlength) && userform.password.$dirty">Passwords must be between 8 and 20 characters.</span>
             </div>
+
             <!-- Forgot Password -->
             <div class="form-group">
-                <label><a ui-sref="forgotpassword">Mot de passe oubli&eacute ?</a></label>
-
+                <label><a ui-sref="forgotpassword">Mot de passe oublié ?</a></label>
             </div>
+
             <div class="form-group">
-            <label>Vous �tes nouveau ,<a ui-sref="signin">Inscrivez-vous ici </a></label>
-
+                <label>Vous êtes nouveau ? <a ui-sref="signin">Inscrivez-vous ici</a></label>
             </div>
-
 
             <!--Button-->
-            <button class="btn btn-lg btn-primary btn-block" ng-click="connexion()" ng-disabled="!userform.$valid">Connectez</button>
+            <button class="btn btn-lg btn-primary btn-block" ng-click="connexion()" ng-disabled="!userform.$valid">Connexion</button>
 
         </form>
 
