@@ -1,5 +1,5 @@
-module = angular.module('connexionApp',[]);
-module.controller('ConnexionUserController',function($scope,$http){
+var app = angular.module('readIt');
+app.controller('ConnexionUserController',function($scope,$http){
 	$scope.connexion=function(){
 	
 	$http.post('/connexion',$scope.user)

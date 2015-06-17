@@ -1,7 +1,31 @@
-<div class="container">
-    <h2>Contact</h2>
-    <hr>
-    <p>
-        Merci de nous contacter par mail à :  social.readit@gmail.com
-    </p>
+<div id="login_view" class="container">
+    <form class="form-login" name="contactform">
+        <legend><h2 class="form-login-heading">Contact</h2></legend>
+
+        <!-- Email -->
+        <div class="form-group"  ng-class="{'has-error':contactform.email.$invalid && contactform.email.$dirty }" >
+            <input  class="form-control" type="Email" id="email" name="email" placeholder="Email" ng-model="user.email" required>
+            <span class="help-block" ng-show="contactform.email.$error.required && contactform.email.$dirty">Email is required.</span>
+            <span class="help-block" ng-show="contactform.email.$error.email">This is not a valid email.</span>
+        </div>
+
+        <!-- subject_message -->
+        <div class="form-group" ng-class="{'has-error':contactform.subject_message.$invalid && contactform.subject_message.$dirty }">
+            <input class="form-control" type="text" id="subject_message" name="subject_message" placeholder="Subject" ng-model="user.subject_message" ng-minlength="2" ng-maxlength="30" required  />
+            <span class="help-block" ng-show="contactform.subject_message.$error.required && contactform.subject_message.$dirty">this is required</span>
+            <span class="help-block" ng-show="!contactform.subject_message.$error.required && (contactform.subject_message.$error.minlength || contactform.subject_message.$error.maxlength) && contactform.subject_message.$dirty">Subject must be between 2 and 30 characters.</span>
+        </div>
+
+        <!-- Texte -->
+        <div class="form-group" ng-class="{'has-error':contactform.text.$invalid && contactform.text.$dirty }">
+            <textarea class="form-control" type="text" placeholder="Message" id="text" name="text" ng-model="user.text_message" ng-minlength="2" ng-maxlength="300" required  />
+            <span class="help-block" ng-show="contactform.text.$error.required && contactform.text.$dirty">this is required</span>
+            <span class="help-block" ng-show="!contactform.text.$error.required && (contactform.text.$error.minlength || contactform.text.$error.maxlength) && contactform.text.$dirty">Message must be between 8 and 300 characters.</span>
+        </div>
+
+
+
+        <!--Button-->
+        <button class="btn btn-lg btn-primary btn-block" ng-click="contact()" ng-disabled="!contactform.$valid">Contactez</button>
+    </form>
 </div>
