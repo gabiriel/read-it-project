@@ -2,6 +2,10 @@
     <legend>Inscription :</legend>
     <!-- Form -->
     <form name="userForm" ng-controller="NewUserController">
+        <!--Erreur-->
+        <div class="alert alert-danger" ng-show="error">
+            {{erreur}}
+        </div>
         <!-- Nom -->
         <div class="form-group" data-ng-class="{'has-error':!userForm.nom.$valid && userForm.nom.$dirty }">
             <label for="nom">Nom :</label>

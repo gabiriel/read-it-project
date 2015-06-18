@@ -3,6 +3,11 @@
         <form class="form-login" name="userform" ng-controller="ConnexionUserController">
             <legend><h2 class="form-login-heading">Log in</h2></legend>
 
+            <!--Erreur-->
+            <div class="alert alert-danger" ng-show="error">
+                {{erreur}}
+            </div>
+
             <!-- Email -->
             <div class="form-group"  ng-class="{'has-error':userform.email.$invalid && userform.email.$dirty }" >
                 <input type="Email" class="form-control" id="email" name="email" placeholder="Saisie Email" ng-model="user.email" required>

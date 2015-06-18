@@ -9,10 +9,17 @@ ReadIT.controller('NewUserController',['$scope','$http','$location',function($sc
         };
        if($scope.userForm.$valid){
            $http.post('/inscriptionuser',userDetails)
-               .success (function(res){
-               alert(res);
+               .success (function(data) {
+               if (data === "OK") {
 
-           })
+                   $location.path("/");
+                   $scope.error = false;
+               } else {
+                   $location.path("/inscription");
+                   $scope.erreur=data;
+                   $scope.error = true;
+                  }
+               })
                .error (function(res, req) {
                    console.log('Repos error'+res+" - "+ req);
                });

@@ -99,15 +99,31 @@ app.post('/inscriptionuser',function(req,res) {
                                 res.send(msg+' et erreur à l\'envoi mail : '+error);
                             }
                             else{
-                                res.send(msg+' et consultez ton mail: ');
+                                res.send("OK");
                             }
                         transport.close();
                     });
                 });
             }
         }
-
     });
+});
 
+
+app.post('/connexion', function (req, res){
+    var Mesparams = req.body;
+
+    usersModel.find({mail:Mesparams.mail},function(err,data){
+        if(err)
+            res.send(err);
+        else
+            if (data.length==0)
+                res.send('Email invalide');
+            else
+                if(passwordHash.verify(Mesparams.password, data[0].password))
+                    res.send("OK");
+                else
+                    res.send("Mot de passe est faux");
+    })
 });
 

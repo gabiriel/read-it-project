@@ -1,19 +1,22 @@
 var app = angular.module('readIt');
-app.controller('ConnexionUserController',function($scope,$http){
+app.controller('ConnexionUserController',function($scope,$http,$location){
 	$scope.connexion=function(){
+		var userDetails= {
+			mail : $scope.user.email,
+			password : $scope.user.password
+		};
 	
-	$http.post('/connexion',$scope.user)
+	$http.post('/connexion',userDetails)
 			.success (function(data){
-					if(data=='Email invalide'){
-						alert(data+" - email n'existe pas");
+		if (data === "OK") {
 
-					}else {
-						if(data[0].password==$scope.user.password)
-						alert('OK');
-						else 
-						alert('Worst password');
-
-					}
+			$location.path("/");
+			$scope.error = false;
+		} else {
+			$location.path("/login");
+			$scope.erreur=data;
+			$scope.error = true;
+		}
 			})
 			.error(function(data, status) {
 				alert('Repos error'+status+' - '+data);
