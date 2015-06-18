@@ -1,5 +1,5 @@
 var ReadIT = angular.module('readIt');
-ReadIT.controller('NewUserController',['$scope','serviceDetails',function($scope,serviceDetails){
+ReadIT.controller('NewUserController',['$scope','$http','$location',function($scope,$http,$location){
     $scope.save=function(){
         var userDetails= {
             firstName : $scope.user.nom,
@@ -7,13 +7,19 @@ ReadIT.controller('NewUserController',['$scope','serviceDetails',function($scope
             mail : $scope.user.email,
             password : $scope.user.password
         };
-        serviceDetails.newUser(userDetails).success(function(data){
-            if(data=='succes')
-                alert('user saved');
-            else
-                alert("non Valide");
-        });
-        $scope.reset();
+       if($scope.userForm.$valid){
+           $http.post('/inscriptionuser',userDetails)
+               .success (function(res){
+               alert(res);
+
+           })
+               .error (function(res, req) {
+                   console.log('Repos error'+res+" - "+ req);
+               });
+       }
+
+       else
+       alert("No");
     };
 
     $scope.reset=function(){

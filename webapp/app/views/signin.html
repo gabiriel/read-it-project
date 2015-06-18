@@ -1,7 +1,7 @@
-<div class="container" ng-controller="NewUserController">
+<div class="container">
     <legend>Inscription :</legend>
     <!-- Form -->
-    <form name="userForm" method="POST" novalidate="" data-ng-submit="submitForm()">
+    <form name="userForm" ng-controller="NewUserController">
         <!-- Nom -->
         <div class="form-group" data-ng-class="{'has-error':!userForm.nom.$valid && userForm.nom.$dirty }">
             <label for="nom">Nom :</label>
@@ -38,21 +38,21 @@
         <!-- confirmpassword -->
         <div class="form-group" ng-class="{'has-error':userForm.password_conf.$invalid && userForm.password_conf.$dirty }">
             <label class="form-label" for="password_conf">Confirm Password :</label>
-            <input class="form-control" type="password" id="password_conf" name="password_conf" ng-model="user.password_conf" valid-password-c required  />
+            <input class="form-control" type="password" id="password_conf" name="password_conf" data-ng-model="user.password_conf" equals-to="userForm.password" required  />
             <span class="help-block" ng-show="userForm.password_conf.$error.required && userForm.password_conf.$dirty">Please confirm your password.</span>
-            <span class="help-block" ng-show="!userForm.password_conf.$error.required && userForm.password_conf.$error.noMatch && userForm.password.$dirty">Passwords do not match.</span>
+            <span class="help-block" ng-show="(!userForm.password_conf.$error.required && userForm.password.$dirty) && !userForm.password_conf.$valid">Passwords do not match.</span>
 
 
         </div>
 
         <!-- check agree -->
         <div>
-            <input type="checkbox" name="checkagree" ng-model="user.checkagree" >
+            <input type="checkbox" name="checkagree" ng-model="checkagree" >
             <label>I agree <a ui-sref="termsAndConditions">term and condition</a></label>
         </div>
 
         <!-- Valider -->
-        <button ng-click="save()" class="btn btn-primary" ng-disabled="!userForm.$valid && user.checkagree" >Valider</button>
+        <button ng-click="save()" class="btn btn-primary" ng-disabled="(!userForm.$valid || !checkagree)" >Valider</button>
 
         <!-- Reset -->
         <button ng-click="reset()" class="btn btn-default" >Reset</button>
