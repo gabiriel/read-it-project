@@ -6,6 +6,15 @@
         <div class="alert alert-danger" ng-show="error">
             {{erreur}}
         </div>
+
+        <!-- UserName -->
+        <div class="form-group" data-ng-class="{'has-error':!userForm.username.$valid && userForm.username.$dirty }">
+            <label for="username">usernom :</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Saisie Nom" ng-minlength="4" ng-maxlength="25" ng-model="user.username" required="">
+            <span class="help-block" data-ng-show="userForm.username.$error.required && userForm.username.$dirty">This is required.</span>
+            <span class="help-block" ng-show="!userForm.username.$error.required && (userForm.username.$error.minlength || userForm.username.$error.maxlength) && userForm.username.$dirty">username must be between 4 and 20 characters.</span>
+        </div>
+
         <!-- Nom -->
         <div class="form-group" data-ng-class="{'has-error':!userForm.nom.$valid && userForm.nom.$dirty }">
             <label for="nom">Nom :</label>
@@ -22,6 +31,7 @@
             <span class="help-block" data-ng-show="userForm.prenom.$error.maxlength">Name is too short.</span>
             <span class="help-block" data-ng-show="userForm.presnom.$error.minlength">Name is too long.</span>
         </div>
+
 
         <!-- Email -->
         <div class="form-group" ng-class="{'has-error':userForm.email.$invalid && userForm.email.$dirty }" >

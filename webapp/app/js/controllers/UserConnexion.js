@@ -1,12 +1,12 @@
 var app = angular.module('readIt');
-app.controller('ConnexionUserController',function($scope,$http,$location){
+app.controller('ConnexionUserController',['$scope','$location','serviceDetails',function($scope,$location,$serviceDetails){
 	$scope.connexion=function(){
 		var userDetails= {
 			mail : $scope.user.email,
 			password : $scope.user.password
 		};
 	
-	$http.post('/connexion',userDetails)
+	$serviceDetails.login(userDetails)
 			.success (function(data){
 		if (data === "OK") {
 
@@ -26,4 +26,4 @@ app.controller('ConnexionUserController',function($scope,$http,$location){
 		$scope.user={email:'',password:''};
 	}
 	
-});
+}]);

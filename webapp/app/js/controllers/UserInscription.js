@@ -1,32 +1,28 @@
 var ReadIT = angular.module('readIt');
-ReadIT.controller('NewUserController',['$scope','$http','$location',function($scope,$http,$location){
+ReadIT.controller('NewUserController',['$scope','$location','serviceDetails',function($scope,$location,serviceDetails){
     $scope.save=function(){
         var userDetails= {
+            userName: $scope.user.username,
             firstName : $scope.user.nom,
             lastName : $scope.user.prenom,
             mail : $scope.user.email,
             password : $scope.user.password
         };
-       if($scope.userForm.$valid){
-           $http.post('/inscriptionuser',userDetails)
-               .success (function(data) {
-               if (data === "OK") {
+        serviceDetails.inscrire(userDetails)
+            .success (function(data) {
+            if (data === "OK") {
 
-                   $location.path("/");
-                   $scope.error = false;
-               } else {
-                   $location.path("/inscription");
-                   $scope.erreur=data;
-                   $scope.error = true;
-                  }
-               })
-               .error (function(res, req) {
-                   console.log('Repos error'+res+" - "+ req);
-               });
-       }
-
-       else
-       alert("No");
+                $location.path("/");
+                $scope.error = false;
+            } else {
+                $location.path("/inscription");
+                $scope.erreur=data;
+                $scope.error = true;
+            }
+        })
+            .error (function(res, req) {
+            console.log('Repos error'+res+" - "+ req);
+        });
     };
 
     $scope.reset=function(){

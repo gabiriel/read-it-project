@@ -15,5 +15,12 @@ app.factory('serviceDetails', ['$http',function($http){
             headers: {'Content-Type': undefined}
         });
     };
+    Details.inscrire = function (userDetail){
+        return $http.post("/inscriptionuser",userDetail);
+    }
+    Details.login = function (userDetail) {
+        return $http.post("/connexion", userDetail);
+    }
+
     return Details;
 }]);
