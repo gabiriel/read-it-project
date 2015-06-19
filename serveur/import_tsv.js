@@ -8,13 +8,13 @@ var express = require('express');
 var router = express.Router();
 var fs = require("fs");
 var tsv_parser = require("./tsv_transformer");
+var mongoose = require('mongoose');
 
 /**
  * Created by arjuna on 24/04/15.
  */
 //lets require/import the mongodb native drivers.
 var mongodb = require('mongodb');
-
 //We need to work with "MongoClient" interface in order to connect to a mongodb server.
 var MongoClient = mongodb.MongoClient;
 
@@ -22,12 +22,36 @@ var MongoClient = mongodb.MongoClient;
 var url = 'mongodb://localhost:27017/my_database_name';
 var util = require('util');
 
-
+var ChapterSchema =new mongoose.Schema({
+    pageNumber : Number,
+    name : String,
+    number : Number,
+    resume : String,
+    date : Date
+});
+var OeuvreSchema = new  mongoose.Schema({
+    type : String,
+    title :String,
+    name : String,
+    author :[String],
+    category : [String],
+    chapters : [ChapterSchema]
+});
+var OeuvreModel = mongoose.model('Oeuvre', OeuvreSchema);
+//MongoClient.connect(url, function (err, db));
 /* GET home page. */
 router.post('/', function(req, res, next) {
     fs.readFile(req.files['to-import'].path, 'utf8', function(err, data) {
         // Use connect method to connect to the Server
-        MongoClient.connect(url, function (err, db) {
+        var result = tsv_parser(data);
+        result.forEach(function(oeuvre) {
+            OeuvreModel.create(oeuvre,function(err) {
+                console.log(err);
+                console.log(data);
+            });
+        });
+        res.end("success");
+        /*MongoClient.connect(url, function (err, db) {
             if (err) {
                 console.log('Unable to connect to the mongoDB server. Error:', err);
             } else {
@@ -63,7 +87,7 @@ router.post('/', function(req, res, next) {
                     res.end("success");
                 });
             }
-        });
+        });*/
     });
 
     //on affiche la validation

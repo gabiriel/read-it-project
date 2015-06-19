@@ -13,16 +13,16 @@ function Chapter(name, number, resume, pageNumber, date) {
         throw new WrongArgumentException('Chapter', 'name','string',typeof(name));
     if(typeof resume !== 'string')
         throw new WrongArgumentException('Chapter', 'resume','string',typeof(resume));
-    if(typeof number !== 'number')
+    if(number !==  undefined && typeof number !== 'number')
         throw new WrongArgumentException('Chapter', 'number','number',typeof(number));
-    if(typeof pageNumber !== 'number')
+    if(pageNumber !== undefined && typeof pageNumber !== 'number')
         throw new WrongArgumentException('Chapter', 'pageNumber','number',typeof(pageNumber));
 
-    this.pageNumber = pageNumber;
+    this.pageNumber = pageNumber || 0;
     this.name = name;
-    this.number = number;
+    this.number = number || 0;
     this.resume = resume;
-    this.date = date;
+    this.date = new Date(date, 'DD/MM/YYYY') || new Date(date,'YYYY') || undefined;
 }
 
 function Oeuvre(name, type, author, category){
@@ -77,7 +77,7 @@ function stringToTsv(toParse) {
             //on ajoute un nouveau chapitre a l'euvre
             Oeuvres[Oeuvres.length - 1].chapters.push(new Chapter(
                 csv[i].Titre_du_chapitre,
-                parseInt(csv[i].Numéro_de_chapitre),
+                parseInt(csv[i].Numéro_de_chapitre) ,
                 csv[i].Résumé,
                 parseInt(csv[i].Nombre_de_pages),
                 csv[i].Date_de_parution_originale

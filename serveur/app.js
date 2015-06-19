@@ -24,7 +24,7 @@ app.use('/import', tsvimport);
 http.createServer(app).listen(app.get('port'), function(req,res){
     console.log('Express server listening on port ' + app.get('port'));
 });
-mongoose.connect('mongodb://localhost/users', function(err) {
+mongoose.connect('mongodb://localhost/readIt', function(err) {
     console.log('Trying to connect to Mongodb');
  if (err)
      console.log("'Connection to MongoDB [ERROR] :"+err);
