@@ -46,11 +46,23 @@
 h1,h2,h3,h4,h5{
   font-family:"Vollkorn", serif;
 }
+
 /** Menu
 ------------------*/
 #menu{
   color: #FEFFFE;
   background: #6FC2F4;
+}
+#navbar li,
+#navbar a{
+  cursor: pointer;
+}
+
+#btn_login:hover .glyphicon{
+  color:#e2f89c;
+}
+#btn_logout .glyphicon{
+  color:#cc0000;
 }
 /** Layout
 ------------------*/

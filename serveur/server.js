@@ -38,28 +38,62 @@ app.use(session({secret:'secret'}));
 app.use(express.static('../webapp/app'));
 app.use('/import', tsvimport);
 
-
 http.createServer(app).listen(app.get('port'), function(req,res){
     console.log('Express server listening on port ' + app.get('port'));
 });
-mongoose.connect('mongodb://localhost:27017/readIt', function(err) {
-    console.log('Trying to connect to Mongodb');
- if (err)
-     console.log("'Connection to MongoDB [ERROR] :"+err);
+
+var url_mongodb ={
+  local: "mongodb://localhost/readIt",
+  prod: "mongodb://root:toor@ds047772.mongolab.com:47772/read_it"
+};
+
+var url_mongodb_in_use = url_mongodb.prod;
+mongoose.connect(url_mongodb_in_use, function(err) {
+    console.log("Trying to connect to Mongodb :" + url_mongodb_in_use);
+ if (err){
+     console.log("Connection to MongoDB [ERROR]");
+     throw err;
+ }
  else
-    console.log('Connection to MongoDB [SUCCESS]');
+    console.log("Connection to MongoDB [SUCCESS]");
 });
 
-
 ////////////////////Creation du schema de la base////////////////////////////////////////////////////////////////////
-var users = new mongoose.Schema({
-    userName :Object,
-    firstName : Object,
-    lastName : Object,
-    mail : Object,
-    password : Object
- });
-var usersModel = mongoose.model('users', users);
+var UserSchema = new mongoose.Schema({
+    username: {type: String, lowercase: true, unique: true},
+    fistname: String,
+    lastname: String,
+    mail: String,
+    hash: String,
+    salt: String
+});
+
+UserSchema.methods.setPassword = function(password){
+    this.salt = crypto.randomBytes(16).toString('hex');
+    this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+};
+
+UserSchema.methods.validPassword = function(password) {
+    var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+
+    return this.hash === hash;
+};
+
+UserSchema.methods.generateJWT = function() {
+
+    // set expiration to 30 days
+    var today = new Date();
+    var exp = new Date(today);
+    exp.setDate(today.getDate() + 30);
+
+    return jwt.sign({
+        _id: this._id,
+        username: this.username,
+        exp: parseInt(exp.getTime() / 1000),
+    }, '$eucrèt');
+};
+
+mongoose.model('User', UserSchema);
 
 var usersforgotpwd = new mongoose.Schema({
    mail:Object,
@@ -77,25 +111,29 @@ app.post('/',function(req,res) {
         if (err) {
             throw err;
         }
-        console.log('Commentaire ajouté avec succees !');
+        console.log('User ajouté avec succees !');
     });
     res.end();
 });
+
+var sender_email = {
+    adress: "social.readit",
+    password: "ChuckN0rr1s"
+};
 
 app.post('/inscriptionuser',function(req,res) {
     var monuser=req.body;
     /* créer Exemplaire à envoyer aux nouveaux utilisateurs */
 
-    var ExemplaireText='<h4>Bonjour Cher(e) <b>'
-            +monuser.firstName+'</b> ;</h4></br>'
-            +'Merci pour votre inscription,Voici vos coordonnées:</br>'
-            +'Votre username : ' +monuser.userName+'</b> ;</h4></br>'
-            +'Pour des informations, n\'hésitez pas à nous contacter sur email : '+site_email
+    var ExemplaireText = "Bonjour Cher(e)" +  monuser.firstName
+            + "Merci pour votre inscription,Voici vos coordonnées:"
+            + "Username:" + monuser.userName
+            + "Pour des informations, n'hésitez pas à nous contacter sur email : "+ sender_email.adress
         ;
 
     // Créer OptionMail
     var mailOptions = {
-        from: 'Suivi Manga ✔ <'+site_email+'>', // sender address
+        from: 'Suivi Manga ✔ <' + sender_email.adress + '>', // sender address
         to: monuser.mail, // list of receivers
         subject: 'inscription', // Subject line
         html: ExemplaireText // html body
@@ -170,6 +208,7 @@ app.post('/contact', function (req, res){
             res.send("Mot de passe est faux");
     })
 });
+<<<<<<< HEAD:serveur/app.js
 
 
 app.post('/forgotpassword',function(req,res) {
@@ -258,3 +297,8 @@ app.post('/user/reset/',function(req,res) {
   });
 
 });
+=======
+/*
+app.get('*', '../webapp/app/index.html'); /*** Cette conf doit être à la fin du fichier !!!
+NE RIEN METTRE EN DESSOUS ****/
+>>>>>>> BIG refinement:serveur/server.js

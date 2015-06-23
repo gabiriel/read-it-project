@@ -1,4 +1,5 @@
-<div class="container">
-    <h2>Home</h2>
-    <p></p>
+<div class="container" ng-controller="UserPage">
+    <h1>Home</h1>
+    <p ng-show="auth.isLoggedIn"> Welcome {{auth.currentUser()}} !</p>
+
 </div>

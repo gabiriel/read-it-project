@@ -1,7 +1,8 @@
 var app = angular.module('readIt');
-    app.controller('UserPage',function($scope){
-        //=== Variables ===//
+app.controller('UserPage',['$scope', 'auth', function($scope, auth){
+
+    //=== Variables ===//
     $scope.user="ghersi cherifa";
     $scope.imgSource ="img.jpg"//donnée le lien vers limage de profile de chaque utilisateur ;
-
-    }) // end navbarDirectiveTestCtrl
+    $scope.auth = auth;
+}]);

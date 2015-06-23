@@ -1,28 +1,24 @@
 <div id="login_view" class="container">
 
-        <form class="form-login" name="userform" ng-controller="ConnexionUserController">
+        <form class="form-login" name="userform" ng-submit="logIn()">
             <legend><h2 class="form-login-heading">Log in</h2></legend>
 
-            <!--Erreur-->
             <div class="alert alert-danger" ng-show="error">
-                {{erreur}}
+                {{ error.message }}
             </div>
 
-            <!-- Email -->
             <div class="form-group"  ng-class="{'has-error':userform.email.$invalid && userform.email.$dirty }" >
-                <input type="Email" class="form-control" id="email" name="email" placeholder="Saisie Email" ng-model="user.email" required>
+                <input type="Email" class="form-control" id="email" name="email" placeholder="Email" ng-model="user.email" required>
                 <span class="help-block" ng-show="userform.email.$error.required && userform.email.$dirty">Email is required.</span>
                 <span class="help-block" ng-show="userform.email.$error.email">This is not a valid email.</span>
             </div>
 
-            <!-- Password -->
             <div class="form-group" ng-class="{'has-error':userform.password.$invalid && userform.password.$dirty }">
-                <input class="form-control" type="password" placeholder="Saisie le mot de passe" id="password" name="password" ng-model="user.password" ng-minlength="8" ng-maxlength="20" required  />
+                <input class="form-control" type="password" placeholder="Mot de passe" id="password" name="password" ng-model="user.password" ng-minlength="8" ng-maxlength="20" required  />
                 <span class="help-block" ng-show="userform.password.$error.required && userform.password.$dirty">this is required</span>
                 <span class="help-block" ng-show="!userform.password.$error.required && (userform.password.$error.minlength || userform.password.$error.maxlength) && userform.password.$dirty">Passwords must be between 8 and 20 characters.</span>
             </div>
 
-            <!-- Forgot Password -->
             <div class="form-group">
                 <label><a ui-sref="forgotpassword">Mot de passe oublié ?</a></label>
             </div>
@@ -31,8 +27,7 @@
                 <label>Vous êtes nouveau ? <a ui-sref="signin">Inscrivez-vous ici</a></label>
             </div>
 
-            <!--Button-->
-            <button class="btn btn-lg btn-primary btn-block" ng-click="connexion()" ng-disabled="!userform.$valid">Connexion</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="!userform.$valid">Connexion</button>
 
         </form>
 
