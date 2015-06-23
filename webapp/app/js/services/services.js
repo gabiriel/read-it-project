@@ -17,10 +17,17 @@ app.factory('serviceDetails', ['$http',function($http){
     };
     Details.inscrire = function (userDetail){
         return $http.post("/inscriptionuser",userDetail);
-    }
+    };
     Details.login = function (userDetail) {
         return $http.post("/connexion", userDetail);
-    }
+    };
+    Details.forgot = function (userDetail) {
+        return $http.post("/forgotpassword", userDetail);
+    };
+    Details.reset = function (userDetail) {
+        return $http.post("/user/reset/", userDetail);
+    };
+
 
     return Details;
 }]);

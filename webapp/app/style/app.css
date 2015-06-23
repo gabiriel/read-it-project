@@ -64,7 +64,7 @@ main#content{
   min-height:85vh;
 }
 
-/** Forms
+/** Form Login
 ------------------*/
 #login_view form{
   margin:auto;
@@ -84,3 +84,42 @@ main#content{
   margin-bottom: 10px;
 }
 
+/** Form Forgot
+------------------*/
+#forgot_view form{
+  margin:auto;
+}
+.form-forgot {
+  max-width: 330px;
+  padding: 15px;
+}
+.form-forgot .form-forgot-heading,
+.form-forgot .checkbox {
+  margin-bottom: 10px;
+}
+.form-forgot .form-control {
+  padding: 10px;
+}
+.form-forgot input[type="password"] {
+  margin-bottom: 10px;
+}
+
+/** Form Reset
+------------------*/
+#reset_view form{
+  margin:auto;
+}
+.form-reset {
+  max-width: 330px;
+  padding: 15px;
+}
+.form-reset .form-reset-heading,
+.form-reset .checkbox {
+  margin-bottom: 10px;
+}
+.form-reset .form-control {
+  padding: 10px;
+}
+.form-reset input[type="password"] {
+  margin-bottom: 10px;
+}

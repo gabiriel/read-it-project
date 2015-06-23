@@ -32,6 +32,10 @@ angular.module('readIt', ['ui.router'])
             url: "/forgotpassword",
             templateUrl: "views/forgotpassword.html"
         })
+        .state('resetpassword',{
+            url:'/user/reset/:token',
+            templateUrl:"views/resetpassword.html"
+        })
         .state('userDisplay', {
             url: "/user/display",
             templateUrl: "views/user_display.html"
