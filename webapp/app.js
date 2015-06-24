@@ -1,4 +1,5 @@
 var http = require('http');
+var url = require('url');
 var express = require('express');
 var path = require('path');
 var session = require('express-session');
@@ -28,6 +29,7 @@ mongoose.connect(url_mongodb_in_use, function(err) {
  * !! Should be before Routes definition !!
  *************************************************/
 require('./models/Users');
+require('./models/UsersForgotPassword');
 require('./config/passport');
 
 /** TSV import
@@ -70,30 +72,4 @@ http.createServer(app).listen(app.get('port'), function(req,res){
 });
 
 var User = mongoose.model('User');
-
-app.post('/connexion', function (req, res){
-    var Mesparams = req.body;
-
-    User.find({mail:Mesparams.mail},function(err,data){
-        if(err){ res.send(err); }
-        if (data.length==0){ res.send('Invalid Email');}
-        if(passwordHash.verify(Mesparams.password, data[0].password))
-        {
-            res.send("OK");
-        }
-        res.send("Wrong password");
-    })
-});
-
-app.post('/contact', function (req, res){
-    var Mesparams = req.body;
-
-    User.find({mail:Mesparams.mail},function(err,data){
-        if(err){ res.send(err); }
-        if (data.length==0){ res.send('Email invalide'); }
-        if(passwordHash.verify(Mesparams.password, data[0].password)) {
-            res.send("OK");
-        }
-        res.send("Mot de passe est faux");
-    })
-});
+var UserForgotPwd = mongoose.model('UserForgotPassword');

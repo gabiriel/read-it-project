@@ -51,12 +51,20 @@ angular.module('readIt', ['ui.router'])
             }]
         })
         .state('forgotpassword', {
-            url: "/forgotpassword",
-            templateUrl: "views/forgotpassword.html"
+            url: '/forgotpassword',
+            templateUrl: 'views/forgotpassword.html',
+            controller: 'UserForgotPasswordController',
+
         })
         .state('resetpassword',{
             url:'/user/reset/:token',
-            templateUrl:"views/resetpassword.html"
+            templateUrl: 'views/resetpassword.html',
+            controller: 'UserResetPasswordController',
+            onEnter: ['$state', 'auth', function($state, auth){
+                if(!auth.isLoggedIn()){
+                    $state.go('home');
+                }
+            }]
         })
         .state('userDisplay', {
             url: "/user/display",
@@ -73,8 +81,10 @@ angular.module('readIt', ['ui.router'])
         .state('termsAndConditions', {
             url: "/terms",
             templateUrl: "views/terms_and_conditions.html"
-        }).state('import', {
+        })
+        .state('import', {
             url : '/import',
-            templateUrl : '/views/import.html'
+            templateUrl : '/views/import.html',
+            controller: 'ImportTsvController'
         })
     });

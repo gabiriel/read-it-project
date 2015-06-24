@@ -1,5 +1,5 @@
 var app = angular.module('readIt');
-app.controller('forgotUserController',['$scope','$location','serviceDetails',function($scope,$location,$serviceDetails){
+app.controller('UserForgotPasswordController',['$scope','$location','serviceDetails',function($scope,$location,$serviceDetails){
 	$scope.forgot = function(){
 		var userDetails= {
 			mail : $scope.email

@@ -7,10 +7,13 @@ var passport = require('passport');
 var jwt = require('express-jwt');
 var auth = jwt({secret: '$eucrèt', userProperty: 'payload'});
 var nodemailer = require('nodemailer');
+var crypto = require('crypto');
+
 
 var mongoose = require('mongoose');
 console.log('[index.js] Load mongoose models');
 var User = mongoose.model('User');
+var UserForgotPwd = mongoose.model('UserForgotPassword');
 
 /** Mail config
  *************************************************/
@@ -103,6 +106,66 @@ router.post('/login', function(req, res, next){
             return res.status(401).json(info);
         }
     })(req, res, next);
+});
+
+router.post('/forgotpassword', function(req,res) {
+    var formUser = req.body;
+
+    User.find({mail: formUser.mail}, function (err,data) {
+        if(err){ return res.send('erreur de db - users'); }
+        if(data.length < 1){ return res.send("Cet utilisateur n'existe pas" ); }
+
+        UserForgotPwd.find({mail: formUser.mail}, function(err,data){
+            if(err){ return res.send('Erreur de db - forgot'); }
+            if(data.length > 0) { return res.send('Vous avez déja demandé une récupération du mot de passe'); }
+            var tokenCree = crypto.randomBytes(10).toString('hex');
+            console.log(tokenCree);
+            var tokenToSave = new UserForgotPwd({
+                mail: formUser.mail,
+                resetPasswordToken: tokenCree
+            });
+            tokenToSave.save(function (err) {
+                if(err){ return res.send("erreur au sauvegarder token :"+err); }
+
+                var ExemplaireText = "Pour changer votre mot de passe, il faut cliquer "
+                    + "<a href=http://" + req.headers.host + "/#/user/reset/?token=" + tokenCree
+                    + ">Ici</a></br>"
+                    + "<b> Attention, ce lien ne fonctionne qu'une seule fois.</b>";
+
+                var mailOptions = {
+                    from: 'Suivi Manga ✔ <' + sender_email.address + '>',
+                    to: formUser.mail,
+                    subject: 'Récuperation du mot de passe',
+                    html: ExemplaireText
+                };
+
+                mailTransport.sendMail(mailOptions, function (error, response) {
+                    if (error) { return res.status(500).send("Erreur lors de l'envoie du mail : " + error); }
+                        mailTransport.close();
+                });
+                return res.status(200).send('Vous venez de recevoir un mail afin de réinitialiser votre mot de passe');
+            });
+        });
+    });
+});
+
+router.post('/user/reset/', function(req,res) {
+    var params = req.body;
+    UserForgotPwd.findOneAndRemove({resetPasswordToken: params.token}, function(err, data){
+        if(err){ return res.send("erreur db"); }
+        if(!data){ return res.send("Ce lien ne fonctionne plus."); }
+
+        var currentUser = new User();
+        User.find({mail: data.email}, function (err, user){
+            if(err){ return res.send('Erreur user database'); }
+            currentUser = user;
+        });
+        currentUser.setPassword(params.password);
+        User.update({mail: currentUser.mail},{salt: currentUser.salt, hashpass: currentUser.hashpass}, function(err, id, res){
+            if(err){ return res.send('Erreur user database'); }
+        });
+        return res.status(200).send("Password reset");
+    });
 });
 
 module.exports = router;

@@ -2,7 +2,7 @@
  * Created by hedhili on 22/06/2015.
  */
 var app = angular.module('readIt');
-app.controller('ResetPasswordController',['$scope','$location','serviceDetails',function($scope,$location,$serviceDetails){
+app.controller('UserResetPasswordController',['$scope','$location','serviceDetails',function($scope,$location,$serviceDetails){
     $scope.resetpassword=function(){
         var userDetails= {
             password : $scope.user.password,
