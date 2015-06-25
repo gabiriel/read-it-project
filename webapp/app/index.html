@@ -1,38 +1,46 @@
 <!DOCTYPE html>
 <html ng-app="readIt" lang="fr">
 <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Read-it | Réseau social sur les Bande déssinées, Comics, Manga...">
+  <meta name="author" content="GHASDA">
+
   <link rel="shortcut icon" href="img/logo_read_it.ico" />
   <link rel="icon" type="image/x-icon" href="img/logo_read_it.ico" />
   <link rel="icon" type="image/png" href="img/logo_read_it.png" />
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Read-it | Réseau social sur les Bande déssinées, Comics, Manga...">
-<meta name="author" content="GHASDA">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
+  <link rel="stylesheet" href="js/lib/datepicker/css/datepicker.css"/>
+  <link rel="stylesheet" href="style/app.css">
 
-<link rel="icon" href="">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-<link rel="stylesheet" href="style/app.css">
+  <!-- Libraries -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script src="js/read_it_design.js"></script>
+  <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
+  <script type="text/javascript" src="https://code.angularjs.org/1.4.0/angular.min.js"></script>
+  <script type="text/javascript" src="http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
+  <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+  <script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
+  <script type="text/javascript" src="js/lib/datepicker/js/bootstrap-datepicker.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script src="js/read_it_design.js"></script>
-  
-<script src="https://code.angularjs.org/1.4.0/angular.min.js"></script>
-<script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
-<script src="angularApp.js"></script>
+  <script src="angularApp.js"></script>
 
-<script src="js/controllers/AuthController.js"></script>
-<script src="js/controllers/UserDisplay.js"></script>
-<script src="js/controllers/ContactUserController.js"></script>
-<script src="js/controllers/ImportTsvController.js"></script>
-<script src="js/controllers/UserForgotPasswordController.js"></script>
-<script src="js/controllers/UserResetPasswordController.js"></script>
+  <script src="js/controllers/AuthController.js"></script>
+  <script src="js/controllers/UserDisplay.js"></script>
+  <script src="js/controllers/ContactUserController.js"></script>
+  <script src="js/controllers/ImportTsvController.js"></script>
+  <script src="js/controllers/UserForgotPasswordController.js"></script>
+  <script src="js/controllers/UserResetPasswordController.js"></script>
+  <script src="js/controllers/UiCalendarController.js"></script>
 
-<script src="js/services/services.js"></script>
-<script src="js/directives/directive.js"></script>
+  <script src="js/services/services.js"></script>
+  <script src="js/directives/directive.js"></script>
 
-<title>Read-it : Manga, Comics, BD</title>
+  <title>Read-it : Manga, Comics, BD</title>
 </head>
 
 <body>
