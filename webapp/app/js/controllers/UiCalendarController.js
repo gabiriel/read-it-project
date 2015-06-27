@@ -58,6 +58,7 @@ app.controller('UiCalendarController', function($scope, $compile, uiCalendarConf
 
     $scope.uiConfig = {
         calendars:{
+            lang: 'fr',
             justForAdminCalendar:{
                 editable: true,
                 header:{
@@ -65,24 +66,19 @@ app.controller('UiCalendarController', function($scope, $compile, uiCalendarConf
                     center: '',
                     right: 'prev,today,next'
                 },
-                dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
                 eventClick: $scope.alertOnEventClick,
                 eventDrop: $scope.alertOnDrop,
                 eventResize: $scope.alertOnResize,
                 eventRender: $scope.eventRender
             },
             displayCalendar:{
+                lang: 'fr',
                 editable: false,
                 header:{
                     left: 'title',
                     center: '',
                     right: 'prev,today,next'
                 },
-                dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-                // dayNames: ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
-                // dayNamesShort: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Vend", "Sam"],
                 eventClick: $scope.alertOnEventClick
             }
         }
