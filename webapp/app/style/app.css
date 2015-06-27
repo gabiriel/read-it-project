@@ -139,3 +139,18 @@ main#content{
 .form-reset input[type="password"] {
   margin-bottom: 10px;
 }
+
+/** HOME
+------------------*/
+#home_view{ }
+
+
+/**
+* Calendar
+------------------*/
+.fc-event-container{
+  cursor: pointer;
+}
+.fc-day-grid-container{
+  height: auto!important;
+}

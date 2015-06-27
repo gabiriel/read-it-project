@@ -14,6 +14,7 @@ var mongoose = require('mongoose');
 console.log('[index.js] Load mongoose models');
 var User = mongoose.model('User');
 var UserForgotPwd = mongoose.model('UserForgotPassword');
+var CalendarEvent = mongoose.model('CalendarEvent');
 
 /** Mail config
  *************************************************/
@@ -165,6 +166,24 @@ router.post('/user/reset/', function(req,res) {
             if(err){ return res.send('Erreur user database'); }
         });
         return res.status(200).send("Password reset");
+    });
+});
+/**
+ * Create event from home.html (form near calendar)
+ */
+router.post('/event/create', auth, function(req, res, next) {
+    var event = new CalendarEvent(req.body);
+    event.author = req.payload.username;
+    event.save(function(err, event){
+        if(err){ return next(err); }
+        res.json(event);
+    });
+});
+
+router.get('/events', function(req, res, next) {
+    CalendarEvent.find(function(err, events){
+        if(err){ return next(err); }
+        res.json(events);
     });
 });
 

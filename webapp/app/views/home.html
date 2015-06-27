@@ -1,5 +1,81 @@
-<div class="container" ng-controller="UserPage">
-    <h1>Home</h1>
-    <p ng-show="auth.isLoggedIn()"> Welcome {{auth.currentUser()}} !</p>
+<div id="home_view" class="container">
+    <div class="row">
+        <div class="col-m-10">
+            <aside class="col-sm-9" ng-controller="AuthController"> <!-- Center Large Column -->
+                <div class="row">
+                    <div class="col-xs-4">
+                        <img id="logo" src="img/logo_read_it.svg" alt="Logo - Read it"/>
+                    </div>
+                    <div class="col-sm-8">
+                        <h2 ng-show="auth.isLoggedIn()">Bienvenue {{auth.currentUser()}}</h2>
+                        <h2 ng-hide="auth.isLoggedIn()">Bienvenue, pour contribuer à ce site merci de vous identifier</h2>
+                        <p>Read-it est un réseau social dédié à la BD, aux mangas et comics, du contenu sera bientôt disponible.</p>
+                    </div>
+                </div>
+                <div class="row" ng-controller="UiCalendarController">
+                    <div class="col-md-7">
+                        <div id="calendar" ng-model="calendar">
+                            <div ui-calendar="uiConfig.calendars.displayCalendar" ng-model="eventSources"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="row">
+                            <p ng-show="eventClicked != null" class="alert alert-success"><b>{{eventClicked.title}}</b> | {{eventClicked.start | date: format : date}}<br/>{{eventClicked.description}}</p>
+                            <p ng-hide="eventClicked != null" class="alert alert-warning">Selectionnez un évenement pour afficher ses détails</p>
+                        </div>
+                        <div class="row">
+                            <h3>Proposer un évenement :</h3>
+                            <div ng-show="auth.isLoggedIn()">
+                                <form name="purposeEventForm" class="form-inline" role="form" ng-submit="addEvent()">
+                                    <div id="title_event" class="input-group col-xs-12" ng-class="{'has-error': purposeEventForm.title.$invalid}">
+                                        <span class="input-group-addon" id="basic-addon-title"><i class="glyphicon glyphicon-tag"></i></span>
+                                        <input type="text" class="form-control" aria-describedby="basic-addon-title"
+                                               name="title"
+                                               ng-model="titleEvent"
+                                               placeholder="Titre"
+                                               ng-minlength="3"
+                                               ng-maxlength="50"
+                                               required >
+                                    </div>
+                                    <div id="date_event" class="input-group col-xs-12" ng-class="{'has-error': purposeEventForm.date.$invalid}">
+                                        <span class="input-group-addon" id="basic-addon-calendar"><i class="glyphicon glyphicon-calendar"></i></span>
+                                        <input type="text" class="form-control" aria-describedby="basic-addon-calendar"
+                                               name="date"
+                                               ng-model="dateEvent"
+                                               placeholder="Date de l'évenement"
+                                               data-date-format="dd/MM/yyyy"
+                                               data-date-type="number"
+                                               data-min-date="today"
+                                               data-autoclose="1"
+                                               required
+                                               bs-datepicker >
+                                    </div>
+                                    <div id="description_event" class="input-group col-xs-12" >
+                                        <span class="input-group-addon" id="basic-addon-description"><i class="glyphicon glyphicon-align-left"></i></span>
+                                        <textarea type="text" class="input-mini form-control" aria-describedby="basic-addon-description"
+                                               name="description"
+                                               ng-model="descriptionEvent"
+                                               placeholder="Description"
+                                               ng-maxlength="400" ></textarea>
+                                    </div>
+                                    <button class="btn btn-primary" type="submit"  ng-disabled="!purposeEventForm.$valid">Valider</button>
+                                </form>
+                            </div>
+                            <p class="alert alert-info" ng-hide="auth.isLoggedIn()">Voici un calendrier des sorties. Il faut être <a ui-sref="login">authentifié</a> pour pouvoir proposer une date.</p>
+                            <p class="alert alert-info" ng-show="alertMessage!=null">{{alertMessage}}</p>
 
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <aside class="col-sm-3"> <!-- Right Column -->
+                <div id="sondage" ng-model="sondage">
+                    <h3>Sondage</h3>
+                </div>
+                <div id="recommendation" ng-model="recommendation">
+                    <h3>Recommendation</h3>
+                </div>
+            </aside>
+        </div>
+    </div>
 </div>

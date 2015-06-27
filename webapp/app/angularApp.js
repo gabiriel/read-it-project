@@ -2,7 +2,7 @@
 
 // Declare app level module which depends on views, and components
 
-angular.module('readIt', ['ui.router'])
+angular.module('readIt', ['ui.router', 'ui.calendar', 'mgcrea.ngStrap'])
     .config(function($locationProvider, $stateProvider, $urlRouterProvider) {
     // For any unmatched url, redirect to /index
     $urlRouterProvider.otherwise('/');
@@ -11,16 +11,23 @@ angular.module('readIt', ['ui.router'])
     // Now set up the states
     $stateProvider
         .state('/', {
-            url: '/',
-            templateUrl: 'views/home.html'
+            onEnter: ['$state', function($state){
+                $state.go('home');
+            }]
         })
         .state('index', {
-            url: '/',
-            templateUrl: 'views/home.html'
+            onEnter: ['$state', function($state){
+                $state.go('home');
+            }]
         })
         .state('home', {
             url: '/',
-            templateUrl: 'views/home.html'
+            templateUrl: 'views/home.html',
+            resolve: {
+                postPromise: ['events', function(events){
+                    return events.getAll();
+                }]
+            }
         })
         .state('signin', {
             url: '/signin',

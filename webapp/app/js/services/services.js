@@ -71,3 +71,26 @@ app.factory('auth', ['$http', '$window', function($http, $window){
 
     return auth;
 }]);
+
+/** Calendar Events Factory **/
+app.factory('events', ['$http', 'auth', function($http, auth){
+    var o = {
+        events: [ ]
+    };
+
+    o.getAll = function() {
+        return $http.get('/events').success(function(data){
+            angular.copy(data, o.events);
+        });
+    };
+
+    o.create = function(event) {
+        return $http.post('/event/create', event, {
+            headers: {Authorization: 'Bearer '+auth.getToken()}
+        }).success(function(data){
+            o.events.push(data);
+        });
+    };
+    
+    return o;
+}]);

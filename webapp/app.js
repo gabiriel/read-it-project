@@ -30,6 +30,7 @@ mongoose.connect(url_mongodb_in_use, function(err) {
  *************************************************/
 require('./models/Users');
 require('./models/UsersForgotPassword');
+require('./models/CalendarEvent');
 require('./config/passport');
 
 /** TSV import
@@ -73,3 +74,4 @@ http.createServer(app).listen(app.get('port'), function(req,res){
 
 var User = mongoose.model('User');
 var UserForgotPwd = mongoose.model('UserForgotPassword');
+var CalendarEvent = mongoose.model('CalendarEvent');
