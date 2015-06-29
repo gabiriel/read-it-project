@@ -84,13 +84,35 @@ app.factory('events', ['$http', 'auth', function($http, auth){
         });
     };
 
+    o.getNews = function(){
+      return $http.get('/events/new').success(function(data){
+         angular.copy(data, o.events);
+      });
+    };
+
     o.create = function(event) {
         return $http.post('/event/create', event, {
             headers: {Authorization: 'Bearer '+auth.getToken()}
         }).success(function(data){
-            o.events.push(data);
+            o.getAll();
         });
     };
-    
+
+    o.update = function(event) {
+        return $http.post('/event/update', event, {
+            headers: {Authorization: 'Bearer '+auth.getToken()}
+        }).success(function(data){
+            o.getNews();
+        });
+    };
+
+    o.delete = function(event) {
+        return $http.post('/event/delete', event, {
+            headers: {Authorization: 'Bearer '+auth.getToken()}
+        }).success(function(data){
+            o.getNews();
+        });
+    };
+
     return o;
 }]);

@@ -176,6 +176,36 @@ router.post('/event/create', auth, function(req, res, next) {
     event.author = req.payload.username;
     event.save(function(err, event){
         if(err){ return next(err); }
+        console.log("[Mongoose] event successfuly created");
+        res.json(event);
+    });
+});
+
+router.post('/event/update', function(req, res, next) {
+
+    var updatedEvent = req.body,
+        query = {_id: updatedEvent._id},
+        options = { multi: true };
+
+    console.log("[Query] update event (id = " + updatedEvent._id + ")");
+
+    CalendarEvent.update(query, {$set: updatedEvent}, options, function(err, event){
+        if(err){ return next(err); }
+        console.log("[Mongoose] event successfuly updated");
+        res.json(event);
+    });
+});
+
+router.post('/event/delete', function(req, res, next) {
+
+    var updatedEvent = req.body,
+        query = {_id: updatedEvent._id};
+
+    console.log("[Query] remove event (id = " + updatedEvent._id + ")");
+
+    CalendarEvent.remove(query, function(err, event){
+        if(err){ return next(err); }
+        console.log("[Mongoose] event successfuly removed");
         res.json(event);
     });
 });
@@ -183,6 +213,15 @@ router.post('/event/create', auth, function(req, res, next) {
 router.get('/events', function(req, res, next) {
     CalendarEvent.find(function(err, events){
         if(err){ return next(err); }
+        console.log("[Mongoose] all events successfuly retrieved");
+        res.json(events);
+    });
+});
+
+router.get('/events/new', function(req, res, next) {
+    CalendarEvent.find({display: false}, function(err, events){
+        if(err){ return next(err); }
+        console.log("[Mongoose] new events successfuly retrieved");
         res.json(events);
     });
 });

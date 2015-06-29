@@ -70,12 +70,16 @@ h1,h2,h3,h4,h5{
 }
 /** Layout
 ------------------*/
-aside[class^="col-"] > div{
+aside[class^="col-"] > div,
+.readit_block{
   border: 1px solid #6FC2F4;
   padding: 15px;
   margin: 15px 0;
 }
-
+.admin_block{
+  padding: 15px;
+  margin: 15px 0;
+}
 main#content{
   min-height:85vh;
 }

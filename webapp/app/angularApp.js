@@ -2,7 +2,7 @@
 
 // Declare app level module which depends on views, and components
 
-angular.module('readIt', ['ui.router', 'ui.calendar', 'mgcrea.ngStrap'])
+angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize', 'mgcrea.ngStrap'])
     .config(function($locationProvider, $stateProvider, $urlRouterProvider) {
     // For any unmatched url, redirect to /index
     $urlRouterProvider.otherwise('/');
@@ -93,5 +93,20 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'mgcrea.ngStrap'])
             url : '/import',
             templateUrl : '/views/import.html',
             controller: 'ImportTsvController'
+        })
+        .state('adminevent', {
+            url: '/admin/event',
+            templateUrl: "views/admin/event.html",
+            controller: 'AdminEventController',
+            onEnter: ['$state', 'auth', function($state, auth){
+                if(!auth.isLoggedIn()){
+                    $state.go('error');
+                }
+            }],
+            resolve: {
+                postPromise: ['events', function(events){
+                    return events.getNews();
+                }]
+            }
         })
     });
