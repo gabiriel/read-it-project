@@ -12,13 +12,8 @@ ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope,servic
  });
 }]);
 ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails','$stateParams',function($scope, serviceDetails,$stateParams){
-    //$scope.name = $stateParams.name;
     serviceDetails.getOeuvre($stateParams.id).success (function(data) {
-        $scope.type = data[0].type;
-        $scope.name = data[0].name;
-        $scope.chapters = data[0].chapters;
-        $scope.authors = data[0].author;
-        $scope.categories = data[0].category;
+        $scope.oeuvre = data[0];
     });
 }]);
 ReadIT.controller('searchCtrl',['$scope','$stateParams','serviceDetails',function($scope,$stateParams,serviceDetails) {

@@ -18,9 +18,9 @@
             </aside>
             <aside class="col-sm-6"> <!-- Center Column -->
                 <div id="oeuvre_description">
-                    <h1>{{name}}</h1>
-                    <h4>{{type}}:<i ng-repeat="category in categories"> {{category}}</i></h4>
-                    <h5><i ng-repeat="author in authors"> {{author}}</i></h5>
+                    <h1>{{oeuvre.name}}</h1>
+                    <h4>{{oeuvre.type}}:<i ng-repeat="category in oeuvre.categories"> {{category}}</i></h4>
+                    <h5><i ng-repeat="author in oeuvre.authors"> {{oeuvre.author}}</i></h5>
 
                     <div id="resume">
 
@@ -40,7 +40,7 @@
                 </div>
                 <div id="chapter_title">
                     <h4>Titre du chapitre</h4>
-                    <div ng-repeat="chapter in chapters">
+                    <div ng-repeat="chapter in oeuvre.chapters">
                         <h3>{{chapter.name}}</h3>
                         <p>{{chapter.resume}}</p>
                     </div>
