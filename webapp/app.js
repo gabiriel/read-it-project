@@ -76,24 +76,3 @@ var User = mongoose.model('User');
 var UserForgotPwd = mongoose.model('UserForgotPassword');
 var CalendarEvent = mongoose.model('CalendarEvent');
 var OeuvreModel = mongoose.model('Oeuvre');
-
-app.get('/oeuvres', function(req,res){
-    //console.log(req.query.Oeuvre);
-    OeuvreModel.find(null, function (err, comms) {
-        if (err) { throw err; }
-        // comms est un tableau de hash
-        console.log("comms",comms);
-        res.end(JSON.stringify(comms))
-    });
-
-});
-app.get('/oeuvre', function(req,res){
-    console.log(req.query.Oeuvre);
-    OeuvreModel.find({ '_id': req.query.id_Oeuvre }, function (err, comms) {
-        if (err) { throw err; }
-        // comms est un tableau de hash
-        console.log("comms",comms);
-        res.end(JSON.stringify(comms))
-    });
-
-});

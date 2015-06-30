@@ -1,12 +1,61 @@
-<div ng-controller="OeuvreDetailCtrl" class="">
-    <div class="container col-sm-offset-1">
-        <div>titre : {{name}}</div>
-        <div>type :{{type}}</div>
-        author :
-            <div ng-repeat="author in authors" class="col-sm-offset-1">  {{author}}</div>
-        categoty :
-            <div ng-repeat="category in categories" class="col-sm-offset-1" >{{category}}</div>
-        chapiters :
-            <div ng-repeat="chapiter in chapters" class="col-sm-offset-1">{{chapiter.name}} {{chapiter.resume}} <br/><br/></div>
+<div class="container">
+    <div class="row">
+        <div class="col-m-10">
+            <aside class="col-sm-3"> <!-- left Column -->
+                <div>
+                    <img  ng-src="{{imgSource}}" alt="Cover" style="width:200px;height:200px;">
+                    <div class="large">
+                        <a ui-sref="home"><i class="glyphicon glyphicon-shopping-cart"></i></a>
+                        <a ui-sref="home"><i class="glyphicon glyphicon-heart-empty"></i></a>
+                    </div>
+                </div>
+                <div>
+                    Avancement Etat
+                </div>
+                <div>
+                    Administrateur
+                </div>
+            </aside>
+            <aside class="col-sm-6"> <!-- Center Column -->
+                <div id="oeuvre_description">
+                    <h1>{{name}}</h1>
+                    <h4>{{type}}:<i ng-repeat="category in categories"> {{category}}</i></h4>
+                    <h5><i ng-repeat="author in authors"> {{author}}</i></h5>
+
+                    <div id="resume">
+                        <div ng-repeat="chapter in chapters">
+                            <h3>{{chapter.name}}</h3>
+                            <p>{{chapter.resume}}</p>
+                        </div>
+                    </div>
+
+                    <div id="display_comment" >
+                        <button class="btn btn-default pull-right">Afficher les commentaire</button>
+                    </div>
+                </div>
+
+                <div id="progress_bar">
+                    -------------- Barre de progression --------------
+                </div>
+                <div id="chapter_selector">
+                    -------------- Selecteur de chapitre --------------
+                </div>
+                <div id="chapter_title">
+                    <h4>Titre du chapitre</h4>
+                </div>
+
+                <div id="comments">
+                    Commentaire ...
+                </div>
+            </aside>
+            <aside class="col-sm-3"> <!-- Right Column -->
+                <div id="sondage">
+                    Sondage
+                </div>
+                <div id="recommendation">
+                    Recommendation
+                </div>
+            </aside>
+        </div>
     </div>
 </div>

@@ -15,6 +15,7 @@ console.log('[index.js] Load mongoose models');
 var User = mongoose.model('User');
 var UserForgotPwd = mongoose.model('UserForgotPassword');
 var CalendarEvent = mongoose.model('CalendarEvent');
+var OeuvreModel = mongoose.model('Oeuvre');
 
 /** Mail config
  *************************************************/
@@ -223,6 +224,26 @@ router.get('/events/new', function(req, res, next) {
         if(err){ return next(err); }
         console.log("[Mongoose] new events successfuly retrieved");
         res.json(events);
+    });
+});
+
+/**
+ *  Oeuvre
+ */
+router.get('/oeuvres', function(req,res){
+    OeuvreModel.find(null, function (err, oeuvres) {
+        if (err) { throw err; }
+        console.log("[Mongoose] all oeuvres successfuly retrieved");
+        res.json(oeuvres);
+    });
+
+});
+router.get('/oeuvre', function(req,res){
+    console.log("[Query] retrieve Oeuvre : (id" + req.query.id_Oeuvre +")");
+    OeuvreModel.find({ '_id': req.query.id_Oeuvre }, function (err, oeuvre) {
+        if (err) { throw err;}
+        console.log("[Mongoose] oeuvre has been successfuly retrieved");
+        res.json(oeuvre);
     });
 });
 

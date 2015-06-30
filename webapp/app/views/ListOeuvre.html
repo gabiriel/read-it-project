@@ -1,5 +1,21 @@
-<div class="col-sm-9 col-sm-offset-3" id ="listOeuvres">
-<ul class="example-animate-container"  ng-controller="OeuvreCtrl">
-    <li id="listOeuvre" ng-repeat="oeuvre in oeuvres"> <a ui-sref="oeuvre({ id: oeuvre._id})"> {{oeuvre.name}} </a></li>
-</ul>
+<div class="container">
+    <div class="row">
+        <div class="col-m-10">
+            <aside class="col-sm-9"> <!-- Center Large Column -->
+                <div id="listOeuvres" ng-show="oeuvres">
+                    <h3>Liste des oeuvres :</h3>
+                    <ul class="example-animate-container">
+                        <li id="listOeuvre" ng-repeat="oeuvre in oeuvres">
+                            <a ui-sref="oeuvre({ id: oeuvre._id})"> {{oeuvre.name}} </a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+            <aside class="col-sm-3"> <!-- Right Column -->
+                <div id="popularContent" ng-model="popular">
+                    Populaire
+                </div>
+            </aside>
+        </div>
+    </div>
 </div>
