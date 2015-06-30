@@ -23,10 +23,7 @@
                     <h5><i ng-repeat="author in authors"> {{author}}</i></h5>
 
                     <div id="resume">
-                        <div ng-repeat="chapter in chapters">
-                            <h3>{{chapter.name}}</h3>
-                            <p>{{chapter.resume}}</p>
-                        </div>
+
                     </div>
 
                     <div id="display_comment" >
@@ -39,9 +36,14 @@
                 </div>
                 <div id="chapter_selector">
                     -------------- Selecteur de chapitre --------------
+
                 </div>
                 <div id="chapter_title">
                     <h4>Titre du chapitre</h4>
+                    <div ng-repeat="chapter in chapters">
+                        <h3>{{chapter.name}}</h3>
+                        <p>{{chapter.resume}}</p>
+                    </div>
                 </div>
 
                 <div id="comments">

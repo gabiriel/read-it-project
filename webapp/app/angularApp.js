@@ -121,5 +121,10 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             controller: 'OeuvreDetailCtrl'
 
         })
+        .state('search',{
+            url:'/search/:title',
+            templateUrl:'views/SearchResults.html',
+            controller: 'searchCtrl'
+        });
 
     });
