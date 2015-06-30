@@ -3,13 +3,13 @@
         <div class="col-m-10">
             <aside class="col-sm-9"> <!-- Center Large Column -->
                 <div class="row">
-
                     <div ng-hide="events != null && events.length">
                         <p class="alert alert-info">Il n'y a aucun évenement à valider</p>
                     </div>
 
                     <div ng-show="events != null && events.length" >
-                        <h3>Valider les {{events.length}} évenements suivants: </h3>
+                        <h3 ng-show="events.length > 1">Valider les {{events.length}} évenements suivants:</h3>
+                        <h3 ng-show="events.length == 1">Valider l'évenement suivant:</h3>
                         <button ng-init="selectedEvent=events[0]" type="button" class="btn btn-default"
                                 ng-model="selectedEvent" data-html="1"
                                 bs-options="event.title for event in events"
@@ -17,7 +17,18 @@
                             Evenement <span class="caret"></span>
                         </button>
                         <hr>
+
                         <ng-form ng-show="selectedEvent != null" class="col-sm-8 admin_block" name="validEventForm" role="form" ng-model="eventSelected">
+
+                            <div id="author_event" class="input-group col-xs-12">
+                                <span class="input-group-addon" id="basic-addon-author"><i class="glyphicon glyphicon-user"></i></span>
+                                <input type="text" class="form-control" aria-describedby="basic-addon-author"
+                                       name="title"
+                                       disabled
+                                       ng-model="authorEvent"
+                                       placeholder="{{selectedEvent.author}}" >
+                            </div>
+
                             <div id="title_event" class="input-group col-xs-12">
                                 <span class="input-group-addon" id="basic-addon-title"><i class="glyphicon glyphicon-tag"></i></span>
                                 <input type="text" class="form-control" aria-describedby="basic-addon-title"
@@ -27,6 +38,7 @@
                                        ng-minlength="3"
                                        ng-maxlength="50" >
                             </div>
+
                             <div id="date_event" class="input-group col-xs-12" >
                                 <span class="input-group-addon" id="basic-addon-calendar"><i class="glyphicon glyphicon-calendar"></i></span>
                                 <input type="text" class="form-control" aria-describedby="basic-addon-calendar"
@@ -38,6 +50,7 @@
                                        data-autoclose="1"
                                        bs-datepicker >
                             </div>
+
                             <div id="description_event" class="input-group col-xs-12" >
                                 <span class="input-group-addon" id="basic-addon-description"><i class="glyphicon glyphicon-align-left"></i></span>
                                 <textarea type="text" class="form-control" aria-describedby="basic-addon-description"
@@ -46,19 +59,20 @@
                                       placeholder="{{selectedEvent.description}}"
                                       ng-maxlength="400" ></textarea>
                             </div>
+
                             <div id="url_event" class="input-group col-xs-12">
                                 <span class="input-group-addon" id="basic-addon-url"><i class="glyphicon glyphicon-link"></i></span>
                                 <input type="text" class="form-control" aria-describedby="basic-addon-url"
                                        name="url"
                                        ng-model="urlEvent"
-                                       placeholder="{{selectedEvent.url}}" >
+                                       placeholder="{{selectedEvent.url || 'ex: http://monurl.com' }}" >
                             </div>
 
-                            <div class="input-group col-xs-5">
+                            <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon-textColor">
                                     <i class="glyphicon glyphicon-text-color"></i>
                                 </span>
-                                <button type="button" class="btn" aria-describedby="basic-addon-textColor"
+                                <button type="button" class="btn btn-block" aria-describedby="basic-addon-textColor"
                                         ng-style="{'background-color':textColor}"
                                         ng-model="textColor" data-html="1"
                                         bs-options="tcolor for tcolor in textColors"
@@ -66,11 +80,12 @@
                                     Action <span class="caret"></span>
                                 </button>
                             </div>
-                            <div class="input-group col-xs-5">
+
+                            <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon-backgroundColor">
                                     <i class="glyphicon glyphicon-text-background"></i>
                                 </span>
-                                <button type="button" class="btn" aria-describedby="basic-addon-backgroundColor"
+                                <button type="button" class="btn btn-block pull-right" aria-describedby="basic-addon-backgroundColor"
                                         ng-style="{'background-color':backgroundColor}"
                                         ng-model="backgroundColor" data-html="1"
                                         bs-options="bcolor for bcolor in backgroundColors"
@@ -79,11 +94,17 @@
                                 </button>
                             </div>
 
+                            <div id="display_event" class="input-group">
+                                <input id="checkboxDisplay" type="checkbox" ng-model="displayEvent" ng-checked="selectedEvent.display==true">
+                                <label for="checkboxDisplay">
+                                    Afficher dans le calendrier
+                                </label>
+                            </div>
+
                             <button class="btn btn-primary" type="submit"  ng-click="validEvent()"
                                     ng-disabled="!validEventForm.$valid">Valider</button>
 
-                            <button class="btn btn-danger" ng-click="deleteEvent()">Supprimer</button>
-                            <hr>
+                            <button class="btn btn-danger pull-right" ng-click="deleteEvent()">Supprimer</button>
                         </ng-form>
                     </div>
                 </div>

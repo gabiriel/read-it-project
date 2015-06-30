@@ -16,8 +16,8 @@ app.controller('AdminEventController', function($scope, auth, events){
         formEvent.url= $scope.url || $scope.selectedEvent.url;
         formEvent.textColor = $scope.textColor || $scope.selectedEvent.textColor;
         formEvent.color = $scope.color || $scope.selectedEvent.color;
+        formEvent.display = $scope.displayEvent || false;
 
-        formEvent.display = true;
         events.update(formEvent);
     };
 
