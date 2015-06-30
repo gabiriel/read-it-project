@@ -1,0 +1,5 @@
+<div class="col-sm-9 col-sm-offset-3" id ="listOeuvres">
+<ul class="example-animate-container"  ng-controller="OeuvreCtrl">
+    <li id="listOeuvre" ng-repeat="oeuvre in oeuvres"> <a ui-sref="oeuvre({ id: oeuvre._id})"> {{oeuvre.name}} </a></li>
+</ul>
+</div>

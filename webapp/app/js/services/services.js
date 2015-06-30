@@ -20,6 +20,16 @@ app.factory('serviceDetails', ['$http',function($http){
     Details.reset = function (userDetail) {
         return $http.post("/user/reset/", userDetail);
     };
+    Details.getListOeuvre = function (titleOeuvre) {
+        return $http.get("/oeuvres", {
+            params: {Oeuvre: titleOeuvre}
+        });
+    }
+    Details.getOeuvre = function (id_oeuvre) {
+        return $http.get("/oeuvre", {
+            params: {id_Oeuvre: id_oeuvre}
+        });
+    }
 
     return Details;
 }]);

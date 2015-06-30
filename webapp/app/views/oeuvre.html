@@ -1,0 +1,12 @@
+<div ng-controller="OeuvreDetailCtrl" class="">
+    <div class="container col-sm-offset-1">
+        <div>titre : {{name}}</div>
+        <div>type :{{type}}</div>
+        author :
+            <div ng-repeat="author in authors" class="col-sm-offset-1">  {{author}}</div>
+        categoty :
+            <div ng-repeat="category in categories" class="col-sm-offset-1" >{{category}}</div>
+        chapiters :
+            <div ng-repeat="chapiter in chapters" class="col-sm-offset-1">{{chapiter.name}} {{chapiter.resume}} <br/><br/></div>
+    </div>
+</div>

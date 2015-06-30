@@ -8,7 +8,6 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var tsvimport = require("./import_tsv");
 var multer = require('multer');
-var passwordHash = require('password-hash');
 var site_email="suivi.mangas@gmail.com";
 var site_pass="Suivi.Manga";
 var site_service="Gmail";
@@ -208,7 +207,6 @@ app.post('/contact', function (req, res){
             res.send("Mot de passe est faux");
     })
 });
-<<<<<<< HEAD:serveur/app.js
 
 
 app.post('/forgotpassword',function(req,res) {
@@ -297,8 +295,27 @@ app.post('/user/reset/',function(req,res) {
   });
 
 });
-=======
+app.get('/oeuvres', function(req,res){
+    //console.log(req.query.Oeuvre);
+    OeuvreModel.find(null, function (err, comms) {
+        if (err) { throw err; }
+        // comms est un tableau de hash
+        console.log("comms",comms);
+        res.end(JSON.stringify(comms))
+    });
+
+});
+app.get('/oeuvre', function(req,res){
+    console.log(req.query.Oeuvre);
+    OeuvreModel.find({ '_id': req.query.id_Oeuvre }, function (err, comms) {
+        if (err) { throw err; }
+        // comms est un tableau de hash
+        console.log(comms);
+        res.end(JSON.stringify(comms))
+    });
+
+});
 /*
 app.get('*', '../webapp/app/index.html'); /*** Cette conf doit être à la fin du fichier !!!
 NE RIEN METTRE EN DESSOUS ****/
->>>>>>> BIG refinement:serveur/server.js
+

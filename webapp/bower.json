@@ -17,5 +17,8 @@
     "angular-sanitize": "~1.4.1",
     "bootstrap": "~3.3.5",
     "angular-ui-router": "~0.2.15"
+  },
+  "resolutions": {
+    "angular": "1.2.26"
   }
 }

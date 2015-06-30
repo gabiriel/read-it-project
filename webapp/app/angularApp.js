@@ -109,4 +109,17 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
                 }]
             }
         })
+        .state('ListOeuvre', {
+            url : '/ListOeuvre',
+            templateUrl : 'views/ListOeuvre.html',
+            controller: 'OeuvreCtrl'
+
+        })
+        .state('oeuvre',{
+            url:'/oeuvre/:id',
+            templateUrl:'views/oeuvre.html',
+            controller: 'OeuvreDetailCtrl'
+
+        })
+
     });
