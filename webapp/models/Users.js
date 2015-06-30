@@ -11,7 +11,10 @@ var UserSchema = new mongoose.Schema({
     mail: {type: String, lowercase: true, unique: true},
     firstname: String,
     lastname: String,
-    role: Object,
+    roles: {
+            user: {type: Boolean, default: true},
+            admin: {type: Boolean, default: false}
+    },
     hashpass: String,
     salt: String
 });
@@ -36,6 +39,7 @@ UserSchema.methods.generateJWT = function() {
     return jwt.sign({
         _id: this._id,
         username: this.username,
+        roles: this.roles,
         exp: parseInt(exp.getTime() / 1000),
     }, secretToken);
 };

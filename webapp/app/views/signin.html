@@ -1,4 +1,8 @@
 <div class="container">
+    <div class="row">
+        <div class="col-m-10">
+            <aside class="col-sm-9"> <!-- Center Large Column -->
+                <div>
     <legend>Inscription :</legend>
     <!-- Form -->
     <form name="userForm" ng-submit="register()">
@@ -71,4 +75,13 @@
         <!-- Reset -->
         <button ng-click="reset()" class="btn btn-default" >Reset</button>
     </form>
+                </div>
+            </aside>
+            <aside class="col-sm-3"> <!-- Right Column -->
+                <div id="popularContent" ng-model="popular">
+                    Populaire
+                </div>
+            </aside>
+        </div>
+    </div>
 </div>

@@ -48,7 +48,11 @@ router.post('/register', function(req, res, next){
         username: formUser.username,
         mail: formUser.email,
         firstname: formUser.prenom,
-        lastname: formUser.nom
+        lastname: formUser.nom,
+        roles: {
+            user: true,
+            admin: formUser.roles.admin || false
+        }
     });
 
     console.log("Check if user doesn't already exists");
@@ -60,7 +64,7 @@ router.post('/register', function(req, res, next){
         }
     });
     console.log("New user !");
-    newUser.setPassword(req.body.password);
+    newUser.setPassword(formUser.password);
 
     newUser.save(function (err) {
         if (err){ return res.status(400).json({message: 'Error when saving user (' + newUser.username + ') : ' + err}); }
@@ -92,7 +96,7 @@ router.post('/register', function(req, res, next){
             console.log("[SUCCESS] Email has been sent to <" + newUser.mail + ">");
         });
     });
-    return res.json({token: newUser.generateJWT()});
+    return res.json({alertmessage: "Le compte a été créé"});
 });
 
 router.post('/login', function(req, res, next){

@@ -55,6 +55,14 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         }
     };
 
+    auth.isAdmin = function(){
+        if(auth.isLoggedIn()){
+            var token = auth.getToken();
+            var payload = JSON.parse($window.atob(token.split('.')[1]));
+            return payload.roles["admin"];
+        }
+    };
+
     auth.currentUser = function(){
         if(auth.isLoggedIn()){
             var token = auth.getToken();
@@ -64,9 +72,7 @@ app.factory('auth', ['$http', '$window', function($http, $window){
     };
 
     auth.register = function(user){
-        return $http.post('/register', user).success(function(data){
-            auth.saveToken(data.token);
-        });
+        return $http.post('/register', user);
     };
 
     auth.logIn = function(user){
