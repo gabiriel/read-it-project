@@ -72,11 +72,11 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             url:'/user/reset/:token',
             templateUrl: 'views/resetpassword.html',
             controller: 'UserResetPasswordController',
-            onEnter: ['$state', 'auth', function($state, auth){
+           /* onEnter: ['$state', 'auth', function($state, auth){
                 if(!auth.isLoggedIn()){
                     $state.go('home');
                 }
-            }]
+            }]*/
         })
         .state('userDisplay', {
             url: "/user/display",

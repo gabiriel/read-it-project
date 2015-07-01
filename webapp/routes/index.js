@@ -52,9 +52,13 @@ router.post('/register', function(req, res, next){
         lastname: formUser.nom,
         roles: {
             user: true,
-            admin: formUser.roles.admin || false
+            admin: false
         }
     });
+    if(formUser.roles != undefined )
+    {
+        newUser.roles.admin = formUser.roles.admin;
+    }
 
     console.log("Check if user doesn't already exists");
     User.find({$or:[{mail: newUser.mail},{username: newUser.username}]}, function (err, userFromDB) {
@@ -122,7 +126,7 @@ router.post('/forgotpassword', function(req,res) {
         if(err){ return res.send('erreur de db - users'); }
         if(data.length < 1){ return res.send("Cet utilisateur n'existe pas" ); }
 
-        UserForgotPwd.find({mail: formUser.mail}, function(err,data){
+        UserForgotPwd.findOneAndRemove({mail: formUser.mail}, function(err,data){
             if(err){ return res.send('Erreur de db - forgot'); }
             if(data.length > 0) { return res.send('Vous avez déja demandé une récupération du mot de passe'); }
             var tokenCree = crypto.randomBytes(10).toString('hex');
@@ -174,6 +178,7 @@ router.post('/user/reset/', function(req,res) {
         return res.status(200).send("Password reset");
     });
 });
+
 /**
  * Create event from home.html (form near calendar)
  */
