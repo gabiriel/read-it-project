@@ -109,6 +109,16 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
                 }]
             }
         })
+        .state('adminUserCreate', {
+            url: '/admin/user/create',
+            templateUrl: "views/admin/create_user.html",
+            controller: 'AuthController',
+            onEnter: ['$state', 'auth', function($state, auth){
+                if(!auth.isLoggedIn()){
+                    $state.go('error');
+                }
+            }]
+        })
         .state('ListOeuvre', {
             url : '/ListOeuvre',
             templateUrl : 'views/ListOeuvre.html',

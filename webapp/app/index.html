@@ -52,7 +52,7 @@
 <body>
 
 <!-- MENU -->
-<nav id="menu" class="navbar navbar-default navbar-fixed-top">
+<nav id="menu" class="navbar navbar-default navbar-fixed-top" ng-controller="AuthController">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -67,6 +67,19 @@
       <ul class="nav navbar-nav">
         <li ui-sref-active="active" ui-sref="about"><a>About</a></li>
         <li ui-sref-active="active" ui-sref="contact"><a>Contact</a></li>
+        <li class="dropdown" ng-show="auth.isLoggedIn()">
+          <a ui-sref="adminInterface" class="dropdown-toggle" data-toggle="dropdown"
+             role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a ui-sref="ListOeuvre">Liste des oeuvres</a></li>
+            <li><a ui-sref="adminevent">Calendrier</a></li>
+            <li><a ui-sref="adminUserCreate">Creer un utilisateur</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
       </ul>
 
       <div class="pull-right">
@@ -78,7 +91,7 @@
             </div>
           </div>
         </form>
-        <ul class="nav navbar-nav navbar-right" ng-controller="AuthController">
+        <ul class="nav navbar-nav navbar-right">
           <li ng-hide="auth.isLoggedIn()" ui-sref-active="active" ui-sref="login">
             <a id="btn_login">
               <i class="glyphicon glyphicon-user"></i>
