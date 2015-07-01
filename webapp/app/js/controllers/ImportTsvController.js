@@ -3,10 +3,17 @@
  */
 
 var app = angular.module('readIt');
-app.controller('ImportTsvController',['$scope','serviceDetails',function($scope,serviceDetails){
+app.controller('ImportTsvController',['$scope', '$state', 'serviceDetails',function($scope, $state, serviceDetails){
     $scope.send = function() {
         var file = $scope.fichier;
         serviceDetails.importCsv(file,"to-import")
+            .success(function(data) {
+                if(data === 'failure') {
+                    alert("echec lors de l'import");
+                    return;
+                }
+                $state.go("/");
+            })
             .error(function(data) {
                 alert("erreur lors de l'import")
             });

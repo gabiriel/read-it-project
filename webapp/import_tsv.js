@@ -38,17 +38,21 @@ var OeuvreSchema = new  mongoose.Schema({
 var OeuvreModel = mongoose.model('Oeuvre', OeuvreSchema);
 //MongoClient.connect(url, function (err, db));
 /* GET home page. */
-router.post('/', function(req, res, next) {
+router.post('/', function(req, res, ext) {
     fs.readFile(req.files['to-import'].path, 'utf8', function(err, data) {
         // Use connect method to connect to the Server
-        var result = tsv_parser(data);
-        result.forEach(function(oeuvre) {
-            OeuvreModel.create(oeuvre,function(err) {
-                console.log(err);
-                console.log(data);
+        try {
+            var result = tsv_parser(data);
+            result.forEach(function(oeuvre) {
+                OeuvreModel.create(oeuvre,function(err) {
+                    console.log(err);
+                    console.log(data);
+                });
             });
-        });
-        res.end("success");
+            res.end("success");
+        }catch(e) {
+            res.end("failure");
+        }
         /*MongoClient.connect(url, function (err, db) {
             if (err) {
                 console.log('Unable to connect to the mongoDB server. Error:', err);
