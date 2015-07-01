@@ -50,7 +50,11 @@ img{
 h1,h2,h3,h4,h5{
   font-family:"Vollkorn", serif;
 }
-
+/** Override bootstrap with custom layout
+------------------*/
+.btn-primary{
+  background: #6FC2F4;
+}
 /** Menu
 ------------------*/
 #menu{
@@ -84,26 +88,12 @@ main#content{
   min-height:85vh;
 }
 
-/** Form Login
-------------------*/
-#login_view form{
-  margin:auto;
+.input-group{
+  margin-bottom: 15px;
 }
-.form-login {
-  max-width: 330px;
-  padding: 15px;
+.input-group-addon {
+  min-width: 100px;
 }
-.form-login .form-login-heading,
-.form-login .checkbox {
-  margin-bottom: 10px;
-}
-.form-login .form-control {
-  padding: 10px;
-}
-.form-login input[type="password"] {
-  margin-bottom: 10px;
-}
-
 /** Form Forgot
 ------------------*/
 #forgot_view form{
