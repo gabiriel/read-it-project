@@ -132,3 +132,17 @@ app.factory('events', ['$http', 'auth', function($http, auth){
 
     return o;
 }]);
+app.factory('commentaireService',['$http',function($http){
+    var commentDetails ={};
+    commentDetails.postComment = function(details){
+        return $http.post('/commentaire',details);
+    };
+    commentDetails.getComments = function(id_oeuvre){
+        return $http.get("/comments", {
+            params: {id_Oeuvre: id_oeuvre}
+        });
+
+    }
+
+    return commentDetails;
+}]);

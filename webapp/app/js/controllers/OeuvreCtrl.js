@@ -11,10 +11,39 @@ ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope,servic
 
  });
 }]);
-ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails','$stateParams',function($scope, serviceDetails,$stateParams){
+ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails','$stateParams','auth','commentaireService',function($scope, serviceDetails,$stateParams,auth,commentaireService){
     serviceDetails.getOeuvre($stateParams.id).success (function(data) {
         $scope.oeuvre = data[0];
     });
+
+    $scope.comment= function(){
+        var CommentDetails ={
+            id : $stateParams.id,
+            user : auth.currentUser(),
+            commentaire : $scope.commentTxt
+
+        };
+        commentaireService.postComment(CommentDetails).success(function(data){
+            console.log(data);
+
+        });
+        $scope.commentTxt="";
+        $scope.Showcomments = 'true';
+        $scope.addDiv(CommentDetails.user,CommentDetails.commentaire);
+
+    };
+
+    $scope.addDiv = function(user, comment){
+        var newElemen = angular.element('#addDiv').append('<div style= "border: 1px solid #6FC2F4; padding: 15px;margin: 15px 0;"> '+user +': ' + comment +'</div>');
+        $compile(newElemen)(scope);
+    }
+    $scope.displayComments = function(){
+        var id_oeuvre=$stateParams.id;
+        commentaireService.getComments(id_oeuvre).success(function(data){
+           $scope.comments = data;
+        });
+    };
+
 }]);
 ReadIT.controller('searchCtrl',['$scope','$stateParams','serviceDetails',function($scope,$stateParams,serviceDetails) {
     serviceDetails.getListOeuvre("").success (function(data) {

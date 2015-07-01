@@ -12,7 +12,7 @@ readIt.directive('equalsTo', [function () {
             var check = function () {
                 //Valeur du champs courant
                 var v1 = scope.$eval(attrs.ngModel); // attrs.ngModel = "password_conf"
-                //valeur du champ à comparer
+                //valeur du champ ï¿½ comparer
                 var v2 = scope.$eval(attrs.equalsTo).$viewValue; // attrs.equalsTo = "Password"
                 return v1 == v2;
             };

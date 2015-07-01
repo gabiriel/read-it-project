@@ -16,6 +16,7 @@ var User = mongoose.model('User');
 var UserForgotPwd = mongoose.model('UserForgotPassword');
 var CalendarEvent = mongoose.model('CalendarEvent');
 var OeuvreModel = mongoose.model('Oeuvre');
+var Commentaires = mongoose.model('Commentaires');
 
 /** Mail config
  *************************************************/
@@ -249,6 +250,28 @@ router.get('/oeuvre', function(req,res){
         console.log("[Mongoose] oeuvre has been successfuly retrieved");
         res.json(oeuvre);
     });
+});
+router.post('/commentaire', function(req,res) {
+    var commentaire = new Commentaires({
+     user : req.body.user,
+     id_oeuvre : req.body.id,
+     commentaire :req.body.commentaire
+     });
+    commentaire.save(function (err) {
+        if (err) { throw err; }
+    });
+
+});
+
+router.get('/comments', function(req,res) {
+    var query = Commentaires.find(null);
+    query.where("id_oeuvre", req.query.id_Oeuvre);
+    query.exec(function (err, comms) {
+        if (err) { throw err;}
+        res.json(comms);
+    });
+
+
 });
 
 module.exports = router;
