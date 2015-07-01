@@ -29,6 +29,11 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
                 }]
             }
         })
+        .state('error', {
+            url: '/error',
+            templateUrl: "views/error.html",
+            controller: 'AuthController'
+        })
         .state('signin', {
             url: '/signin',
             templateUrl: 'views/signin.html',
@@ -114,7 +119,17 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             templateUrl: "views/admin/create_user.html",
             controller: 'AuthController',
             onEnter: ['$state', 'auth', function($state, auth){
-                if(!auth.isLoggedIn()){
+                if(!auth.isAdmin()){
+                    $state.go('error');
+                }
+            }]
+        })
+        .state('adminInterface', {
+            url: '/admin/home',
+            templateUrl: "views/admin/home.html",
+            controller: 'AuthController',
+            onEnter: ['$state', 'auth', function($state, auth){
+                if(!auth.isAdmin()){
                     $state.go('error');
                 }
             }]
@@ -123,7 +138,6 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             url : '/ListOeuvre',
             templateUrl : 'views/ListOeuvre.html',
             controller: 'OeuvreCtrl'
-
         })
         .state('oeuvre',{
             url:'/oeuvre/:id',
