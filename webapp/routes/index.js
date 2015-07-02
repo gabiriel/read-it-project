@@ -278,5 +278,72 @@ router.get('/comments', function(req,res) {
 
 
 });
+router.post('/user/favorites/add',function(req,res) {
+    //var query = User.find(null)
+    //query.where("user",req.query.name);
+
+    var idOeuvre = req.body.idOeuvre;
+    var user = req.body.user;
+
+    console.log('add favorite');
+    console.log('user : ' + user);
+    console.log('idOeuvre : ' + idOeuvre);
+
+    User.findOneAndUpdate(
+        { username: user }, {
+            $push: {
+                favoris: idOeuvre
+            }
+        }, {
+            safe: true
+        },
+        function(err, model) {
+            console.log(err);
+        }
+    );
+});
+
+router.post('/user/favorites/remove',function(req,res) {
+    var idOeuvre = req.body.idOeuvre;
+    var user = req.body.user;
+    console.log('remove favorites ');
+    console.log('user : ' + user);
+    console.log('idOeuvre : ' + idOeuvre);
+
+    User.findOneAndUpdate(
+        { username: user}, {
+            $addToSet: {
+                favoris: idOeuvre
+            }
+        }, {
+            safe: true
+        },
+        function(err, model) {
+            console.log(err);
+        }
+    );
+});
+
+router.post('/user/favorites/is',function(req,res) {
+    var idOeuvre = req.body.idOeuvre;
+    var user = req.body.user;
+    console.log('remove favorites ');
+    console.log('user : ' + user);
+    console.log('idOeuvre : ' + idOeuvre);
+    User
+        .find({
+            username : user,
+            favoris: idOeuvre
+        })
+        .count(function(err,count) {
+            if(err) {
+                console.log(err);
+                res.end('false');
+                return;
+            }
+            console.log('found ' + count);
+            res.end(String(count !== 0));
+        });
+});
 
 module.exports = router;

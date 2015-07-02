@@ -30,6 +30,27 @@ app.factory('serviceDetails', ['$http',function($http){
             params: {id_Oeuvre: id_oeuvre}
         });
     }
+    //je passe l'utilisateur en parametre, mais c'est une faille de sécurité(on ne vérifie pas qu'on peut retirer)
+    //il faudrai de préférence le trouver au niveau de la session
+    //j'ai cru comprendre que la session n'est pas encore au point, et c'est déja comme ça qu'on fait pour les commentaires
+    Details.addFavorite = function(user, oeuvre) {
+        return $http.post("/user/favorites/add", {
+            idOeuvre: oeuvre._id,
+            user: user
+        });
+    };
+    Details.removeFavorite = function(user, oeuvre) {
+        return $http.post("/user/favorites/remove", {
+                idOeuvre: oeuvre._id,
+                user: user
+        });
+    };
+    Details.isFavorite = function(user, idOeuvre) {
+        return $http.post("/user/favorites/is", {
+            idOeuvre: idOeuvre,
+            user: user
+        });
+    };
 
     return Details;
 }]);

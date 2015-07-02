@@ -6,7 +6,7 @@
                     <img  ng-src="{{imgSource}}" alt="Cover" style="width:200px;height:200px;">
                     <div class="large">
                         <a ui-sref="home"><i class="glyphicon glyphicon-shopping-cart"></i></a>
-                        <a ui-sref="home"><i class="glyphicon glyphicon-heart-empty"></i></a>
+                        <a ng-click="toogleFavorite()"><i class="glyphicon {{favorite ? 'glyphicon-heart' : 'glyphicon-heart-empty'}}"></i></a>
                     </div>
                 </div>
                 <div>

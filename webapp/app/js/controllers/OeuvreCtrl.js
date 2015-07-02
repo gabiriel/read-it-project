@@ -15,6 +15,10 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails','$stateParams','
     serviceDetails.getOeuvre($stateParams.id).success (function(data) {
         $scope.oeuvre = data[0];
     });
+    serviceDetails.isFavorite(auth.currentUser(), $stateParams.id).success(function(data) {
+        $scope.favorite = Boolean(data === 'true');
+    });
+
 
     $scope.comment= function(){
         var CommentDetails ={
@@ -29,10 +33,17 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails','$stateParams','
         });
         $scope.commentTxt="";
         $scope.Showcomments = 'true';
-        $scope.addDiv(CommentDetails.user,CommentDetails.commentaire);
+        $scope.addDiv(CommentDetails.user, CommentDetails.commentaire);
 
     };
-
+    $scope.toogleFavorite = function() {
+        $scope.favorite = ! $scope.favorite;
+        if($scope.favorite) {
+            serviceDetails.addFavorite(auth.currentUser(), $scope.oeuvre);
+        } else {
+            serviceDetails.removeFavorite(auth.currentUser(), $scope.oeuvre);
+        }
+    };
     $scope.addDiv = function(user, comment){
         var newElemen = angular.element('#addDiv').append('<div style= "border: 1px solid #6FC2F4; padding: 15px;margin: 15px 0;"> '+user +': ' + comment +'</div>');
         $compile(newElemen)(scope);
