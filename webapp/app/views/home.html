@@ -72,8 +72,11 @@
                 <div id="sondage" ng-model="sondage">
                     <h3>Sondage</h3>
                 </div>
-                <div id="recommendation" ng-model="recommendation">
-                    <h3>Recommendation</h3>
+                <div id="recommendation" ng-controller="wellRated-controller">
+                    <h3>Les mieux notés</h3>
+                    <div ng-repeat="oeuvre in wellRated">
+                        <a ui-sref="oeuvre({ id: oeuvre._id})">{{oeuvre.name}}</a>
+                    </div>
                 </div>
                 <div id="populaires" ng-controller="popular-controller">
                     <h3>Les plus vues</h3>

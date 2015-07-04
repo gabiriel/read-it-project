@@ -402,6 +402,22 @@ router.post('/oeuvre/rate', function(req,res) {
                     if(err)
                         throw err;
                     res.json({rating: data.ratings.reduce(function(x,y) { return x + y.rating; }, 0) /data.ratings.length});
+                    ////thread safe ?
+                    //OeuvreModel.findOneAndUpdate(
+                    //    {
+                    //        id: idOeuvre
+                    //    },
+                    //    {
+                    //        averageRating:
+                    //    },
+                    //    {
+                    //        safe: true
+                    //    },
+                    //    function(err,data) {
+                    //        if(err)
+                    //            throw err;
+                    //    }
+                    //)
                 });
         }
     );
@@ -449,6 +465,38 @@ router.post('/oeuvre/rating', function(req,res) {
             res.json({ rating: data.reduce(function(x,y) { return x + y; }) /data.length || 0});
         });
 });
-
+router.get('/oeuvre/well_rated',function(req,res) {
+    OeuvreModel
+        .find()
+        .exec(function(err,data) {
+            //data contains all oeuvre
+            if(err) {
+                console.log(err);
+                res.json({failure:true});
+                return;
+            }
+            res.json(
+                data
+                    .map(function(oeuvre) {
+                        return {
+                            _id:oeuvre._id,
+                            name: oeuvre.name,
+                            rating:
+                                oeuvre.ratings
+                                    ? oeuvre.ratings.reduce(function(x,y) { return x + y.rating; }, 0) / oeuvre.ratings.length
+                                || 0
+                                    : 0
+                        }
+                    })
+                    .sort(function(e1,e2) {
+                        console.log(e2.rating - e1.rating);
+                        console.log(e2.rating);
+                        console.log(e1.rating);
+                        return e2.rating - e1.rating;
+                    })
+                    .splice(0,5)
+            );
+        })
+});
 
 module.exports = router;

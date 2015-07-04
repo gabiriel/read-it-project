@@ -105,3 +105,13 @@ ReadIT.controller('popular-controller',['$scope','serviceDetails',function($scop
             alert('erreur : ' + data);
         });
 }]);
+ReadIT.controller('wellRated-controller',['$scope','serviceDetails',function($scope,serviceDetails) {
+    serviceDetails.getWellRated()
+        .success(function(data) {
+            //alert(JSON.stringify(data));
+            $scope.wellRated = data;
+        })
+        .error(function(data) {
+            alert('erreur : ' + data);
+        });
+}]);

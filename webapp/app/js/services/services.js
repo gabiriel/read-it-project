@@ -69,6 +69,9 @@ app.factory('serviceDetails', ['$http',function($http){
             params: { idOeuvre: idOeuvre }
         });
     };
+    Details.getWellRated = function() {
+        return $http.get('/oeuvre/well_rated');
+    };
 
     return Details;
 }]);
