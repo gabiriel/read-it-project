@@ -52,6 +52,24 @@ app.factory('serviceDetails', ['$http',function($http){
         });
     };
 
+    Details.getPopular = function() {
+        return $http.get("/oeuvres/popular");
+    };
+
+    Details.rate =function(idOeuvre,user,rating) {
+        return $http.post("/oeuvre/rate",{
+            idOeuvre:idOeuvre,
+            user: user,
+            rating:rating
+        });
+    };
+
+    Details.getRating = function(idOeuvre) {
+        return $http.get("/oeuvre/rating", {
+            params: { idOeuvre: idOeuvre }
+        });
+    };
+
     return Details;
 }]);
 

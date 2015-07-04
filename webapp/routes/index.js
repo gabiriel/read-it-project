@@ -250,11 +250,17 @@ router.get('/oeuvres', function(req,res){
 });
 router.get('/oeuvre', function(req,res){
     console.log("[Query] retrieve Oeuvre : (id" + req.query.id_Oeuvre +")");
-    OeuvreModel.find({ '_id': req.query.id_Oeuvre }, function (err, oeuvre) {
-        if (err) { throw err;}
-        console.log("[Mongoose] oeuvre has been successfuly retrieved");
-        res.json(oeuvre);
-    });
+    OeuvreModel.findOneAndUpdate(
+        { '_id': req.query.id_Oeuvre },
+        { $inc: { accessCount: 1 } },
+        { safe: true },
+        function (err, oeuvre) {
+            if (err) { throw err;}
+            console.log("[Mongoose] oeuvre has been successfuly retrieved");
+            //console.log(oeuvre);
+            res.json(oeuvre);
+        }
+    );
 });
 router.post('/commentaire', function(req,res) {
     var commentaire = new Commentaires({
@@ -345,5 +351,104 @@ router.post('/user/favorites/is',function(req,res) {
             res.end(String(count !== 0));
         });
 });
+router.get('/oeuvres/popular', function(req,res) {
+    OeuvreModel
+        .find()
+        .sort({accessCount: -1})
+        .limit(5)
+        .exec(function(err, populaires) {
+            if(err) {
+                console.log(err);
+                res.json({failure:true});
+                return;
+            }
+            res.json(populaires);
+        });
+});
+router.post('/oeuvre/rate', function(req,res) {
+    var rating = req.body.rating;
+    var idOeuvre = req.body.idOeuvre;
+    var user = req.body.user;
+    OeuvreModel.findOneAndUpdate(
+        {
+            _id: idOeuvre
+        },
+        {
+            $pull: {
+                'ratings': {
+                    user: user
+                }
+            }
+        },
+        function(err, d) {
+            if(err) throw err;
+            OeuvreModel.findOneAndUpdate(
+                {
+                    _id: idOeuvre
+                },
+                {
+                    $push: {
+                        'ratings': {
+                            user: user,
+                            rating: rating
+                        }
+                    }
+                },
+                {
+                    safe : true,
+                    'new': true
+                },
+                function(err,data) {
+                    if(err)
+                        throw err;
+                    res.json({rating: data.ratings.reduce(function(x,y) { return x + y.rating; }, 0) /data.ratings.length});
+                });
+        }
+    );
+    //OeuvreModel
+    //    .findOneAndUpdate(
+    //        {
+    //            _id: idOeuvre,
+    //            'ratings.$.user':user
+    //        },
+    //        {
+    //            'ratings.rating':rating
+    //        },
+    //        {
+    //            safe:true
+    //        }
+    //    )
+    //    .exec(function(err, populaires) {
+    //        if(err) {
+    //            console.log(err);
+    //            res.json({failure:true});
+    //            return;
+    //        }
+    //        res.json(populaires);
+    //    });
+});
+//il vaut mieu utiliser oeuvre lorsqu'on charge l'oeuvre, mais on peut laisser cette données la
+router.post('/oeuvre/rating', function(req,res) {
+    var rating = req.body.rating;
+    var idOeuvre = req.body.idOeuvre;
+
+    OeuvreModel
+        .findOne({
+            _id: idOeuvre
+        })
+        .select({
+            'ratings.rating':1
+        })
+        .exec(function(err,data) {
+            if(err) {
+                console.log(err);
+                res.json({failure:true});
+                return;
+            }
+            console.log(data);
+            res.json({ rating: data.reduce(function(x,y) { return x + y; }) /data.length || 0});
+        });
+});
+
 
 module.exports = router;

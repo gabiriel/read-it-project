@@ -40,6 +40,7 @@ function Oeuvre(name, type, author, category){
     this.author = author;
     this.category = category;
     this.chapters = [];
+    this.accessCount = 0;
 }
 function DynamicObject(names,values) {
     if(names.constructor !== Array)

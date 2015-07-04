@@ -27,13 +27,19 @@ var ChapterSchema =new mongoose.Schema({
     resume : String,
     date : Date
 });
+var RatingSchema = new mongoose.Schema({
+    user : String,
+    rating : Number
+})
 var OeuvreSchema = new  mongoose.Schema({
     type : String,
     title :String,
     name : String,
     author :[String],
     category : [String],
-    chapters : [ChapterSchema]
+    chapters : [ChapterSchema],
+    ratings : [RatingSchema],
+    accessCount : Number
 });
 var OeuvreModel = mongoose.model('Oeuvre', OeuvreSchema);
 //MongoClient.connect(url, function (err, db));
