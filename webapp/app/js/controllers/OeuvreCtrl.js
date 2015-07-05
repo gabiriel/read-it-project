@@ -19,10 +19,20 @@ ReadIT.controller('searchCtrl',['$scope','$stateParams','serviceDetails',functio
     });
 }]);
 ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails','$stateParams','auth','commentaireService',function($scope, serviceDetails,$stateParams,auth,commentaireService){
+    $scope.logged = auth.isLoggedIn();
     serviceDetails.getOeuvre($stateParams.id).success (function(data) {
         $scope.oeuvre = data;
         $scope.rating = $scope.oldRating = data.ratings.reduce(function(x,y) { return x + y.rating; },0) / data.ratings.length
                                             || 0;
+        if($scope.logged) {
+            serviceDetails.getReadChapter(auth.currentUser(),$stateParams.id).success(function(data) {
+                for(var i in $scope.oeuvre.chapters) {
+                    $scope.oeuvre.chapters[i].read = data.some(function(x) {
+                        return $scope.oeuvre.chapters[i]._id == x;
+                    });
+                }
+            });
+        }
     });
     serviceDetails.isFavorite(auth.currentUser(), $stateParams.id).success(function(data) {
         $scope.favorite = Boolean(data === 'true');
@@ -30,7 +40,30 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails','$stateParams','
     //$scope.oldRating = 0;
     //
     //$scope.rating = $scope.oldRating;
-
+    $scope.toggleRead = function(chapter) {
+        $scope.result = 'toogle';
+        chapter.read = !chapter.read;
+        if(chapter.read)
+            serviceDetails.readChapter(auth.currentUser(), $scope.oeuvre._id, chapter._id,chapter.read);
+        else
+            serviceDetails.unreadChapter(auth.currentUser(), $scope.oeuvre._id, chapter._id,chapter.read);
+    };
+    /*enter,leave,clickBegin, and clickEnd are used in the read selector*/
+    $scope.enter= function(chapter) {
+        if($scope.clicking) {
+            $scope.toggleRead(chapter);
+        }
+    };
+    $scope.leave = function() {
+        $scope.clicking = false;
+    };
+    $scope.clickBegin = function(chapter) {
+        $scope.clicking = true;
+        $scope.toggleRead(chapter);
+    };
+    $scope.clickEnd = function() {
+        $scope.clicking = false;
+    };
     $scope.comment= function(){
         var CommentDetails ={
             id : $stateParams.id,

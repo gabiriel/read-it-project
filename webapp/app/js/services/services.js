@@ -73,6 +73,29 @@ app.factory('serviceDetails', ['$http',function($http){
         return $http.get('/oeuvre/well_rated');
     };
 
+    Details.readChapter = function(user,idOeuvre,idChapter) {
+        return $http.post('/oeuvre/read', {
+            user:user,
+            idOeuvre: idOeuvre,
+            idChapter: idChapter
+        });
+    };
+    Details.unreadChapter = function(user,idOeuvre,idChapter) {
+        return $http.post('/oeuvre/unread', {
+            user:user,
+            idOeuvre: idOeuvre,
+            idChapter: idChapter
+        });
+    };
+    Details.getReadChapter = function(user,idOeuvre,idChapter) {
+        return $http.get('/oeuvre/get/read',{
+            params : {
+                user:user,
+                idOeuvre: idOeuvre,
+                idChapter: idChapter
+            }
+        });
+    };
     return Details;
 }]);
 

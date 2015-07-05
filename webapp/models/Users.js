@@ -17,7 +17,11 @@ var UserSchema = new mongoose.Schema({
     },
     hashpass: String,
     salt: String,
-    favoris:[String]
+    favoris:[String],
+    reads:[{
+        idOeuvre:String,
+        idChapter:String
+    }]
 });
 
 UserSchema.methods.setPassword = function(password){

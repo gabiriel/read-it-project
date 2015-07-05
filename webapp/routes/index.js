@@ -489,12 +489,95 @@ router.get('/oeuvre/well_rated',function(req,res) {
                         }
                     })
                     .sort(function(e1,e2) {
-                        console.log(e2.rating - e1.rating);
-                        console.log(e2.rating);
-                        console.log(e1.rating);
                         return e2.rating - e1.rating;
                     })
                     .splice(0,5)
+            );
+        })
+});
+router.post('/oeuvre/read',function(req,res) {
+    var idOeuvre = req.body.idOeuvre;
+    var user = req.body.user;
+    var idChapter = req.body.idChapter;
+    console.log(user + ' has read ' + idChapter + ' from ' + idOeuvre);
+    User.findOneAndUpdate(
+        {
+            username:user
+        },
+        {
+            $addToSet: {
+                'reads': {
+                    idOeuvre: idOeuvre,
+                    idChapter: idChapter
+                }
+            }
+        },
+        {
+            safe: true
+        },
+        function(err,data) {
+            if(err) {
+                console.log('error during read saving : ' + read);
+                res.end("failure");
+                return;
+            }
+            res.end('success');
+        }
+    );
+});
+router.post('/oeuvre/unread',function(req,res) {
+    var idOeuvre = req.body.idOeuvre;
+    var user = req.body.user;
+    var idChapter = req.body.idChapter;
+    console.log(user + ' has not read ' + idChapter + ' from ' + idOeuvre);
+    User.findOneAndUpdate(
+        {
+            username:user
+        },
+        {
+            $pull: {
+                'reads': {
+                    idOeuvre: idOeuvre,
+                    idChapter: idChapter
+                }
+            }
+        },
+        {
+            safe: true
+        },
+        function(err,data) {
+            if(err) {
+                console.log('error during unread saving : ' + read);
+                res.end("failure");
+                return;
+            }
+            res.end('success');
+        }
+    );
+});
+router.get('/oeuvre/get/read',function(req,res) {
+    var idOeuvre = req.query.idOeuvre;
+    var user = req.query.user;
+    User
+        .findOne({username:user})
+        .select('reads')
+        .exec(function(err,data) {
+            if(err) {
+                console.log('error : ' + err);
+                return;
+            }
+            if(data == null) {
+                console.log("no such user : " + user);
+                return;
+            }
+            res.json(
+                data.reads
+                    .filter(function(elem) {
+                        return elem.idOeuvre == idOeuvre;
+                    })
+                    .map(function(elem) {
+                        return elem.idChapter;
+                    })
             );
         })
 });
