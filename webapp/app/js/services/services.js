@@ -112,6 +112,13 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             return payload.username;
         }
     };
+    auth.getUser = function(currentUser){
+        if(auth.isLoggedIn()){
+            return $http.get("/User", {
+                params: {currentUser: currentUser}
+            });
+        }
+    };
 
     auth.register = function(user){
         return $http.post('/register', user);

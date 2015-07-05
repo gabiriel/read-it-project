@@ -498,5 +498,13 @@ router.get('/oeuvre/well_rated',function(req,res) {
             );
         })
 });
-
+router.get('/User',function(req,res){
+    var currentUser = req.query.currentUser;
+    console.log(req.query.currentUser);
+    User.findOne({username: currentUser
+    },function (err, user) {
+        console.log(user);
+        res.json(user);
+    });
+});
 module.exports = router;
