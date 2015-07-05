@@ -37,6 +37,7 @@
                 </div>
 
                 <div id="progress_bar" ng-show="logged">
+                    <h4> J'ai lu : </h4>
                     <ul ng-mouseleave="leave()" ng-mouseup="clickEnd()" class="pagination no-select">
                         <li ng-repeat="chapter in oeuvre.chapters"
                             class="{{chapter.read ? 'active' : ''}}"
