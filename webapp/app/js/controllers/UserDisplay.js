@@ -8,4 +8,5 @@ app.controller('UserPage',['$scope', 'auth', function($scope, auth){
     });
     $scope.imgSource ="img.jpg"//donnée le lien vers limage de profile de chaque utilisateur ;
     $scope.auth = auth;
+
 }]);

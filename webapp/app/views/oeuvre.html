@@ -62,7 +62,10 @@
                 <div ng-repeat="comment in comments">{{comment.user}} : {{comment.commentaire}} </div>
                 <p ng-model="addDiv" id ="addDiv" ng-show="Showcomments=='true'"></p>
                 <div id="comments">
-                    <input ng-model="commentTxt" value ="txt" type="text">
+                    <button class="col-sm-offset-7" id="displayComments" ng-click="displayComments()" >afficher les commentaires </button>
+                    <br/>
+                    <br/>
+                    <input id ="commentTxt" ng-model="commentTxt" value ="txt" type="text" >
                     <button ng-model = "comments" ng-click="comment()" value ="false" >publier</button>
                 </div>
             </aside>

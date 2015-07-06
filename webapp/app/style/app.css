@@ -148,7 +148,10 @@ main#content{
 .fc-day-grid-container{
   height: auto!important;
 }
-/* prevent selection of text. Added for read Selector */
+#commentTxt
+{
+width: 85%;
+}/* prevent selection of text. Added for read Selector */
 /*.no-select {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
