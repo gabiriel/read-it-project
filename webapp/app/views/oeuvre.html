@@ -56,16 +56,31 @@
                     <h4>Titre du chapitre</h4>
                     <div ng-repeat="chapter in oeuvre.chapters">
                         <h3>{{chapter.name}}</h3>
-                        <p>{{chapter.resume}}</p>
+                        {{chapter.resume}}
                     </div>
                 </div>
-                <div ng-repeat="comment in comments">{{comment.user}} : {{comment.commentaire}} </div>
+                <div ng-repeat="comment in comments">
+                    {{comment.user}} : <br/>
+                    <div ng-bind-html="comment.commentaire"></div>
+                </div>
                 <p ng-model="addDiv" id ="addDiv" ng-show="Showcomments=='true'"></p>
                 <div id="comments">
                     <button class="col-sm-offset-7" id="displayComments" ng-click="displayComments()" >afficher les commentaires </button>
                     <br/>
                     <br/>
-                    <input id ="commentTxt" ng-model="commentTxt" value ="txt" type="text" >
+
+                    <wysiwyg
+                            textarea-id="question"
+                            textarea-class="form-control"
+                            textarea-height="80px"
+                            textarea-name="textareaQuestion"
+                            textarea-required
+                            ng-model="newComment"
+                            enable-bootstrap-title="true"
+                            textarea-menu="commentMenu"
+                    ></wysiwyg>
+                    <!--<input id ="commentTxt" ng-model="commentTxt" value ="txt" type="text" >-->
+                    <!--<textarea class="rich-text-box" ng-model="commentTxt" type="text" title="commentaire"></textarea>-->
                     <button ng-model = "comments" ng-click="comment()" value ="false" >publier</button>
                 </div>
             </aside>

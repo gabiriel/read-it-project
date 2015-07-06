@@ -3,7 +3,7 @@
  */
 var ReadIT = angular.module('readIt');
 
-ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope,serviceDetails){
+ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, serviceDetails){
 
  serviceDetails.getListOeuvre("").success (function(data) {
 
@@ -18,7 +18,7 @@ ReadIT.controller('searchCtrl',['$scope','$stateParams','serviceDetails',functio
         $scope.searchText = $stateParams.title;
     });
 }]);
-ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails','$stateParams','auth','commentaireService',function($scope, serviceDetails,$stateParams,auth,commentaireService){
+ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
     $scope.logged = auth.isLoggedIn();
     serviceDetails.getOeuvre($stateParams.id).success (function(data) {
         $scope.oeuvre = data;
@@ -65,10 +65,15 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails','$stateParams','
         $scope.clicking = false;
     };
     $scope.comment= function(){
+        if(! $scope.logged) {
+            $state.go('login');
+            return;
+        }
+
         var CommentDetails ={
             id : $stateParams.id,
             user : auth.currentUser(),
-            commentaire : $scope.commentTxt
+            commentaire : $scope.newComment
 
         };
         commentaireService.postComment(CommentDetails).success(function(data){
@@ -80,6 +85,13 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails','$stateParams','
         $scope.addDiv(CommentDetails.user, CommentDetails.commentaire);
 
     };
+    $scope.commentMenu = [
+        ['bold', 'italic', 'underline', 'strikethrough'],
+        ['ordered-list', 'unordered-list', 'outdent', 'indent'],
+        ['left-justify', 'center-justify', 'right-justify'],
+        ['quote'],
+        ['link']
+    ];
     $scope.toogleFavorite = function() {
         $scope.favorite = ! $scope.favorite;
         if($scope.favorite) {

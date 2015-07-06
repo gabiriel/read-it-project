@@ -2,7 +2,7 @@
 
 // Declare app level module which depends on views, and components
 
-angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize', 'mgcrea.ngStrap'])
+angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize', 'mgcrea.ngStrap','wysiwyg.module'])
     .config(function($locationProvider, $stateProvider, $urlRouterProvider) {
     // For any unmatched url, redirect to /index
     $urlRouterProvider.otherwise('/');
@@ -65,13 +65,13 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
         .state('forgotpassword', {
             url: '/forgotpassword',
             templateUrl: 'views/forgotpassword.html',
-            controller: 'UserForgotPasswordController',
+            controller: 'UserForgotPasswordController'
 
         })
         .state('resetpassword',{
             url:'/user/reset/:token',
             templateUrl: 'views/resetpassword.html',
-            controller: 'UserResetPasswordController',
+            controller: 'UserResetPasswordController'
            /* onEnter: ['$state', 'auth', function($state, auth){
                 if(!auth.isLoggedIn()){
                     $state.go('home');

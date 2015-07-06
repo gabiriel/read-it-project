@@ -46,9 +46,11 @@ app.factory('serviceDetails', ['$http',function($http){
         });
     };
     Details.isFavorite = function(user, idOeuvre) {
-        return $http.post("/user/favorites/is", {
-            idOeuvre: idOeuvre,
-            user: user
+        return $http.get("/user/favorites/is", {
+            params: {
+                idOeuvre: idOeuvre,
+                user: user
+            }
         });
     };
 

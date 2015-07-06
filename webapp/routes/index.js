@@ -330,9 +330,9 @@ router.post('/user/favorites/remove',function(req,res) {
     );
 });
 
-router.post('/user/favorites/is',function(req,res) {
-    var idOeuvre = req.body.idOeuvre;
-    var user = req.body.user;
+router.get('/user/favorites/is',function(req,res) {
+    var idOeuvre = req.query.idOeuvre;
+    var user = req.query.user;
     console.log('remove favorites ');
     console.log('user : ' + user);
     console.log('idOeuvre : ' + idOeuvre);
