@@ -22,5 +22,20 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
     $scope.reset = function(){
         $scope.user.clear();
     };
+   $scope.removeUser = function(name){
+       auth.deleteUser(name).success(function(data){
+           auth.getAllUser(auth.currentUser())
+               .success(function(data){
+                   console.log(data);
+                   $scope.Users = data;
+               });
+       });
+
+   };
+    auth.getAllUser(auth.currentUser())
+    .success(function(data){
+            console.log(data);
+        $scope.Users = data;
+    });
 
 }]);

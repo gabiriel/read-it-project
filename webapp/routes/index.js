@@ -590,4 +590,18 @@ router.get('/User',function(req,res){
         res.json(user);
     });
 });
+router.get('/Users',function(req,res) {
+    console.log(req.query.currentUser);
+
+    User.find({username:{$ne:req.query.currentUser}}, function (err, users) {
+        console.log(users);
+        res.json(users);
+    });
+});
+router.get('/usersDelete',function(req,res){
+    console.log(req.query.deleteUser);
+    User.remove({username: req.query.deleteUser},function(err,users){
+        res.json(users);
+    })
+});
 module.exports = router;

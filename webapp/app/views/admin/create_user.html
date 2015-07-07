@@ -1,3 +1,5 @@
+<input type="radio" ng-model="userCreat" value="creat"> Creation d'utilisateur
+<div ng-show="userCreat=='creat'">
 <div class="container">
     <div class="row">
         <div class="col-m-10">
@@ -19,7 +21,7 @@
                                    ng-minlength="4" ng-maxlength="25"
                                    ng-model="user.username"
                                    required>
-                          </div>
+                        </div>
                         <span class="help-block" data-ng-show="userForm.username.$error.required && userForm.username.$dirty">This is required.</span>
                         <span class="help-block" ng-show="!userForm.username.$error.required && (userForm.username.$error.minlength || userForm.username.$error.maxlength) && userForm.username.$dirty">username must be between 4 and 20 characters.</span>
 
@@ -53,7 +55,7 @@
                         <div class="input-group" ng-class="{'has-error':userForm.password.$invalid && userForm.password.$dirty }">
                             <span class="input-group-addon" >Mot de passe :</span>
                             <input class="form-control" type="password" id="password" name="password" ng-model="user.password" ng-minlength="8" ng-maxlength="20" required  />
-                          </div>
+                        </div>
                         <span class="help-block" ng-show="userForm.password.$error.required && userForm.password.$dirty">this is required</span>
                         <span class="help-block" ng-show="!userForm.password.$error.required && (userForm.password.$error.minlength || userForm.password.$error.maxlength) && userForm.password.$dirty">Password must be between 8 and 20 characters.</span>
 
@@ -74,6 +76,28 @@
                     </form>
                 </div>
             </aside>
+        </div>
+    </div>
+</div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-m-10">
+            <input type="radio" ng-model="userCreat" value="delete"> Suppression d'utilisateurs
+            <div ng-show="userCreat=='delete'">
+            <aside class="col-sm-9" > <!-- Center Large Column -->
+                <div >
+                   chercher un utilisateur :
+                    <input type="text" ng-model="userDelete">
+                    <br/>
+                   <legend> Liste des utilisateurs : </legend>
+                    <div class="col-sm-offset-1" ng-repeat="UserDisplay in Users | filter : userDelete">
+                        <input type="checkbox" ng-model="name" > {{UserDisplay.username}}
+                        <button class=" col-sm-offset-3 glyphicon glyphicon-trash" ng-click="removeUser(UserDisplay.username)" ng-show="name"></button></button>
+                    </div>
+                </div>
+            </aside>
+            </div>
         </div>
     </div>
 </div>

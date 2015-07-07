@@ -158,7 +158,16 @@ app.factory('auth', ['$http', '$window', function($http, $window){
     auth.logOut = function(){
         $window.localStorage.removeItem('read-it-token');
     };
-
+    auth.getAllUser = function(currentUser){
+        return $http.get('/Users',{
+            params: {currentUser: currentUser}
+        });
+       };
+    auth.deleteUser = function(deleteUser) {
+        return $http.get('/usersDelete', {
+            params: {deleteUser: deleteUser}
+        });
+    };
     return auth;
 }]);
 
