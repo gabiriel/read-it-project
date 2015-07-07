@@ -52,13 +52,29 @@
                     -------------- Selecteur de chapitre --------------
 
                 </div>
-                <div id="chapter_title">
-                    <h4>Titre du chapitre</h4>
-                    <div ng-repeat="chapter in oeuvre.chapters">
-                        <h3>{{chapter.name}}</h3>
-                        {{chapter.resume}}
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default" ng-repeat="chapter in oeuvre.chapters">
+                        <div class="panel-heading" role="tab" id="heading-{{chapter._id}}">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapse-{{chapter._id}}" aria-expanded="false" aria-controls="collapseTwo">
+                                    {{chapter.name}}
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapse-{{chapter._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{chapter._id}}">
+                            <div class="panel-body">
+                                {{chapter.resume}}
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <!--<div id="chapter_title">-->
+                    <!--<h4>Titre du chapitre</h4>-->
+                    <!--<div ng-repeat="chapter in oeuvre.chapters">-->
+                        <!--<h3>{{chapter.name}}</h3>-->
+                        <!--{{chapter.resume}}-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div ng-repeat="comment in comments">
                     {{comment.user}} : <br/>
                     <div ng-bind-html="comment.commentaire"></div>
