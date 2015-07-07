@@ -76,7 +76,7 @@
                     <!--</div>-->
                 <!--</div>-->
                 <div ng-repeat="comment in comments">
-                    {{comment.user}} : <br/>
+                    <b id="user">{{comment.user}} </b> : <br/>
                     <div ng-bind-html="comment.commentaire"></div>
                 </div>
                 <p ng-model="addDiv" id ="addDiv" ng-show="Showcomments=='true'"></p>

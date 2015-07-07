@@ -83,7 +83,7 @@
 <div class="container">
     <div class="row">
         <div class="col-m-10">
-            <input type="radio" ng-model="userCreat" value="delete"> Suppression d'utilisateurs
+            <input type="radio" ng-model="userCreat" value="delete"> Suppression/Modification d'utilisateurs
             <div ng-show="userCreat=='delete'">
             <aside class="col-sm-9" > <!-- Center Large Column -->
                 <div >
@@ -94,6 +94,7 @@
                     <div class="col-sm-offset-1" ng-repeat="UserDisplay in Users | filter : userDelete">
                         <input type="checkbox" ng-model="name" > {{UserDisplay.username}}
                         <button class=" col-sm-offset-3 glyphicon glyphicon-trash" ng-click="removeUser(UserDisplay.username)" ng-show="name"></button></button>
+                        <button class="glyphicon glyphicon-pencil" ng-show="name"></button>
                     </div>
                 </div>
             </aside>

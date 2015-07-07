@@ -130,6 +130,7 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
         var id_oeuvre=$stateParams.id;
         commentaireService.getComments(id_oeuvre).success(function(data){
             $scope.comments = data;
+
         });
     };
 

@@ -124,7 +124,7 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
                 }
             }]
         })
-        .state('adminInterface', {
+       /* .state('adminInterface', {
             url: '/admin/home',
             templateUrl: "views/admin/home.html",
             controller: 'AuthController',
@@ -133,7 +133,7 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
                     $state.go('error');
                 }
             }]
-        })
+        })*/
         .state('ListOeuvre', {
             url : '/ListOeuvre',
             templateUrl : 'views/ListOeuvre.html',

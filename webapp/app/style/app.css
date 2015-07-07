@@ -160,3 +160,7 @@ width: 85%;
   -ms-user-select: none;
   user-select: none;
 }*//*if we do this then drag&drop. worse, checking for another solution*/
+#user{
+  font-family: 'Open Sans';
+  color: #6FC2F4;
+   }
