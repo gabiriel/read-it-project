@@ -82,8 +82,8 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
         });
         $scope.commentTxt="";
         $scope.Showcomments = 'true';
-        $scope.addDiv(CommentDetails.user, CommentDetails.commentaire);
-
+        $scope.comments.push(CommentDetails);
+        //$scope.addDiv(CommentDetails.user, CommentDetails.commentaire);
     };
     $scope.commentMenu = [
         ['bold', 'italic', 'underline', 'strikethrough'],
@@ -92,6 +92,7 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
         ['quote'],
         ['link']
     ];
+    $scope.comments = [];
     $scope.toogleFavorite = function() {
         $scope.favorite = ! $scope.favorite;
         if($scope.favorite) {
