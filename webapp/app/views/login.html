@@ -13,14 +13,14 @@
 
                             <div class="form-group"  ng-class="{'has-error':userform.email.$invalid && userform.email.$dirty }" >
                                 <input type="Email" class="form-control" id="email" name="email" placeholder="Email" ng-model="user.email" required>
-                                <span class="help-block" ng-show="userform.email.$error.required && userform.email.$dirty">Email is required.</span>
-                                <span class="help-block" ng-show="userform.email.$error.email">This is not a valid email.</span>
+                                <span class="help-block" ng-show="userform.email.$error.required && userform.email.$dirty">Email est obligatoire.</span>
+                                <span class="help-block" ng-show="userform.email.$error.email">Email est invalide.</span>
                             </div>
 
                             <div class="form-group" ng-class="{'has-error':userform.password.$invalid && userform.password.$dirty }">
                                 <input class="form-control" type="password" placeholder="Mot de passe" id="password" name="password" ng-model="user.password" ng-minlength="8" ng-maxlength="20" required  />
-                                <span class="help-block" ng-show="userform.password.$error.required && userform.password.$dirty">this is required</span>
-                                <span class="help-block" ng-show="!userform.password.$error.required && (userform.password.$error.minlength || userform.password.$error.maxlength) && userform.password.$dirty">Passwords must be between 8 and 20 characters.</span>
+                                <span class="help-block" ng-show="userform.password.$error.required && userform.password.$dirty">Ce champ est obligatoire</span>
+                                <span class="help-block" ng-show="!userform.password.$error.required && (userform.password.$error.minlength || userform.password.$error.maxlength) && userform.password.$dirty">Ce champ entre 8 et 20 caractéres.</span>
                             </div>
 
                             <div class="form-group">
