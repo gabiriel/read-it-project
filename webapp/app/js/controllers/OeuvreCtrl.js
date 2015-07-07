@@ -80,7 +80,7 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
             console.log(data);
 
         });
-        $scope.commentTxt="";
+        $scope.newComment="";
         $scope.Showcomments = 'true';
         $scope.comments.push(CommentDetails);
         //$scope.addDiv(CommentDetails.user, CommentDetails.commentaire);
