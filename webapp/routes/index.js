@@ -515,6 +515,43 @@ router.post('/oeuvre/read',function(req,res) {
         }
     );
 });
+
+router.post('/oeuvre/read',function(req,res) {
+    var user = req.body.user;
+    var idChapter = req.body.idChapter;
+    console.log(user + ' has read ' + idChapter + ' from ' + idOeuvre);
+    OeuvreModel
+        .find({
+
+        })
+        .exec(function(data) {
+            User.findOneAndUpdate(
+                {
+                    username:user
+                },
+                {
+                    $addToSet: {
+                        'reads': {
+                            idOeuvre: idOeuvre,
+                            idChapter: idChapter
+                        }
+                    }
+                },
+                {
+                    safe: true
+                },
+                function(err,data) {
+                    if(err) {
+                        console.log('error during read saving : ' + read);
+                        res.end("failure");
+                        return;
+                    }
+                    res.end('success');
+                }
+            );
+        });
+});
+
 router.post('/oeuvre/unread',function(req,res) {
     var idOeuvre = req.body.idOeuvre;
     var user = req.body.user;
@@ -571,6 +608,8 @@ router.get('/oeuvre/get/read',function(req,res) {
             );
         })
 });
+
+
 router.get('/User',function(req,res){
     var currentUser = req.query.currentUser;
     User.findOne({username: currentUser
@@ -591,6 +630,20 @@ router.get('/Users',function(req,res) {
             res.json(users);
         }
     );
+});
+router.get('/users/search',function(req,res) {
+    var searched = req.query.searched;
+    User.
+        find({username: {$regex: searched, $options: "i" }})
+        .exec(function(err, data) {
+            if(err) {
+                console.log('error : ' + err);
+                res.end("error");
+                return;
+            }
+            console.log('data ' + data);
+            res.json(data);
+        });
 });
 router.get('/usersDelete',function(req,res){
     User.remove({username: req.query.deleteUser},function(err,users){

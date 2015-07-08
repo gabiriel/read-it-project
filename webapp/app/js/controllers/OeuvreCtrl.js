@@ -11,12 +11,20 @@ ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, servi
 
  });
 }]);
-ReadIT.controller('searchCtrl',['$scope','$stateParams','serviceDetails',function($scope,$stateParams,serviceDetails) {
+ReadIT.controller('searchCtrl',['$scope','$stateParams','auth', 'serviceDetails',function($scope,$stateParams, auth, serviceDetails) {
     serviceDetails.getListOeuvre("").success (function(data) {
         console.log("data",data);
         $scope.Oeuvres = data;
         $scope.searchText = $stateParams.title;
     });
+    //alert('ok');
+    auth.searchUsers($stateParams.title)
+        .success(function(data) {
+            $scope.users = data;
+        })
+        .error(function(err) {
+            alert(err);
+        })
 }]);
 ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
     $scope.logged = auth.isLoggedIn();
@@ -31,12 +39,30 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
                         return $scope.oeuvre.chapters[i]._id == x;
                     });
                 }
+                var reading = $scope.oeuvre.chapters.some(function(elem) {
+                    return elem.read;
+                });
+                var finished = $scope.oeuvre.chapters.every(function(elem) {
+                    return elem.read;
+                });
+                var interested = false;
+                $scope.readingState = finished
+                                ? 'finished'
+                                : reading
+                                    ? 'reading'
+                                    : interested
+                                        ? 'interested'
+                                        : 'not interested'
             });
         }
     });
+    $scope.readAll = function() {
+        serviceDetails.readAll($scope.user, $scope.oeuvre._id);
+    };
     serviceDetails.isFavorite(auth.currentUser(), $stateParams.id).success(function(data) {
         $scope.favorite = Boolean(data === 'true');
     });
+
     //$scope.oldRating = 0;
     //
     //$scope.rating = $scope.oldRating;

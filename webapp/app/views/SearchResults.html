@@ -12,6 +12,16 @@
                         </li>
                     </ul>
                 </div>
+                <div id="users" ng-show="users">
+                    <h3>Liste des utilisateurs recherchés:</h3>
+                    <ul class="example-animate-container">
+                        <li ng-repeat="user in users">
+                            <a ui-sref="userDisplay({ user: user.username})">
+                                {{user.username}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </aside>
         </div>
     </div>

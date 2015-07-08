@@ -98,6 +98,12 @@ app.factory('serviceDetails', ['$http',function($http){
             }
         });
     };
+    Details.readAll = function(user,idOeuvre) {
+        return $http.post('/oeuvre/read/all',{
+            user: user,
+            idOeuvre: idOeuvre
+        });
+    };
     return Details;
 }]);
 
@@ -158,6 +164,14 @@ app.factory('auth', ['$http', '$window', function($http, $window){
     auth.logOut = function(){
         $window.localStorage.removeItem('read-it-token');
     };
+    auth.searchUsers = function(searched) {
+        return $http.get('/users/search',{
+            params: {
+                searched: searched
+            }
+        });
+    };
+
     auth.getAllUser = function(currentUser){
         return $http.get('/Users',{
             params: {currentUser: currentUser}

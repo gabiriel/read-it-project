@@ -79,7 +79,7 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             }]*/
         })
         .state('userDisplay', {
-            url: "/user/display",
+            url: "/user/display/:user",
             templateUrl: "views/user_display.html"
         })
         .state('about', {
