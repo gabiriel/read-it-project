@@ -24,7 +24,7 @@ ReadIt.controller('messageCtrl',['$scope','auth',function($scope, auth) {
                 $scope.message_return = "message envoyé";
                 $scope.username="";
                 $scope.objet ="";
-                $scope.newMessage="";
+                $scope.newMessage=" ";
             }
 
             else if(data =="echec") $scope.message_return = "l'utilisateur "+ MessageBody.Username +" n'a pas été trouvé, message non envoyé";
@@ -35,18 +35,40 @@ ReadIt.controller('messageCtrl',['$scope','auth',function($scope, auth) {
 ReadIt.controller('messageListCtrl',['$scope','auth',function($scope, auth) {
 
     auth.getMessage(auth.currentUser()).success(function(data) {
-        console.log(data);
-        $scope.messages= data.sort(function(elem1,elem2){
-        console.log(typeof(elem2.date));
-            return new Date(elem2.date) - new Date(elem1.date);
+        $scope.messages= data
+            .map(function(elem){
+                return {
+                    _id: elem._id,
+                    sender :elem.sender ,
+                    objet : elem.objet ,
+                    message : elem.message ,
+                    reads : elem.reads,
+                    date : new Date(elem.date)
+                }
+            })
+            .sort(function(elem1,elem2){
+            return elem2.date - elem1.date;
 
         });
+        console.log($scope.messages);
 
     });
-    $scope.displayMessage = function(sender,objet,message)
+    $scope.displayMessage = function(reciver,messageCorps)
     {
-        $scope.sender = sender;
-        $scope.objet = objet;
-        $scope.message = message;
+        $scope.sender = messageCorps.sender;
+        $scope.objet = messageCorps.objet;
+        messageCorps.reads = true;
+        $scope.message = messageCorps.message;
+        $scope.messageShow ='true';
+        var messageObject =
+        {
+            id_message : messageCorps._id,
+            reciver: reciver
+        };
+
+        auth.postReadMessage(messageObject).success(function(data){
+         console.log(data);
+        });
+
     }
 }]);

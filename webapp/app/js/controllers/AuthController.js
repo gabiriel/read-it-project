@@ -1,5 +1,16 @@
 var app = angular.module('readIt');
 app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $state, auth){
+   setInterval(function(){
+
+       if(auth.isLoggedIn())
+
+            auth.getCountMessageUnread(auth.currentUser()).success(function(data){
+            $scope.numberMessage= data;
+
+            });
+       },
+       1000 * 60 );
+
     $scope.user = {};
     $scope.auth = auth;
 
@@ -37,10 +48,10 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
             console.log(data);
         $scope.Users = data;
     });
-if(auth.isLoggedIn())
-    auth.getMessage(auth.currentUser()).success(function(data){
+ if(auth.isLoggedIn())
+    auth.getCountMessageUnread(auth.currentUser()).success(function(data){
 
-        $scope.numberMessage= data.length;
+        $scope.numberMessage= data;
 
     });
 

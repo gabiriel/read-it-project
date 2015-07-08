@@ -1,38 +1,39 @@
 <div class="container">
     <div class="row">
         <div class="col-m-10">
-            <aside class="col-sm-3"> <!-- Center Large Column -->
-                <div>
-                    <div class="container" ng-repeat="messageCorps in messages">
+            <div class="col-sm-4"> <!-- Center Large Column -->
                         <div class="row">
-                            <div class="col-sm-3">
-                                <aside class="col-sm-8"> <!-- Center Large Column -->
-                                    <div>{{messageCorps.sender}}
+                            <div class="col-sm-3" id = "scrollBar" style="overflow: auto; position: absolute;left: 18px;
+                                height: 580px; width: 340px;" >
+                                <aside class="col-sm-12" ng-repeat="messageCorps in messages"> <!-- Center Large Column -->
+                                    <div class=" {{messageCorps.reads ? '' : 'unreaded'}}">
+                                        <a href="" ng-model="messageChoice" ng-click="displayMessage(auth.currentUser(),messageCorps)">
+                                        {{messageCorps.sender}}
                                         <br/>
-                                        <a href="" ng-model="messageChoice" ng-click="displayMessage(messageCorps.sender,messageCorps.objet,messageCorps.message)">
                                             <b>objet</b> : {{messageCorps.objet}}
-                                        </a>
-
-                                        {{messageCorps.date}}
+                                        <br/>
+                                        {{messageCorps.date.toLocaleString()}}
+                                            </a>
                                     </div>
                                 </aside>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </aside>
+            </div>
         </div>
-        <div class="row">
-            <div class="col-m-10">
-                <aside class="col-sm-3"> <!-- Center Large Column -->
+        <div class="row" ng-show="messageShow=='true'">
+            <div class="col-m-12">
+                <aside class="col-sm-4"> <!-- Center Large Column -->
+                    <lenged>Message</lenged>
                     <div>
-                        {{sender}}
-                    </div>
-                    <div>
-                        {{objet}}
-                    </div>
-                    <div>
-                        {{message}}
+                        <b> envoyé par </b>:{{sender}}
+                        <br/>
+                        <b>objet</b> :{{objet}}
+                        <br/>
+                        <b>message </b>:
+                       <br/>
+                        <div ng-bind-html="message">
+                            {{message}}
+                        </div>
                     </div>
                     </aside>
                 </div>

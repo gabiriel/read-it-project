@@ -103,7 +103,6 @@ router.post('/register', function(req, res, next){
     });
     return res.json({alertmessage: "Le compte a été créé"});
 });
-
 router.post('/login', function(req, res, next){
     if(!req.body.email || !req.body.password){
         return res.status(400).json({message: 'Please fill out all fields'});
@@ -118,7 +117,6 @@ router.post('/login', function(req, res, next){
         }
     })(req, res, next);
 });
-
 router.post('/forgotpassword', function(req,res) {
     var formUser = req.body;
 
@@ -159,7 +157,6 @@ router.post('/forgotpassword', function(req,res) {
         });
     });
 });
-
 router.post('/user/reset/', function(req,res) {
     var params = req.body;
     UserForgotPwd.findOneAndRemove({resetPasswordToken: params.token}, function(err, data){
@@ -178,7 +175,6 @@ router.post('/user/reset/', function(req,res) {
         return res.status(200).send("Password reset");
     });
 });
-
 /**
  * Create event from home.html (form near calendar)
  */
@@ -191,7 +187,6 @@ router.post('/event/create', auth, function(req, res, next) {
         res.json(event);
     });
 });
-
 router.post('/event/update', function(req, res, next) {
 
     var updatedEvent = req.body,
@@ -206,7 +201,6 @@ router.post('/event/update', function(req, res, next) {
         res.json(event);
     });
 });
-
 router.post('/event/delete', function(req, res, next) {
 
     var updatedEvent = req.body,
@@ -220,7 +214,6 @@ router.post('/event/delete', function(req, res, next) {
         res.json(event);
     });
 });
-
 router.get('/events', function(req, res, next) {
     CalendarEvent.find(function(err, events){
         if(err){ return next(err); }
@@ -228,7 +221,6 @@ router.get('/events', function(req, res, next) {
         res.json(events);
     });
 });
-
 router.get('/events/new', function(req, res, next) {
     CalendarEvent.find({display: false}, function(err, events){
         if(err){ return next(err); }
@@ -236,7 +228,6 @@ router.get('/events/new', function(req, res, next) {
         res.json(events);
     });
 });
-
 /**
  *  Oeuvre
  */
@@ -308,7 +299,6 @@ router.post('/user/favorites/add',function(req,res) {
         }
     );
 });
-
 router.post('/user/favorites/remove',function(req,res) {
     var idOeuvre = req.body.idOeuvre;
     var user = req.body.user;
@@ -443,7 +433,7 @@ router.post('/oeuvre/rate', function(req,res) {
     //        res.json(populaires);
     //    });
 });
-//il vaut mieu utiliser oeuvre lorsqu'on charge l'oeuvre, mais on peut laisser cette données la
+//il vaut mieux utiliser oeuvre lorsqu'on charge l'oeuvre, mais on peut laisser cette données la
 router.post('/oeuvre/rating', function(req,res) {
     var rating = req.body.rating;
     var idOeuvre = req.body.idOeuvre;
@@ -591,9 +581,16 @@ router.get('/User',function(req,res){
 router.get('/Users',function(req,res) {
     console.log(req.query.currentUser);
 
-    User.find({username:{$ne:req.query.currentUser}}, function (err, users) {
-        res.json(users);
-    });
+    User.find({username:
+            {
+                $ne:req.query.currentUser
+            }
+        }
+        ,function (err, users)
+        {
+            res.json(users);
+        }
+    );
 });
 router.get('/usersDelete',function(req,res){
     User.remove({username: req.query.deleteUser},function(err,users){
@@ -634,7 +631,31 @@ router.post('/messages',function(req,res) {
 router.get('/messagesSend',function(req,res) {
     User.findOne({username:req.query.username},function(err,user){
         res.json(user.messages);
+
     });
 });
+router.get('/messagesUnread',function(req,res) {
+    User.findOne({username:req.query.username},function(err,user){
+  console.log("lenght",user.messages
+      .filter(function(elem) {
+          return ! elem.reads;
+      })
+      .length);
 
+        res.json(user.messages
+            .filter(function(elem) {
+                return ! elem.reads;
+            })
+            .length);
+
+    });
+});
+router.post('/messageRead',function(req,res){
+
+    var id = req.body.id_message;
+    User.update({username: req.body.reciver , 'messages._id': id },{$set: {'messages.$.reads' :true}},function(err,user){
+        console.log(user);
+    })
+
+});
 module.exports = router;

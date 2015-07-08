@@ -176,6 +176,15 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             params : {username :  userName}
         })
     };
+    auth.getCountMessageUnread = function(userName){
+        return $http.get('/messagesUnread',{
+            params : {username :  userName}
+        })
+    };
+    auth.postReadMessage= function(message){
+        return $http.post('/messageRead',message);
+    };
+
     return auth;
 }]);
 
