@@ -1,8 +1,9 @@
 var app = angular.module('readIt');
-app.controller('UserPage',['$scope', 'auth', function($scope, auth){
+app.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope, $stateParams, auth){
+    var user = $stateParams.user;
 
     //=== Variables ===//
-    auth.getUser(auth.currentUser()).success(function(data){
+    auth.getUser(user).success(function(data){
         $scope.user = data.firstname +" "+data.lastname;
 
     });
