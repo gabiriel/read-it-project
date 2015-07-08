@@ -1,10 +1,41 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+<div class="container">
+    <div class="row">
+        <div class="col-m-10">
+            <aside class="col-sm-3"> <!-- Center Large Column -->
+                <div>
+                    <div class="container" ng-repeat="messageCorps in messages">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <aside class="col-sm-8"> <!-- Center Large Column -->
+                                    <div>{{messageCorps.sender}}
+                                        <br/>
+                                        <a href="" ng-model="messageChoice" ng-click="displayMessage(messageCorps.sender,messageCorps.objet,messageCorps.message)">
+                                            <b>objet</b> : {{messageCorps.objet}}
+                                        </a>
 
-</body>
-</html>
+                                        {{messageCorps.date}}
+                                    </div>
+                                </aside>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+        <div class="row">
+            <div class="col-m-10">
+                <aside class="col-sm-3"> <!-- Center Large Column -->
+                    <div>
+                        {{sender}}
+                    </div>
+                    <div>
+                        {{objet}}
+                    </div>
+                    <div>
+                        {{message}}
+                    </div>
+                    </aside>
+                </div>
+            </div>
+    </div>
+</div>

@@ -149,6 +149,16 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             url:'/search/:title',
             templateUrl:'views/SearchResults.html',
             controller: 'searchCtrl'
-        });
-
+        })
+        .state('message',{
+            url:'/message',
+            templateUrl:'views/message.html',
+            controller: 'messageCtrl'
+        })
+        .state('messageList', {
+            url: '/messages/list',
+            templateUrl: 'views/listMessages.html',
+            controller: 'messageListCtrl'
+        })
+       ;
     });

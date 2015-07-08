@@ -13,7 +13,6 @@
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
   <link rel="stylesheet" href="style/app.css">
-  <link rel="stylesheet" href="bower_components/bootstrap3-wysiwyg/dist/bootstrap3-wysihtml5.min.css"/>
   <link type="text/css" rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
   <link type="text/css" rel="stylesheet" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.min.css" />
 
@@ -44,6 +43,7 @@
   <script src="js/controllers/UserForgotPasswordController.js"></script>
   <script src="js/controllers/UserResetPasswordController.js"></script>
   <script src="js/controllers/UiCalendarController.js"></script>
+  <script src="js/controllers/MessageCtrl.js"></script>
   <script src="js/controllers/OeuvreCtrl.js"></script>
   <script src="js/services/services.js"></script>
   <script src="js/directives/directive.js"></script>
@@ -108,11 +108,24 @@
               <span>{{auth.currentUser()}}</span>
             </a>
           </li>
+          <li ng-show="auth.isLoggedIn()">
+            <a id="btn_user_add" >
+              <i class="glyphicon glyphicon-user"></i>
+              <span class="badge">+1</span>
+            </a>
+          </li>
+          <li ng-show="auth.isLoggedIn()">
+            <a ui-sref="messageList" id="btn_message">
+              <i id="message" class="glyphicon glyphicon-envelope"></i>
+              <span class="badge">{{numberMessage}}</span>
+              </a>
+          </li>
           <li ng-show="auth.isLoggedIn()" ui-sref="logout">
             <a id="btn_logout">
-              <i class="glyphicon glyphicon-off"></i>
+              <i id="off" class="glyphicon glyphicon-off"></i>
               <span class="visible-sm-inline visible-xs-inline">Disconnect</span>
             </a>
+
           </li>
         </ul>
       </div>

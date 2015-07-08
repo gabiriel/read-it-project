@@ -37,5 +37,11 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
             console.log(data);
         $scope.Users = data;
     });
+if(auth.isLoggedIn())
+    auth.getMessage(auth.currentUser()).success(function(data){
+
+        $scope.numberMessage= data.length;
+
+    });
 
 }]);

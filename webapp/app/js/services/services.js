@@ -168,6 +168,14 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             params: {deleteUser: deleteUser}
         });
     };
+    auth.sendMessageto = function(message){
+        return $http.post('/messages',message);
+    }
+    auth.getMessage = function(userName){
+        return $http.get('/messagesSend',{
+            params : {username :  userName}
+        })
+    };
     return auth;
 }]);
 

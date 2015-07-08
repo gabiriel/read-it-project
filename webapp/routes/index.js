@@ -583,10 +583,8 @@ router.get('/oeuvre/get/read',function(req,res) {
 });
 router.get('/User',function(req,res){
     var currentUser = req.query.currentUser;
-    console.log(req.query.currentUser);
     User.findOne({username: currentUser
     },function (err, user) {
-        console.log(user);
         res.json(user);
     });
 });
@@ -594,14 +592,49 @@ router.get('/Users',function(req,res) {
     console.log(req.query.currentUser);
 
     User.find({username:{$ne:req.query.currentUser}}, function (err, users) {
-        console.log(users);
         res.json(users);
     });
 });
 router.get('/usersDelete',function(req,res){
-    console.log(req.query.deleteUser);
     User.remove({username: req.query.deleteUser},function(err,users){
         res.json(users);
     })
 });
+
+router.post('/messages',function(req,res) {
+
+    var usernameSender = req.body.usernameSender;
+    var usernameReciver = req.body.Username;
+    var objet = req.body.Objet;
+    var message = req.body.Message;
+    User.findOneAndUpdate({username:usernameReciver},{
+        $addToSet:{
+              messages  :
+                {
+                    sender : usernameSender,
+                    objet : objet,
+                    message : message,
+                    date : new Date()
+
+                }
+            }
+        },
+        {
+            safe: true
+        }
+
+        ,function(err,user){
+            if(user!=null)
+                res.end("success");
+            else
+                res.end('echec');
+    });
+});
+
+router.get('/messagesSend',function(req,res) {
+    User.findOne({username:req.query.username},function(err,user){
+        res.json(user.messages);
+    });
+});
+
 module.exports = router;

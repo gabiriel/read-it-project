@@ -21,6 +21,13 @@ var UserSchema = new mongoose.Schema({
     reads:[{
         idOeuvre:String,
         idChapter:String
+    }],
+    messages:[{
+        sender : String,
+        objet : String,
+        message : String,
+        reads: {type: Boolean, default: false},
+        date: Date
     }]
 });
 
