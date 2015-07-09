@@ -46,13 +46,13 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
                     return elem.read;
                 });
                 var interested = false;
-                $scope.readingState = finished
-                                ? 'finished'
-                                : reading
-                                    ? 'reading'
-                                    : interested
-                                        ? 'interested'
-                                        : 'not interested'
+                //$scope.readingState = finished
+                //                ? 'finished'
+                //                : reading
+                //                    ? 'reading'
+                //                    : interested
+                //                        ? 'interested'
+                //                        : 'not interested'
             });
         }
     });

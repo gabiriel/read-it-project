@@ -19,17 +19,18 @@
                 </div>
                 <div>
                     <h4>Avancement Etat </h4>
-                    <input type="radio" ng-model="readingState" value="not interested" id="rbtn-advancement-no_interset" /><label for="rbtn-advancement-no_interset">Pas interessé</label><br />
-                    <input type="radio" ng-model="readingState" value="interested" id="rbtn-advancement-interested" /><label for="rbtn-advancement-interested">Interessé</label><br />
-                    <input type="radio" ng-model="readingState" value="reading" id="rbtn-advancement-reading"/><label for="rbtn-advancement-reading">Lut</label><br />
-                    <input
-                        value="finished"
-                        type="radio"
-                        id="rbtn-advancement-finished"
-                        ng-model="readingState"
-                        ng-click="readAll()"
-                    />
-                    <label for="rbtn-advancement-finished">Finis</label>
+                    <!--<input type="radio" ng-model="readingState" value="not interested" id="rbtn-advancement-no_interset" /><label for="rbtn-advancement-no_interset">Pas interessé</label><br />-->
+                    <!--<input type="radio" ng-model="readingState" value="interested" id="rbtn-advancement-interested" /><label for="rbtn-advancement-interested">Interessé</label><br />-->
+                    <!--<input type="radio" ng-model="readingState" value="reading" id="rbtn-advancement-reading"/><label for="rbtn-advancement-reading">Lut</label><br />-->
+                    <!--<input-->
+                        <!--value="finished"-->
+                        <!--type="radio"-->
+                        <!--id="rbtn-advancement-finished"-->
+                        <!--ng-model="readingState"-->
+                        <!--ng-click="readAll()"-->
+                    <!--/>-->
+                    <div>{{oeuvre.chapters | readingStatus}}</div>
+                    <!--<label for="rbtn-advancement-finished">Finis</label>-->
                 </div>
                 <div>
                     Administrateur
