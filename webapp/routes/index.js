@@ -658,4 +658,17 @@ router.post('/messageRead',function(req,res){
     })
 
 });
+router.post('/message/remove',function(req,res) {
+    User.update({username: req.body.username},
+        {
+            $pull:
+            {'messages':
+                 {_id: req.body.id_message}
+            }
+        },
+        function(err,user) {
+            console.log(user);
+    });
+
+});
 module.exports = router;

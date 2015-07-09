@@ -2,8 +2,9 @@
  * Created by macbookpro on 07/07/15.
  */
 var ReadIt = angular.module('readIt');
-ReadIt.controller('messageCtrl',['$scope','auth',function($scope, auth) {
+ReadIt.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,$stateParams, auth) {
 
+    $scope.username = $stateParams.username;
     $scope.messageMenu = [
         ['bold', 'italic', 'underline', 'strikethrough'],
         ['ordered-list', 'unordered-list', 'outdent', 'indent'],
@@ -32,8 +33,7 @@ ReadIt.controller('messageCtrl',['$scope','auth',function($scope, auth) {
     }
 
 }]);
-ReadIt.controller('messageListCtrl',['$scope','auth',function($scope, auth) {
-
+ReadIt.controller('messageListCtrl',['$scope','$state','auth',function($scope,$state, auth) {
     auth.getMessage(auth.currentUser()).success(function(data) {
         $scope.messages= data
             .map(function(elem){
@@ -51,7 +51,6 @@ ReadIt.controller('messageListCtrl',['$scope','auth',function($scope, auth) {
 
         });
         console.log($scope.messages);
-
     });
     $scope.displayMessage = function(reciver,messageCorps)
     {
@@ -70,5 +69,35 @@ ReadIt.controller('messageListCtrl',['$scope','auth',function($scope, auth) {
          console.log(data);
         });
 
+
     }
+    $scope.ansewer = function(user){
+        $scope.user = $scope.sender;
+    }
+    $scope.removeMessage = function(username,id_message){
+        var infoMessage ={
+            username : username,
+            id_message : id_message
+        }
+        auth.removeMessage(infoMessage);
+        auth.getMessage(auth.currentUser()).success(function(data) {
+            $scope.messages= data
+                .map(function(elem){
+                    return {
+                        _id: elem._id,
+                        sender :elem.sender ,
+                        objet : elem.objet ,
+                        message : elem.message ,
+                        reads : elem.reads,
+                        date : new Date(elem.date)
+                    }
+                })
+                .sort(function(elem1,elem2){
+                    return elem2.date - elem1.date;
+
+                });
+            console.log($scope.messages);
+        });
+    }
+
 }]);

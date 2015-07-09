@@ -184,6 +184,9 @@ app.factory('auth', ['$http', '$window', function($http, $window){
     auth.postReadMessage= function(message){
         return $http.post('/messageRead',message);
     };
+    auth.removeMessage= function(id_message){
+        return $http.post('/message/remove',id_message);
+    };
 
     return auth;
 }]);

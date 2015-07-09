@@ -151,10 +151,11 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             controller: 'searchCtrl'
         })
         .state('message',{
-            url:'/message',
+            url:'/message/:username',
             templateUrl:'views/message.html',
             controller: 'messageCtrl'
         })
+
         .state('messageList', {
             url: '/messages/list',
             templateUrl: 'views/listMessages.html',

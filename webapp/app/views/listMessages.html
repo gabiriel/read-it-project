@@ -7,13 +7,17 @@
                                 height: 580px; width: 340px;" >
                                 <aside class="col-sm-12" ng-repeat="messageCorps in messages"> <!-- Center Large Column -->
                                     <div class=" {{messageCorps.reads ? '' : 'unreaded'}}">
-                                        <a href="" ng-model="messageChoice" ng-click="displayMessage(auth.currentUser(),messageCorps)">
-                                        {{messageCorps.sender}}
+                                        <button class="col-sm-offset-11 glyphicon glyphicon-remove-sign" ng-click="removeMessage(auth.currentUser(),messageCorps._id)"></button>
                                         <br/>
+                                        <a href="" ng-model="messageChoice" ng-click="displayMessage(auth.currentUser(),messageCorps)">
+
+                                        {{messageCorps.sender}}
+                                            <br/>
                                             <b>objet</b> : {{messageCorps.objet}}
                                         <br/>
                                         {{messageCorps.date.toLocaleString()}}
                                             </a>
+
                                     </div>
                                 </aside>
                             </div>
@@ -23,7 +27,6 @@
         <div class="row" ng-show="messageShow=='true'">
             <div class="col-m-12">
                 <aside class="col-sm-4"> <!-- Center Large Column -->
-                    <lenged>Message</lenged>
                     <div>
                         <b> envoyé par </b>:{{sender}}
                         <br/>
@@ -35,7 +38,8 @@
                             {{message}}
                         </div>
                     </div>
-                    </aside>
+                    <button ng-click="ansewer(auth.currentUser())" class="col-sm-offset-11" ui-sref="message({ username: user})">répondre</button>
+                </aside>
                 </div>
             </div>
     </div>
