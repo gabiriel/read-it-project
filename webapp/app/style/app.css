@@ -91,6 +91,9 @@ main#content{
 .input-group{
   margin-bottom: 15px;
 }
+#navbar .input-group{
+  margin-bottom: 0;
+}
 .input-group-addon {
   min-width: 100px;
 }

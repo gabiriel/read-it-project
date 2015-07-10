@@ -689,11 +689,11 @@ router.get('/messagesSend',function(req,res) {
 });
 router.get('/messagesUnread',function(req,res) {
     User.findOne({username:req.query.username},function(err,user){
-  console.log("lenght",user.messages
-      .filter(function(elem) {
-          return ! elem.reads;
-      })
-      .length);
+      console.log("lenght", user.messages
+            .filter(function(elem) {
+                return ! elem.reads;
+            })
+            .length);
 
         res.json(user.messages
             .filter(function(elem) {
