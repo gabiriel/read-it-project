@@ -1,43 +1,33 @@
-<div class="container">
-    <div class="row">
-        <div class="col-m-10">
-            <aside class="col-sm-9"> <!-- Center Large Column -->
-                <div class="row">
-                    <form name="userform" ng-submit="logIn()">
-                        <div class="col-sm-8 col-sm-offset-2">
-                            <legend><h2 class="form-login-heading">Log in</h2></legend>
+<div class="row readit_block">
+    <form name="userform" class="col-sm-8 col-sm-offset-2" ng-submit="logIn()">
+        <legend><h2 class="form-login-heading">Log in</h2></legend>
 
-                            <div class="alert alert-danger" ng-show="error">
-                                {{ error.message }}
-                            </div>
-
-                            <div class="form-group"  ng-class="{'has-error':userform.email.$invalid && userform.email.$dirty }" >
-                                <input type="Email" class="form-control" id="email" name="email" placeholder="Email" ng-model="user.email" required>
-                                <span class="help-block" ng-show="userform.email.$error.required && userform.email.$dirty">Email est obligatoire.</span>
-                                <span class="help-block" ng-show="userform.email.$error.email">Email est invalide.</span>
-                            </div>
-
-                            <div class="form-group" ng-class="{'has-error':userform.password.$invalid && userform.password.$dirty }">
-                                <input class="form-control" type="password" placeholder="Mot de passe" id="password" name="password" ng-model="user.password" ng-minlength="8" ng-maxlength="20" required  />
-                                <span class="help-block" ng-show="userform.password.$error.required && userform.password.$dirty">Ce champ est obligatoire</span>
-                                <span class="help-block" ng-show="!userform.password.$error.required && (userform.password.$error.minlength || userform.password.$error.maxlength) && userform.password.$dirty">Ce champ entre 8 et 20 caractéres.</span>
-                            </div>
-
-                            <div class="form-group">
-                                <label><a ui-sref="forgotpassword">Mot de passe oublié ?</a></label>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Vous êtes nouveau ? <a ui-sref="signin">Inscrivez-vous ici</a></label>
-                            </div>
-
-                            <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="!userform.$valid">Connexion</button>
-
-                        </div>
-                    </form>
-                </div>
-            </aside>
+        <div class="alert alert-danger" ng-show="error">
+            {{ error.message }}
         </div>
-    </div>
-</div> <!-- /container -->
+
+        <div class="form-group"  ng-class="{'has-error':userform.email.$invalid && userform.email.$dirty }" >
+            <input type="Email" class="form-control" id="email" name="email" placeholder="Email" ng-model="user.email" required>
+            <span class="help-block" ng-show="userform.email.$error.required && userform.email.$dirty">Ce champ est obligatoire.</span>
+            <span class="help-block" ng-show="userform.email.$error.email">L'email est invalide.</span>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error':userform.password.$invalid && userform.password.$dirty }">
+            <input class="form-control" type="password" placeholder="Mot de passe" id="password" name="password" ng-model="user.password" ng-minlength="8" ng-maxlength="20" required  />
+            <span class="help-block" ng-show="userform.password.$error.required && userform.password.$dirty">Ce champ est obligatoire</span>
+            <span class="help-block" ng-show="!userform.password.$error.required && (userform.password.$error.minlength || userform.password.$error.maxlength) && userform.password.$dirty">Ce champ entre 8 et 20 caractéres.</span>
+        </div>
+
+        <div class="form-group">
+            <label><a ui-sref="forgotpassword">Mot de passe oublié ?</a></label>
+        </div>
+
+        <div class="form-group">
+            <label>Vous êtes nouveau ? <a ui-sref="signin">Inscrivez-vous ici</a></label>
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="!userform.$valid">Connexion</button>
+
+    </form>
+</div>
 

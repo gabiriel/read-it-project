@@ -87,7 +87,7 @@
             <input type="radio" ng-model="userCreat" value="delete"> Suppression/Modification d'utilisateurs
             <div ng-show="userCreat=='delete'">
                 <aside class="col-sm-9" > <!-- Center Large Column -->
-                    <div >
+                    <div>
                         chercher un utilisateur :
                         <input type="text" ng-model="userDelete">
                         <br/>
@@ -100,23 +100,20 @@
                             </div>
                         </form>
                     </div>
-                </aside>
-                <div name="Showmodifyuser" ng-show="((Diplaydetailsuser=='modify'))">
-                    <aside class="col-sm-9"> <!-- Center Large Column -->
-                        <div>
-                            <legend>Modification d'utilisateur :</legend>
+                    <div name="Showmodifyuser" ng-show="((Diplaydetailsuser=='modify'))">
+                        <legend>Modification d'utilisateur :</legend>
 
-                            <form name="Modifyuserform" ng-submit="modifyDetailsUser(modifyuser)">
-                                <div class="alert alert-danger" ng-show="Modifyerror">
-                                    {{ Modifyerror.message }}
-                                </div>
+                        <form name="Modifyuserform" ng-submit="modifyDetailsUser(modifyuser)">
+                            <div class="alert alert-danger" ng-show="Modifyerror">
+                                {{ Modifyerror.message }}
+                            </div>
 
-                                <!-- Nom -->
-                                <div class="input-group" data-ng-class="{'has-error':!Modifyuserform.modifynom.$valid && Modifyuserform.modifynom.$dirty }">
-                                    <span class="input-group-addon" >Nom :</span>
-                                    <input type="text" class="form-control" id="modifynom" name="modifynom"
-                                           placeholder="Nom" ng-minlength="2" ng-maxlength="25" ng-model="modifyuser.firstname" required="">
-                                </div>
+                            <!-- Nom -->
+                            <div class="input-group" data-ng-class="{'has-error':!Modifyuserform.modifynom.$valid && Modifyuserform.modifynom.$dirty }">
+                                <span class="input-group-addon" >Nom :</span>
+                                <input type="text" class="form-control" id="modifynom" name="modifynom"
+                                       placeholder="Nom" ng-minlength="2" ng-maxlength="25" ng-model="modifyuser.firstname" required="">
+                            </div>
                                     <span class="help-block" data-ng-show="Modifyuserform.modifynom.$error.required
                                     && Modifyuserform.modifynom.$dirty">This is required.</span>
                                     <span class="help-block" ng-show="!Modifyuserform.modifynom.$error.required
@@ -124,34 +121,33 @@
                                     && Modifyuserform.modifynom.$dirty">Name must be between 8 and 20 characters.</span>
 
 
-                                <!-- Prenom -->
-                                <div class="input-group" ng-class="{'has-error':Modifyuserform.modifyprenom.$invalid && Modifyuserform.modifyprenom.$dirty }">
-                                    <span class="input-group-addon" >Prénom :</span>
-                                    <input type="text" class="form-control" id="modifyprenom" name="modifyprenom"
-                                           placeholder="Prénom" ng-model="modifyuser.lastname" required ng-minlength="2" maxlength="25">
-                                </div>
-                                <span class="help-block" data-ng-show="Modifyuserform.modifyprenom.$error.required && Modifyuserform.modifyprenom.$dirty">This is required.</span>
-                                <span class="help-block" data-ng-show="Modifyuserform.modifyprenom.$error.maxlength">Name is too short.</span>
-                                <span class="help-block" data-ng-show="Modifyuserform.modifyprenom.$error.minlength">Name is too long.</span>
+                            <!-- Prenom -->
+                            <div class="input-group" ng-class="{'has-error':Modifyuserform.modifyprenom.$invalid && Modifyuserform.modifyprenom.$dirty }">
+                                <span class="input-group-addon" >Prénom :</span>
+                                <input type="text" class="form-control" id="modifyprenom" name="modifyprenom"
+                                       placeholder="Prénom" ng-model="modifyuser.lastname" required ng-minlength="2" maxlength="25">
+                            </div>
+                            <span class="help-block" data-ng-show="Modifyuserform.modifyprenom.$error.required && Modifyuserform.modifyprenom.$dirty">This is required.</span>
+                            <span class="help-block" data-ng-show="Modifyuserform.modifyprenom.$error.maxlength">Name is too short.</span>
+                            <span class="help-block" data-ng-show="Modifyuserform.modifyprenom.$error.minlength">Name is too long.</span>
 
-                                <!-- Email -->
-                                <div class="input-group" ng-class="{'has-error':Modifyuserform.modifyemail.$invalid && Modifyuserform.modifyemail.$dirty }" >
-                                    <span class="input-group-addon" >Email :</span>
-                                    <input type="Email" class="form-control" id=modifyemail" name="modifyemail" placeholder="Email" ng-model="modifyuser.mail" required>
-                                </div>
-                                <span class="help-block" ng-show="Modifyuserform.modifyemail.$error.required && Modifyuserform.modifyemail.$dirty">Tell us your email.</span>
-                                <span class="help-block" ng-show="Modifyuserform.modifyemail.$error.email">This is not a valid email.</span>
+                            <!-- Email -->
+                            <div class="input-group" ng-class="{'has-error':Modifyuserform.modifyemail.$invalid && Modifyuserform.modifyemail.$dirty }" >
+                                <span class="input-group-addon" >Email :</span>
+                                <input type="Email" class="form-control" id=modifyemail" name="modifyemail" placeholder="Email" ng-model="modifyuser.mail" required>
+                            </div>
+                            <span class="help-block" ng-show="Modifyuserform.modifyemail.$error.required && Modifyuserform.modifyemail.$dirty">Tell us your email.</span>
+                            <span class="help-block" ng-show="Modifyuserform.modifyemail.$error.email">This is not a valid email.</span>
 
-                                <div class="form-group">
-                                    <input id="modifyroleAdmin" name="modifyroleAdmin" type="checkbox" ng-model="modifyuser.roles.admin">
-                                    <label for="modifyroleAdmin"> Administrateur</label>
-                                </div>
+                            <div class="form-group">
+                                <input id="modifyroleAdmin" name="modifyroleAdmin" type="checkbox" ng-model="modifyuser.roles.admin">
+                                <label for="modifyroleAdmin"> Administrateur</label>
+                            </div>
 
-                                <button class="btn btn-primary" ng-disabled="!Modifyuserform.$valid" >Valider</button>
-                            </form>
-                        </div>
-                    </aside>
-                </div>
+                            <button class="btn btn-primary" ng-disabled="!Modifyuserform.$valid" >Valider</button>
+                        </form>
+                    </div>
+                </aside>
             </div>
         </div>
     </div>

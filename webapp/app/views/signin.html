@@ -1,78 +1,68 @@
-<div class="container">
-    <div class="row">
-        <div class="col-m-10">
-            <aside class="col-sm-9"> <!-- Center Large Column -->
-                <div>
-                    <legend>Inscription :</legend>
-                    <!-- Form -->
-                    <form name="userForm" ng-submit="register()">
-                        <!--Erreur-->
-                        <div class="alert alert-danger" ng-show="error">
-                            {{ error.message }}
-                        </div>
+<div class="row readit_block">
+    <legend>Inscription :</legend>
+    <!-- Form -->
+    <form name="userForm" ng-submit="register()">
 
-                        <!-- UserName -->
-                        <div class="form-group" data-ng-class="{'has-error':!userForm.username.$valid && userForm.username.$dirty }">
-                            <label for="username">Username :</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" ng-minlength="4" ng-maxlength="25" ng-model="user.username" required="">
-                            <span class="help-block" data-ng-show="userForm.username.$error.required && userForm.username.$dirty">Ce champ est obligatoire.</span>
-                            <span class="help-block" ng-show="!userForm.username.$error.required && (userForm.username.$error.minlength || userForm.username.$error.maxlength) && userForm.username.$dirty">Ce champ entre 4 et 25 caractéres.</span>
-                        </div>
-
-                        <!-- Nom -->
-                        <div class="form-group" data-ng-class="{'has-error':!userForm.nom.$valid && userForm.nom.$dirty }">
-                            <label for="nom">Nom :</label>
-                            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" ng-minlength="2" ng-maxlength="25" ng-model="user.nom" required="">
-                            <span class="help-block" data-ng-show="userForm.nom.$error.required && userForm.nom.$dirty">Ce champ est obligatoire.</span>
-                            <span class="help-block" ng-show="!userForm.nom.$error.required && (userForm.nom.$error.minlength || userForm.nom.$error.maxlength) && userForm.nom.$dirty">Ce champ entre 2 et 25 caractéres.</span>
-                        </div>
-
-                        <!-- Prenom -->
-                        <div class="form-group" ng-class="{'has-error':userForm.prenom.$invalid && userForm.prenom.$dirty }">
-                            <label for="prenom" class="control-label">Prénom :</label>
-                            <input type="text" ng-minlength="2" class="form-control" id="prenom" name="prenom" placeholder="Prénom" ng-model="user.prenom" required minlength="2" maxlength="25">
-                            <span class="help-block" data-ng-show="userForm.prenom.$error.required && userForm.prenom.$dirty">Ce champ est obligatoire.</span>
-                            <span class="help-block" data-ng-show="!userForm.prenom.$error.required && (userForm.prenom.$error.minlength || userForm.prenom.$error.maxlength) && userForm.prenom.$dirty">Ce champ entre 2 et 25 caractéres.</span>
-                           </div>
-
-
-                        <!-- Email -->
-                        <div class="form-group" ng-class="{'has-error':userForm.email.$invalid && userForm.email.$dirty }" >
-                            <label for="email" class="control-label">Email :</label>
-                            <input type="Email" class="form-control" id="email" name="email" placeholder="Email" ng-model="user.email" required>
-                            <span class="help-block" ng-show="userForm.email.$error.required && userForm.email.$dirty">Ce champ est obligatoire.</span>
-                            <span class="help-block" ng-show="userForm.email.$error.email">Email est invalide.</span>
-                        </div>
-
-                        <!-- Password -->
-                        <div class="form-group" ng-class="{'has-error':userForm.password.$invalid && userForm.password.$dirty }">
-                            <label class="control-label" for="password">Mot de passe :</label>
-                            <input class="form-control" type="password" id="password" name="password" ng-model="user.password" ng-minlength="8" ng-maxlength="20" required  />
-                            <span class="help-block" ng-show="userForm.password.$error.required && userForm.password.$dirty">Ce champ est obligatoire.</span>
-                            <span class="help-block" ng-show="!userForm.password.$error.required && (userForm.password.$error.minlength || userForm.password.$error.maxlength) && userForm.password.$dirty">Ce champ entre 8 et 20 caractéres.</span>
-                        </div>
-
-                        <!-- confirmpassword -->
-                        <div class="form-group" ng-class="{'has-error':userForm.password_conf.$invalid && userForm.password_conf.$dirty }">
-                            <label class="form-label" for="password_conf">Confirmation :</label>
-                            <input class="form-control" type="password" id="password_conf" name="password_conf" data-ng-model="user.password_conf" equals-to="userForm.password" required  />
-                            <span class="help-block" ng-show="userForm.password_conf.$error.required && userForm.password_conf.$dirty">Ce champ est obligatoire.</span>
-                            <span class="help-block" ng-show="(!userForm.password_conf.$error.required && userForm.password.$dirty) && !userForm.password_conf.$valid">Les mot de passe ne sont pas identiques.</span>
-
-
-                        </div>
-
-                        <!-- check agree -->
-                        <div>
-                            <input type="checkbox" name="checkagree" ng-model="checkagree" >
-                            <label>I agree <a ui-sref="termsAndConditions">termes et conditions</a></label>
-                        </div>
-
-                        <!-- Valider -->
-                        <button ng-click="save()" class="btn btn-primary" ng-disabled="(!userForm.$valid || !checkagree)" >Valider</button>
-                    </form>
-                </div>
-            </aside>
+        <div class="alert alert-danger" ng-show="error">
+            {{ error.message }}
         </div>
-    </div>
+
+        <!-- UserName -->
+        <div class="form-group" data-ng-class="{'has-error':!userForm.username.$valid && userForm.username.$dirty }">
+            <label for="username">Username :</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Username" ng-minlength="4" ng-maxlength="25" ng-model="user.username" required="">
+            <span class="help-block" data-ng-show="userForm.username.$error.required && userForm.username.$dirty">Ce champ est obligatoire.</span>
+            <span class="help-block" ng-show="!userForm.username.$error.required && (userForm.username.$error.minlength || userForm.username.$error.maxlength) && userForm.username.$dirty">Ce champ entre 4 et 25 caractéres.</span>
+        </div>
+
+        <!-- Nom -->
+        <div class="form-group" data-ng-class="{'has-error':!userForm.nom.$valid && userForm.nom.$dirty }">
+            <label for="nom">Nom :</label>
+            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" ng-minlength="2" ng-maxlength="25" ng-model="user.nom" required="">
+            <span class="help-block" data-ng-show="userForm.nom.$error.required && userForm.nom.$dirty">Ce champ est obligatoire.</span>
+            <span class="help-block" ng-show="!userForm.nom.$error.required && (userForm.nom.$error.minlength || userForm.nom.$error.maxlength) && userForm.nom.$dirty">Ce champ entre 2 et 25 caractéres.</span>
+        </div>
+
+        <!-- Prenom -->
+        <div class="form-group" ng-class="{'has-error':userForm.prenom.$invalid && userForm.prenom.$dirty }">
+            <label for="prenom" class="control-label">Prénom :</label>
+            <input type="text" ng-minlength="2" class="form-control" id="prenom" name="prenom" placeholder="Prénom" ng-model="user.prenom" required minlength="2" maxlength="25">
+            <span class="help-block" data-ng-show="userForm.prenom.$error.required && userForm.prenom.$dirty">Ce champ est obligatoire.</span>
+            <span class="help-block" data-ng-show="!userForm.prenom.$error.required && (userForm.prenom.$error.minlength || userForm.prenom.$error.maxlength) && userForm.prenom.$dirty">Ce champ entre 2 et 25 caractéres.</span>
+        </div>
+
+
+        <!-- Email -->
+        <div class="form-group" ng-class="{'has-error':userForm.email.$invalid && userForm.email.$dirty }" >
+            <label for="email" class="control-label">Email :</label>
+            <input type="Email" class="form-control" id="email" name="email" placeholder="Email" ng-model="user.email" required>
+            <span class="help-block" ng-show="userForm.email.$error.required && userForm.email.$dirty">Ce champ est obligatoire.</span>
+            <span class="help-block" ng-show="userForm.email.$error.email">Email est invalide.</span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group" ng-class="{'has-error':userForm.password.$invalid && userForm.password.$dirty }">
+            <label class="control-label" for="password">Mot de passe :</label>
+            <input class="form-control" type="password" id="password" name="password" ng-model="user.password" ng-minlength="8" ng-maxlength="20" required  />
+            <span class="help-block" ng-show="userForm.password.$error.required && userForm.password.$dirty">Ce champ est obligatoire.</span>
+            <span class="help-block" ng-show="!userForm.password.$error.required && (userForm.password.$error.minlength || userForm.password.$error.maxlength) && userForm.password.$dirty">Ce champ entre 8 et 20 caractéres.</span>
+        </div>
+
+        <!-- confirmpassword -->
+        <div class="form-group" ng-class="{'has-error':userForm.password_conf.$invalid && userForm.password_conf.$dirty }">
+            <label class="form-label" for="password_conf">Confirmation :</label>
+            <input class="form-control" type="password" id="password_conf" name="password_conf" data-ng-model="user.password_conf" equals-to="userForm.password" required  />
+            <span class="help-block" ng-show="userForm.password_conf.$error.required && userForm.password_conf.$dirty">Ce champ est obligatoire.</span>
+            <span class="help-block" ng-show="(!userForm.password_conf.$error.required && userForm.password.$dirty) && !userForm.password_conf.$valid">Les mot de passe ne sont pas identiques.</span>
+        </div>
+
+        <!-- check agree -->
+        <div>
+            <input type="checkbox" name="checkagree" ng-model="checkagree" >
+            <label>I agree <a ui-sref="termsAndConditions" target="_blank">termes et conditions</a></label>
+        </div>
+
+        <!-- Valider -->
+        <button ng-click="save()" class="btn btn-primary" ng-disabled="(!userForm.$valid || !checkagree)" >Valider</button>
+    </form>
 </div>

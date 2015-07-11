@@ -1,117 +1,125 @@
-<div class="container">
-    <div class="row">
-        <div class="col-m-10">
-            <aside class="col-sm-3"> <!-- left Column -->
-                <div>
-                    <img  ng-src="{{imgSource}}" alt="Cover" style="width:200px;height:200px;">
-                    <div class="large">
-                        <a ui-sref="home"><i class="glyphicon glyphicon-shopping-cart"></i></a>
-                        <a ng-click="toogleFavorite()"><i class="glyphicon {{favorite ? 'glyphicon-heart' : 'glyphicon-heart-empty'}}"></i></a>
-                    </div>
-                </div>
-                <div>
-                    Note : <br />
-                    <a ng-click="saveRating()" ng-mouseenter="setRating(1)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 0 ? '' : '-empty'}}"></i></a>
-                    <a ng-click="saveRating()" ng-mouseenter="setRating(2)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 1 ? '' : '-empty'}}"></i></a>
-                    <a ng-click="saveRating()" ng-mouseenter="setRating(3)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 2 ? '' : '-empty'}}"></i></a>
-                    <a ng-click="saveRating()" ng-mouseenter="setRating(4)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 3 ? '' : '-empty'}}"></i></a>
-                    <a ng-click="saveRating()" ng-mouseenter="setRating(5)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 4 ? '' : '-empty'}}"></i></a>
-                </div>
-                <div>
-                    <h4>Avancement Etat </h4>
-                    <!--<input type="radio" ng-model="readingState" value="not interested" id="rbtn-advancement-no_interset" /><label for="rbtn-advancement-no_interset">Pas interessé</label><br />-->
-                    <!--<input type="radio" ng-model="readingState" value="interested" id="rbtn-advancement-interested" /><label for="rbtn-advancement-interested">Interessé</label><br />-->
-                    <!--<input type="radio" ng-model="readingState" value="reading" id="rbtn-advancement-reading"/><label for="rbtn-advancement-reading">Lut</label><br />-->
-                    <!--<input-->
-                        <!--value="finished"-->
-                        <!--type="radio"-->
-                        <!--id="rbtn-advancement-finished"-->
-                        <!--ng-model="readingState"-->
-                        <!--ng-click="readAll()"-->
-                    <!--/>-->
-                    <div>{{oeuvre.chapters | readingStatus}}</div>
-                    <!--<label for="rbtn-advancement-finished">Finis</label>-->
-                </div>
-                <div>
-                    Administrateur
-                </div>
-            </aside>
-            <aside class="col-sm-6"> <!-- Center Column -->
-                <div id="oeuvre_description">
-                    <h1>{{oeuvre.name}}</h1>
-                    <h4>{{oeuvre.type}}:<i ng-repeat="category in oeuvre.categories"> {{category}}</i></h4>
-                    <h5><i ng-repeat="author in oeuvre.authors"> {{oeuvre.author}}</i></h5>
-
-                    <div id="resume">
-
-                    </div>
-
-                </div>
-
-                <div id="progress_bar" ng-show="logged">
-                    <h4> J'ai lu : </h4>
-                    <ul ng-mouseleave="leave()" ng-mouseup="clickEnd()" class="pagination no-select">
-                        <li ng-repeat="chapter in oeuvre.chapters"
-                            class="{{chapter.read ? 'active' : ''}}"
-                            ng-mouseenter="enter(chapter)"
-                            ng-mousedown="clickBegin(chapter)"
-                            class="no-select">
-                            <a class="no-select">{{chapter.number}}</a>
-                        </li>
-                    </ul>
-                </div>
-                <div id="chapter_selector">
-                    -------------- Selecteur de chapitre --------------
-
-                </div>
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default" ng-repeat="chapter in oeuvre.chapters">
-                        <div class="panel-heading" role="tab" id="heading-{{chapter._id}}">
-                            <h4 class="panel-title">
-                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapse-{{chapter._id}}" aria-expanded="false" aria-controls="collapseTwo">
-                                   {{chapter.number}} : {{chapter.name}}
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapse-{{chapter._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{chapter._id}}">
-                            <div class="panel-body">
-                                {{chapter.resume}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--<div id="chapter_title">-->
-                    <!--<h4>Titre du chapitre</h4>-->
-                    <!--<div ng-repeat="chapter in oeuvre.chapters">-->
-                        <!--<h3>{{chapter.name}}</h3>-->
-                        <!--{{chapter.resume}}-->
-                    <!--</div>-->
-                <!--</div>-->
-                <div ng-repeat="comment in comments">
-                    <b id="user">{{comment.user}} </b> : <br/>
-                    <div ng-bind-html="comment.commentaire"></div>
-                </div>
-                <p ng-model="addDiv" id ="addDiv" ng-show="Showcomments=='true'"></p>
-                <div id="comments">
-                    <button class="col-sm-offset-7" id="displayComments" ng-click="displayComments()" >afficher les commentaires </button>
-                    <br/>
-                    <br/>
-
-                    <wysiwyg
-                            textarea-id="question"
-                            textarea-class="form-control"
-                            textarea-height="80px"
-                            textarea-name="textareaQuestion"
-                            textarea-required
-                            ng-model="newComment"
-                            enable-bootstrap-title="true"
-                            textarea-menu="commentMenu"
-                    ></wysiwyg>
-                    <!--<input id ="commentTxt" ng-model="commentTxt" value ="txt" type="text" >-->
-                    <!--<textarea class="rich-text-box" ng-model="commentTxt" type="text" title="commentaire"></textarea>-->
-                    <button ng-model = "comments" ng-click="comment()" value ="false" >publier</button>
-                </div>
-            </aside>
+<div class="row">
+    <aside class="col-sm-4 clearfix"> <!-- left Column -->
+        <div id="imgPanel" class="readit_block col-xs-6 col-sm-12">
+            <img  ng-src="{{imgSource}}" alt="Cover">
+            <div class="large">
+                <a ui-sref="home"><i class="glyphicon glyphicon-shopping-cart"></i></a>
+                <a ng-click="toogleFavorite()"><i class="glyphicon {{favorite ? 'glyphicon-heart' : 'glyphicon-heart-empty'}}"></i></a>
+            </div>
         </div>
-    </div>
+        <div class="readit_block pull-right col-xs-5 col-sm-12">
+            <p>Note : </p>
+            <a ng-click="saveRating()" ng-mouseenter="setRating(1)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 0 ? '' : '-empty'}}"></i></a>
+            <a ng-click="saveRating()" ng-mouseenter="setRating(2)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 1 ? '' : '-empty'}}"></i></a>
+            <a ng-click="saveRating()" ng-mouseenter="setRating(3)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 2 ? '' : '-empty'}}"></i></a>
+            <a ng-click="saveRating()" ng-mouseenter="setRating(4)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 3 ? '' : '-empty'}}"></i></a>
+            <a ng-click="saveRating()" ng-mouseenter="setRating(5)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 4 ? '' : '-empty'}}"></i></a>
+        </div>
+        <div class="readit_block pull-right col-xs-5 col-sm-12">
+            <h4>Avancement Etat </h4>
+            <!--<input type="radio" ng-model="readingState" value="not interested" id="rbtn-advancement-no_interset" /><label for="rbtn-advancement-no_interset">Pas interessé</label><br />-->
+            <!--<input type="radio" ng-model="readingState" value="interested" id="rbtn-advancement-interested" /><label for="rbtn-advancement-interested">Interessé</label><br />-->
+            <!--<input type="radio" ng-model="readingState" value="reading" id="rbtn-advancement-reading"/><label for="rbtn-advancement-reading">Lut</label><br />-->
+            <!--<input-->
+            <!--value="finished"-->
+            <!--type="radio"-->
+            <!--id="rbtn-advancement-finished"-->
+            <!--ng-model="readingState"-->
+            <!--ng-click="readAll()"-->
+            <!--/>-->
+            <div>{{oeuvre.chapters | readingStatus}}</div>
+            <!--<label for="rbtn-advancement-finished">Finis</label>-->
+        </div>
+    </aside>
+    <aside class="col-sm-8"> <!-- Center Column -->
+        <div id="oeuvre_description" class="readit_block">
+            <h1 class="pull-left">{{oeuvre.name}}</h1>
+            <div class="pull-right">
+                <h3> {{oeuvre.type}}
+            <span ng-show="oeuvre.categories">:
+                <i ng-repeat="category in oeuvre.categories"> {{category}}</i>
+            </span>
+                </h3>
+                <h4><i ng-repeat="ath in oeuvre.author"> {{ath}}</i></h4>
+            </div>
+            <div class="clearfix"></div>
+
+            <div id="resume" ng-show="oeuvre.chapters && oeuvre.chapters[0].resume">
+                <h4>Résumé :</h4>
+                <p>{{oeuvre.chapters[0].resume}}</p>
+            </div>
+        </div>
+
+        <div id="progress_bar" class="readit_block" ng-show="auth.isLoggedIn()">
+            <h4> J'ai lu : </h4>
+            <ul ng-mouseleave="leave()" ng-mouseup="clickEnd()" class="pagination no-select">
+                <li ng-repeat="chapter in oeuvre.chapters"
+                    class="{{chapter.read ? 'active' : ''}}"
+                    ng-mouseenter="enter(chapter)"
+                    ng-mousedown="clickBegin(chapter)"
+                    class="no-select">
+                    <a class="no-select">{{chapter.number}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="readit_block">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <h4>Chapitres :</h4>
+                <div class="panel panel-default" ng-repeat="chapter in oeuvre.chapters">
+                    <div class="panel-heading" role="tab" id="heading-{{chapter._id}}">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapse-{{chapter._id}}" aria-expanded="false" aria-controls="collapseTwo">
+                                {{chapter.number}} : {{chapter.name}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse-{{chapter._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{chapter._id}}">
+                        <div class="panel-body">
+                            {{chapter.resume}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div id="chapter_title">-->
+        <!--<h4>Titre du chapitre</h4>-->
+        <!--<div ng-repeat="chapter in oeuvre.chapters">-->
+        <!--<h3>{{chapter.name}}</h3>-->
+        <!--{{chapter.resume}}-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="readit_block" ng-show="comments.length">
+            <div ng-repeat="comment in comments">
+                <b id="user">{{comment.user}} </b> : <br/>
+                <div ng-bind-html="comment.commentaire"></div>
+            </div>
+        </div>
+        <p ng-model="addDiv" id ="addDiv" ng-show="Showcomments=='true'"></p>
+        <div id="comments" class="readit_block">
+
+            <button class="pull-right btn btn-default" id="displayComments" ng-click="displayComments()" >Afficher les commentaires </button>
+
+            <div class="clearfix"></div>
+
+            <div ng-hide="auth.isLoggedIn()">
+                <p class="alert alert-info">Vous devez être inscrit pour pouvoir écrire un commentaire</p>
+            </div>
+
+            <div ng-show="auth.isLoggedIn()">
+                <wysiwyg
+                        textarea-id="question"
+                        textarea-class="form-control"
+                        textarea-height="80px"
+                        textarea-name="textareaQuestion"
+                        textarea-required
+                        ng-model="newComment"
+                        enable-bootstrap-title="true"
+                        textarea-menu="commentMenu" >
+                </wysiwyg>
+                <!--<input id ="commentTxt" ng-model="commentTxt" value ="txt" type="text" >-->
+                <!--<textarea class="rich-text-box" ng-model="commentTxt" type="text" title="commentaire"></textarea>-->
+                <button class="btn btn-primary" ng-model = "comments" ng-click="comment()" value ="false" >publier</button>
+            </div>
+        </div>
+    </aside>
 </div>

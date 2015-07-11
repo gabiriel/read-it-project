@@ -74,11 +74,11 @@ h1,h2,h3,h4,h5{
 }
 /** Layout
 ------------------*/
-aside[class^="col-"] > div,
 .readit_block{
   border: 1px solid #6FC2F4;
   padding: 15px;
   margin: 15px 0;
+  border-radius: 8px ;
 }
 .admin_block{
   padding: 15px;
@@ -87,7 +87,13 @@ aside[class^="col-"] > div,
 main#content{
   min-height:85vh;
 }
-
+.large{
+  font-size: x-large;
+  text-align: center;
+}
+.large a{
+  margin-right: 1em;
+}
 .input-group{
   margin-bottom: 15px;
 }
@@ -138,7 +144,7 @@ main#content{
 }
 
 /** HOME
-------------------*/
+------------------------------------------------------*/
 #home_view{ }
 
 
@@ -174,3 +180,27 @@ width: 85%;
   font-size: 120%;
 }
 .unreaded { font-weight:bold; }
+
+/** OEUVRE
+------------------------------------------------------*/
+/**
+* Description
+------------------*/
+#imgPanel{
+  text-align: center;
+}
+#imgPanel img{
+  width: 200px;
+  height: 200px;
+}
+/**
+* Commentaires
+------------------*/
+#writeComments{
+
+}
+#displayComments{
+  margin-bottom: 30px;
+}
+
+

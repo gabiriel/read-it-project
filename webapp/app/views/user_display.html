@@ -2,24 +2,24 @@
     <div class="row">
         <div class="col-m-10">
             <aside class="col-sm-3"> <!-- left Column -->
-                <div>
+                <div class="readit_block">
                     <div id="userName"> {{user}} </div>
                     <img  ng-src="{{imgSource[$index]}}}" alt="Photo_de_profil" style="width:200px;height:200px;">
-                    <div>
+                    <div class="large">
                         <a ui-sref="message"><i class="glyphicon glyphicon-envelope"></i></a>
                         <a href="#"><i class="glyphicon glyphicon-plus"></i></a>
                         <a href="#"><i class="glyphicon glyphicon-off"></i></a>
                     </div>
                 </div>
-                <div>
+                <div class="readit_block">
                     Avancement Etat
                 </div>
-                <div>
+                <div class="readit_block">
                     Administrateur
                 </div>
             </aside>
             <aside class="col-sm-6"> <!-- Center Column -->
-                <div id="activite" ng-model="activite">
+                <div id="activite" class="readit_block" ng-model="activite">
                     Activité
                 </div>
             </aside>

@@ -1,42 +1,30 @@
-<div class="container">
-    <div class="row">
-        <div class="col-m-10">
-            <aside class="col-sm-9"> <!-- Center Large Column -->
-                <div class="row">
-                    <form class="form-login" name="contactform" ng-controller="ContactUserController">
-                        <div class="col-sm-8 col-sm-offset-2">
-                            <legend><h2 class="form-login-heading">Contact</h2></legend>
+<div class="row readit_block">
+    <form class="form-login col-sm-8 col-sm-offset-2" name="contactform" ng-controller="ContactUserController">
+        <legend><h2 class="form-login-heading">Contact</h2></legend>
 
-                            <!-- Email -->
-                            <div class="form-group"  ng-class="{'has-error':contactform.email.$invalid && contactform.email.$dirty }" >
-                                <input  class="form-control" type="Email" id="email" name="email" placeholder="Email" ng-model="email" required>
-                                <span class="help-block" ng-show="contactform.email.$error.required && contactform.email.$dirty">Ce champ est obligatoire.</span>
-                                <span class="help-block" ng-show="contactform.email.$error.email">Cet email est invalide</span>
-                            </div>
-
-                            <!-- subject_message -->
-                            <div class="form-group" ng-class="{'has-error':contactform.subject_message.$invalid && contactform.subject_message.$dirty }">
-                                <input class="form-control" type="text" id="subject_message" name="subject_message" placeholder="Subject" ng-model="subject_message" ng-minlength="2" ng-maxlength="30" required  />
-                                <span class="help-block" ng-show="contactform.subject_message.$error.required && contactform.subject_message.$dirty">Ce champ est obligatoire</span>
-                                <span class="help-block" ng-show="!contactform.subject_message.$error.required && (contactform.subject_message.$error.minlength || contactform.subject_message.$error.maxlength) && contactform.subject_message.$dirty">Ce champ entre 2 et 30 caractéres.</span>
-                            </div>
-
-                            <!-- Texte -->
-                            <div class="form-group" ng-class="{'has-error':contactform.text.$invalid && contactform.text.$dirty }">
-                                <textarea class="form-control" type="text" placeholder="Message" id="text" name="text" ng-model="text_message" ng-minlength="2" ng-maxlength="300" required  />
-                                <span class="help-block" ng-show="contactform.text.$error.required && contactform.text.$dirty">Ce champ est obligatoire</span>
-                                <span class="help-block" ng-show="!contactform.text.$error.required && (contactform.text.$error.minlength || contactform.text.$error.maxlength) && contactform.text.$dirty">Ce champ entre 8 et 300 caractéres.</span>
-                            </div>
-
-
-
-                            <!--Button-->
-                            <button class="btn btn-lg btn-primary btn-block" ng-click="contact()" ng-disabled="!contactform.$valid">Contactez</button>
-
-                        </div>
-                    </form>
-                </div>
-            </aside>
+        <!-- Email -->
+        <div class="form-group"  ng-class="{'has-error':contactform.email.$invalid && contactform.email.$dirty }" >
+            <input  class="form-control" type="Email" id="email" name="email" placeholder="Email" ng-model="email" required>
+            <span class="help-block" ng-show="contactform.email.$error.required && contactform.email.$dirty">Ce champ est obligatoire.</span>
+            <span class="help-block" ng-show="contactform.email.$error.email">Cet email est invalide</span>
         </div>
-    </div>
+
+        <!-- subject_message -->
+        <div class="form-group" ng-class="{'has-error':contactform.subject_message.$invalid && contactform.subject_message.$dirty }">
+            <input class="form-control" type="text" id="subject_message" name="subject_message" placeholder="Subject" ng-model="subject_message" ng-minlength="2" ng-maxlength="30" required  />
+            <span class="help-block" ng-show="contactform.subject_message.$error.required && contactform.subject_message.$dirty">Ce champ est obligatoire</span>
+            <span class="help-block" ng-show="!contactform.subject_message.$error.required && (contactform.subject_message.$error.minlength || contactform.subject_message.$error.maxlength) && contactform.subject_message.$dirty">Ce champ entre 2 et 30 caractï¿½res.</span>
+        </div>
+
+        <!-- Texte -->
+        <div class="form-group" ng-class="{'has-error':contactform.text.$invalid && contactform.text.$dirty }">
+            <textarea class="form-control" type="text" placeholder="Message" id="text" name="text" ng-model="text_message" ng-minlength="2" ng-maxlength="300" required  />
+            <span class="help-block" ng-show="contactform.text.$error.required && contactform.text.$dirty">Ce champ est obligatoire</span>
+            <span class="help-block" ng-show="!contactform.text.$error.required && (contactform.text.$error.minlength || contactform.text.$error.maxlength) && contactform.text.$dirty">Ce champ entre 8 et 300 caractï¿½res.</span>
+        </div>
+
+        <!--Button-->
+        <button class="btn btn-lg btn-primary btn-block" ng-click="contact()" ng-disabled="!contactform.$valid">Contactez</button>
+
+    </form>
 </div>
