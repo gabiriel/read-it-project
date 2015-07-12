@@ -36,9 +36,9 @@
             <h1 class="pull-left">{{oeuvre.name}}</h1>
             <div class="pull-right">
                 <h3> {{oeuvre.type}}
-            <span ng-show="oeuvre.categories">:
-                <i ng-repeat="category in oeuvre.categories"> {{category}}</i>
-            </span>
+                    <span ng-show="oeuvre.categories">:
+                        <i ng-repeat="category in oeuvre.categories"> {{category}}</i>
+                    </span>
                 </h3>
                 <h4><i ng-repeat="ath in oeuvre.author"> {{ath}}</i></h4>
             </div>
@@ -81,20 +81,16 @@
                 </div>
             </div>
         </div>
-        <!--<div id="chapter_title">-->
-        <!--<h4>Titre du chapitre</h4>-->
-        <!--<div ng-repeat="chapter in oeuvre.chapters">-->
-        <!--<h3>{{chapter.name}}</h3>-->
-        <!--{{chapter.resume}}-->
-        <!--</div>-->
-        <!--</div>-->
+
         <div class="readit_block" ng-show="comments.length">
+            <h4>Commentaires: </h4>
             <div ng-repeat="comment in comments">
                 <b id="user">{{comment.user}} </b> : <br/>
                 <div ng-bind-html="comment.commentaire"></div>
+                <hr/>
             </div>
         </div>
-        <p ng-model="addDiv" id ="addDiv" ng-show="Showcomments=='true'"></p>
+
         <div id="comments" class="readit_block">
 
             <button class="pull-right btn btn-default" id="displayComments" ng-click="displayComments()" >Afficher les commentaires </button>
@@ -116,8 +112,6 @@
                         enable-bootstrap-title="true"
                         textarea-menu="commentMenu" >
                 </wysiwyg>
-                <!--<input id ="commentTxt" ng-model="commentTxt" value ="txt" type="text" >-->
-                <!--<textarea class="rich-text-box" ng-model="commentTxt" type="text" title="commentaire"></textarea>-->
                 <button class="btn btn-primary" ng-model = "comments" ng-click="comment()" value ="false" >publier</button>
             </div>
         </div>

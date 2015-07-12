@@ -109,7 +109,6 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
         $scope.newComment="";
         $scope.Showcomments = 'true';
         $scope.comments.push(CommentDetails);
-        //$scope.addDiv(CommentDetails.user, CommentDetails.commentaire);
     };
     $scope.commentMenu = [
         ['bold', 'italic', 'underline', 'strikethrough'],
@@ -153,15 +152,10 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
         $scope.rating = $scope.oldRating;
     };
 
-    $scope.addDiv = function(user, comment){
-        var newElemen = angular.element('#addDiv').append('<div style= "border: 1px solid #6FC2F4; padding: 15px;margin: 15px 0;"> '+user +': ' + comment +'</div>');
-        $compile(newElemen)(scope);
-    };
     $scope.displayComments = function(){
         var id_oeuvre=$stateParams.id;
         commentaireService.getComments(id_oeuvre).success(function(data){
             $scope.comments = data;
-
         });
     };
 
