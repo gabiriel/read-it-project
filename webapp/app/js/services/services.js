@@ -24,32 +24,31 @@ app.factory('serviceDetails', ['$http',function($http){
         return $http.get("/oeuvres", {
             params: {Oeuvre: titleOeuvre}
         });
-    }
+    };
+
     Details.getOeuvre = function (id_oeuvre) {
         return $http.get("/oeuvre", {
             params: {id_Oeuvre: id_oeuvre}
         });
-    }
-    //je passe l'utilisateur en parametre, mais c'est une faille de sécurité(on ne vérifie pas qu'on peut retirer)
-    //il faudrai de préférence le trouver au niveau de la session
-    //j'ai cru comprendre que la session n'est pas encore au point, et c'est déja comme ça qu'on fait pour les commentaires
-    Details.addFavorite = function(user, oeuvre) {
+    };
+
+    Details.addFavorite = function(params) {
         return $http.post("/user/favorites/add", {
-            idOeuvre: oeuvre._id,
-            user: user
+            idOeuvre: params.oeuvre._id,
+            idUser: params.user_id
         });
     };
-    Details.removeFavorite = function(user, oeuvre) {
+    Details.removeFavorite = function(params) {
         return $http.post("/user/favorites/remove", {
-                idOeuvre: oeuvre._id,
-                user: user
+                idOeuvre: params.oeuvre._id,
+                idUser: params.user_id
         });
     };
-    Details.isFavorite = function(user, idOeuvre) {
+    Details.isFavorite = function(user_id, oeuvre_id) {
         return $http.get("/user/favorites/is", {
             params: {
-                idOeuvre: idOeuvre,
-                user: user
+                idOeuvre: oeuvre_id,
+                idUser: user_id
             }
         });
     };
@@ -143,6 +142,15 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             return payload.username;
         }
     };
+
+    auth.currentUserId = function(){
+        if(auth.isLoggedIn()){
+            var token = auth.getToken();
+            var payload = JSON.parse($window.atob(token.split('.')[1]));
+            return payload._id;
+        }
+    };
+
     auth.getUser = function(currentUser){
         if(auth.isLoggedIn()){
             return $http.get("/User", {

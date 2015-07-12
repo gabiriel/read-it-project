@@ -59,7 +59,7 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
     $scope.readAll = function() {
         serviceDetails.readAll($scope.user, $scope.oeuvre._id);
     };
-    serviceDetails.isFavorite(auth.currentUser(), $stateParams.id).success(function(data) {
+    serviceDetails.isFavorite(auth.currentUserId(), $stateParams.id).success(function(data) {
         $scope.favorite = Boolean(data === 'true');
     });
 
@@ -119,12 +119,17 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
         ['link']
     ];
     $scope.comments = [];
-    $scope.toogleFavorite = function() {
-        $scope.favorite = ! $scope.favorite;
+    $scope.toggleFavorite = function() {
+        $scope.favorite = !$scope.favorite;
+
+        var params = {
+            user_id: auth.currentUserId(),
+            oeuvre: $scope.oeuvre
+        };
         if($scope.favorite) {
-            serviceDetails.addFavorite(auth.currentUser(), $scope.oeuvre);
+            serviceDetails.addFavorite(params);
         } else {
-            serviceDetails.removeFavorite(auth.currentUser(), $scope.oeuvre);
+            serviceDetails.removeFavorite(params);
         }
     };
     //newRating is the new rate of the user, not the new average rate

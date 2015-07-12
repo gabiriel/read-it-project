@@ -276,71 +276,53 @@ router.get('/comments', function(req,res) {
 
 });
 router.post('/user/favorites/add',function(req,res) {
-    //var query = User.find(null)
-    //query.where("user",req.query.name);
-
     var idOeuvre = req.body.idOeuvre;
-    var user = req.body.user;
+    var idUser = req.body.idUser;
 
-    console.log('add favorite');
-    console.log('user : ' + user);
-    console.log('idOeuvre : ' + idOeuvre);
+    console.log("[Query] Add oeuvre (" + idOeuvre + ") to favorites of user (" + idUser + ")");
 
-    User.findOneAndUpdate(
-        { username: user }, {
-            $push: {
-                favoris: idOeuvre
-            }
-        }, {
-            safe: true
-        },
-        function(err, model) {
-            console.log(err);
+    var query = { _id: idUser};
+    var update = { $push: {favoris: idOeuvre} };
+    var option = { safe: true};
+    User.findOneAndUpdate(query, update, option, function(err, model) {
+            if (err) console.log("[Mongoose] - " + err);
         }
     );
 });
 router.post('/user/favorites/remove',function(req,res) {
     var idOeuvre = req.body.idOeuvre;
-    var user = req.body.user;
-    console.log('remove favorites ');
-    console.log('user : ' + user);
-    console.log('idOeuvre : ' + idOeuvre);
+    var idUser = req.body.idUser;
 
-    User.findOneAndUpdate(
-        { username: user}, {
-            $addToSet: {
-                favoris: idOeuvre
-            }
-        }, {
-            safe: true
-        },
-        function(err, model) {
-            console.log(err);
+    console.log("[Query] Remove oeuvre (" + idOeuvre + ") from favorites of user (" + idUser + ")");
+
+    var query = { _id: idUser};
+    var update = { $pull: {favoris: idOeuvre} };
+    var option = { safe: true };
+    User.findOneAndUpdate(query, update, option, function(err, model) {
+            if (err) console.log("[Mongoose] - " + err);
         }
     );
 });
 
 router.get('/user/favorites/is',function(req,res) {
     var idOeuvre = req.query.idOeuvre;
-    var user = req.query.user;
-    console.log('remove favorites ');
-    console.log('user : ' + user);
-    console.log('idOeuvre : ' + idOeuvre);
-    User
-        .find({
-            username : user,
-            favoris: idOeuvre
-        })
+    var idUser = req.query.idUser;
+
+    console.log("[Query] Is this oeuvre (" + idOeuvre + ") is in favorites of user (" + idUser + ")");
+
+    var query = { _id : idUser, favoris: idOeuvre };
+    User.find(query)
         .count(function(err,count) {
             if(err) {
-                console.log(err);
+                console.log("[Mongoose] - " + err);
                 res.end('false');
                 return;
             }
-            console.log('found ' + count);
+            console.log('[Mongoose] Favorite founded(' + count + ')');
             res.end(String(count !== 0));
         });
 });
+
 router.get('/oeuvres/popular', function(req,res) {
     OeuvreModel
         .find()
