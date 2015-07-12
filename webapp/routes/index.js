@@ -744,4 +744,14 @@ router.get('/DetailUser',function(req,res) {
         }
     );
 });
+router.post('/oeuvre/create',function(req,res) {
+    console.log(req.body.oeuvre);
+    OeuvreModel.create(req.body.oeuvre,function(err, data){
+        if(err) {
+            res.end('error');
+            return;
+        }
+        res.end('success');
+    });
+});
 module.exports = router;

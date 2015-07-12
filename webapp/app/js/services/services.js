@@ -103,6 +103,11 @@ app.factory('serviceDetails', ['$http',function($http){
             idOeuvre: idOeuvre
         });
     };
+    Details.saveOeuvre = function(oeuvre) {
+        return $http.post('/oeuvre/create', {
+            oeuvre:oeuvre
+        });
+    };
     return Details;
 }]);
 
@@ -113,7 +118,7 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         $window.localStorage['read-it-token'] = token;
     };
 
-    auth.getToken = function (){
+    auth.getToken = function () {
         return $window.localStorage['read-it-token'];
     };
 

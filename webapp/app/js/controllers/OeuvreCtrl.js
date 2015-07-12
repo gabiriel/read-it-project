@@ -137,6 +137,7 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
     };
     //here, rating is how much the user rate the content
     $scope.saveRating = function() {
+        if(!$scope.oeuvre.chapters.some(function(item) {return item.reads}))
         //on enregistre
         serviceDetails.rate($scope.oeuvre._id, auth.currentUser(), $scope.rating)
             .success(function(data) {
@@ -187,4 +188,64 @@ ReadIT.controller('wellRated-controller',['$scope','serviceDetails',function($sc
         .error(function(data) {
             alert('erreur : ' + data);
         });
+}]);
+ReadIt.controller('add-oeuvre-controller',['$scope','serviceDetails',function($scope, serviceDetails) {
+    $scope.newComment = {};
+    $scope.chapters = [];
+    $scope.categories = [];
+    $scope.authors = [];
+    $scope.addAuthor =function() {
+        if($scope.newAuthor == '') return;
+        //alert(JSON.stringify($scope.authors));
+        $scope.authors.push({name: $scope.newAuthor});
+        $scope.newAuthor = '';
+        $("#txt-author").focus();
+    };
+    $scope.addCategory = function() {
+        if($scope.newCategory == '') return;
+        $scope.categories.push({name: $scope.newCategory});
+        $scope.newCategory = '';
+        $("#txt-category").focus();
+    };
+    $scope.addChapter = function() {
+        $scope.chapters.push($scope.newChapter);
+        $scope.newChapter = {};
+        $("#txt-chapter-name").focus();
+    };
+    $scope.commentMenu = [
+        ['bold', 'italic', 'underline', 'strikethrough'],
+        ['ordered-list', 'unordered-list', 'outdent', 'indent'],
+        ['left-justify', 'center-justify', 'right-justify'],
+        ['quote'],
+        ['link']
+    ];
+    $scope.save = function() {
+        if (!confirm('etes vous sure de vouloir sauvegarder ' + $scope.name + ' ?'))
+            return;
+        $scope.newNumber = Math.floor($scope.newNumber) + 1;
+        serviceDetails.saveOeuvre({
+                name: $scope.name,
+                chapters: $scope.chapters,
+                type: $scope.type,
+                category: $scope.categories
+                                .map(function(elem) {
+                                    return elem.name;
+                                }),
+                author: $scope.authors
+                                .map(function(elem) {
+                                    return elem.name;
+                                })
+            })
+            .success(function(data) {
+                //alert("success");
+                $scope.name = '';
+                $scope.type= '';
+                $scope.chapters= [];
+                $scope.categories = [];
+                $scope.authors = [];
+            })
+            .error(function(err) {
+                alert('une erreure est survenue lors de la sauvegarde');
+            });
+    };
 }]);

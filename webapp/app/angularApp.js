@@ -124,6 +124,16 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
                 }
             }]
         })
+        .state('adminAddOeuvre', {
+            url: '/admin/oeuvre/create',
+            templateUrl: "views/admin/create_oeuvre.html",
+            controller: 'add-oeuvre-controller',
+            onEnter: ['$state', 'auth', function($state, auth){
+                if(!auth.isAdmin()) {
+                    $state.go('error');
+                }
+            }]
+        })
        /* .state('adminInterface', {
             url: '/admin/home',
             templateUrl: "views/admin/home.html",
