@@ -49,4 +49,18 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
             $scope.Users = data;
         });
 
+    $scope.detailsUser=function(detailuser){
+        $scope.Diplaydetailsuser="modify";
+        $scope.modifyuser=detailuser;
+
+    };
+
+    $scope.modifyDetailsUser=function(detailuser){
+       auth.modifyUser(detailuser)
+            .error(function (err) {
+            $scope.Modifyerror=err;
+        }).success(function(){
+            $state.go('home');
+        })
+    };
 }]);

@@ -171,7 +171,6 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             }
         });
     };
-
     auth.getAllUser = function(currentUser){
         return $http.get('/Users',{
             params: {currentUser: currentUser}
@@ -200,6 +199,9 @@ app.factory('auth', ['$http', '$window', function($http, $window){
     };
     auth.removeMessage= function(id_message){
         return $http.post('/message/remove',id_message);
+    };
+    auth.modifyUser=function(user){
+        return $http.post('/modifyUser',user);
     };
 
     return auth;

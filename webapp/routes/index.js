@@ -650,11 +650,50 @@ router.get('/usersDelete',function(req,res){
         res.json(users);
     })
 });
+router.post("/modifyUser" ,function (req,res){
+    var detailUser = req.body;
+    if(!detailUser.firstname || !detailUser.lastname || !detailUser.mail){
+        return res.status(400).json({message: 'Please fill out all fields'});
+    }
+    var newUser = new User({
+        username: detailUser.username,
+        mail: detailUser.mail,
+        firstname: detailUser.firstname,
+        lastname: detailUser.lastname,
+        roles: {
+            user: true,
+            admin: false
+        }
+    });
+    if(detailUser.roles != undefined )
+    {
+        newUser.roles.admin = detailUser.roles.admin;
+    }
+
+    console.log("Check if mail doesn't already exists");
+    User.find({mail: newUser.mail}, function (err, user) {
+        if (err) { return res.status(400).json({message: err }); }
+        if (user.length>0){
+            console.log("mail already exists !");
+            return res.status(400).json({message: 'This mail already exists' });
+        }
+        console.log("Update user !");
+        var updateUser={mail:newUser.mail,firstname:newUser.firstname,lastname:newUser.lastname,roles:{admin:newUser.roles.admin,user:newUser.roles.user}};
+        User.update({username: newUser.username },updateUser,function(err){
+            if(err){return res.status(400).json({message: 'Error when updating user (' + newUser.username + ') : ' + err});}
+            else{
+                console.log("Update success");
+                res.status(200).send("l\'utilisateur est modifié");
+            }
+
+        })
+    });
+});
 
 router.post('/messages',function(req,res) {
 
     var usernameSender = req.body.usernameSender;
-    var usernameReciver = req.body.Username;
+    var usernameReciver = req.body.username;
     var objet = req.body.Objet;
     var message = req.body.Message;
     User.findOneAndUpdate({username:usernameReciver},{
@@ -680,6 +719,7 @@ router.post('/messages',function(req,res) {
                 res.end('echec');
     });
 });
+
 
 router.get('/messagesSend',function(req,res) {
     User.findOne({username:req.query.username},function(err,user){
@@ -723,5 +763,19 @@ router.post('/message/remove',function(req,res) {
             console.log(user);
     });
 
+});
+router.get('/DetailUser',function(req,res) {
+    console.log(req.query.currentUser);
+
+    User.find({username:
+        {
+            $ne:req.query.currentUser
+        }
+        }
+        ,function (err, user)
+        {
+            res.json(user);
+        }
+    );
 });
 module.exports = router;
