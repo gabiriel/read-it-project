@@ -75,8 +75,6 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
     $scope.reponses = reponse;
     
     $scope.registerDetailSondage=function(detailSondageForm){
-        console.log("authcontrole:"+detailSondageForm.question);
-        console.log($scope.reponses);
         auth.registerSondage(detailSondageForm,$scope.reponses).error(function(err){
             $scope.error=err;
         }).success(function () {

@@ -242,8 +242,6 @@ app.factory('auth', ['$http', '$window', function($http, $window){
                 reponses.push({name:reponse.name,rep:reponse.rep})
             });
             var questionRep=({question:sondage.question,reponses:reponses});
-            console.log("La liste");
-            console.log(questionRep);
             return $http.post('/sondage/create',questionRep);
         }
     }
