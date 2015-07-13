@@ -71,6 +71,13 @@
                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapse-{{chapter._id}}" aria-expanded="false" aria-controls="collapseTwo">
                                 {{chapter.number}} : {{chapter.name}}
                             </a>
+                            <div style="float:right;">
+                                <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 1" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index] > 0 ? '' : '-empty'}}"></i></a>
+                                <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 2" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index] > 1 ? '' : '-empty'}}"></i></a>
+                                <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 3" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index]> 2 ? '' : '-empty'}}"></i></a>
+                                <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 4" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index] > 3 ? '' : '-empty'}}"></i></a>
+                                <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 5" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index] > 4 ? '' : '-empty'}}"></i></a>
+                            </div>
                         </h4>
                     </div>
                     <div id="collapse-{{chapter._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{chapter._id}}">
@@ -97,46 +104,9 @@
 
             <div class="clearfix"></div>
 
-                </div>
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default" ng-repeat="chapter in oeuvre.chapters">
-                        <div class="panel-heading" role="tab" id="heading-{{chapter._id}}">
-                            <h4 class="panel-title">
-                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapse-{{chapter._id}}" aria-expanded="false" aria-controls="collapseTwo">
-                                   {{chapter.number}} : {{chapter.name}}
-                                </a>
-                                <div style="float:right;">
-                                    <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 1" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index] > 0 ? '' : '-empty'}}"></i></a>
-                                    <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 2" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index] > 1 ? '' : '-empty'}}"></i></a>
-                                    <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 3" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index]> 2 ? '' : '-empty'}}"></i></a>
-                                    <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 4" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index] > 3 ? '' : '-empty'}}"></i></a>
-                                    <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 5" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index] > 4 ? '' : '-empty'}}"></i></a>
-                                </div>
-                            </h4>
-                        </div>
-                        <div id="collapse-{{chapter._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{chapter._id}}">
-                            <div class="panel-body">
-                                {{chapter.resume}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--<div id="chapter_title">-->
-                    <!--<h4>Titre du chapitre</h4>-->
-                    <!--<div ng-repeat="chapter in oeuvre.chapters">-->
-                        <!--<h3>{{chapter.name}}</h3>-->
-                        <!--{{chapter.resume}}-->
-                    <!--</div>-->
-                <!--</div>-->
-                <div ng-repeat="comment in comments">
-                    <b id="user">{{comment.user}} </b> : <br/>
-                    <div ng-bind-html="comment.commentaire"></div>
-                </div>
-                <p ng-model="addDiv" id ="addDiv" ng-show="Showcomments=='true'"></p>
-                <div id="comments">
-                    <button class="col-sm-offset-7" id="displayComments" ng-click="displayComments()" >afficher les commentaires </button>
-                    <br/>
-                    <br/>
+            <div ng-hide="auth.isLoggedIn()">
+                <p class="alert alert-info">Vous devez être inscrit pour pouvoir écrire un commentaire</p>
+            </div>
 
             <div ng-show="auth.isLoggedIn()">
                 <wysiwyg
