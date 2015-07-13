@@ -161,5 +161,15 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             templateUrl: 'views/listMessages.html',
             controller: 'messageListCtrl'
         })
+        .state('adminSondageCreate', {
+            url: '/admin/sondage/display',
+            templateUrl: 'views/admin/listSondage.html',
+            controller: 'AuthController',
+            onEnter: ['$state', 'auth', function($state, auth){
+                if(!auth.isAdmin()){
+                    $state.go('error');
+                }
+            }]
+        })
        ;
     });

@@ -63,4 +63,19 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
             $state.go('home');
         })
     };
+
+
+    //nous commençons avec un champ hobby dans notre forumaire
+    var fields = [{name:'Réponse 1', val:''}];
+    //va contenir toutes les valeurs de notre formulaire
+    $scope.formData = {};
+    $scope.formData.dynamicFields = fields;
+    
+    $scope.registerSondage=function(){
+        alert("à faire");
+    };
+    $scope.addField= function () {
+        var newItemNum = $scope.formData.dynamicFields.length+1;
+        $scope.formData.dynamicFields.push( {name: 'Réponse '+newItemNum, val: ''});
+    }
 }]);
