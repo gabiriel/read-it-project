@@ -66,16 +66,38 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
 
 
     //nous commençons avec un champ hobby dans notre forumaire
-    var fields = [{name:'Réponse 1', val:''}];
+    var Max_Choix=5;
+    var Min_Choix=2;
+
+    var reponse = [{name:'Réponse 1',rep:''},{name:'Réponse 2',rep:''}];
     //va contenir toutes les valeurs de notre formulaire
-    $scope.formData = {};
-    $scope.formData.dynamicFields = fields;
+    $scope.reponses = {};
+    $scope.reponses = reponse;
     
-    $scope.registerSondage=function(){
-        alert("à faire");
+    $scope.registerDetailSondage=function(detailSondageForm){
+        console.log("authcontrole:"+detailSondageForm.question);
+        console.log($scope.reponses);
+        auth.registerSondage(detailSondageForm,$scope.reponses).error(function(err){
+            $scope.error=err;
+        }).success(function () {
+            $state.go("/sondage/create")
+        })
     };
-    $scope.addField= function () {
-        var newItemNum = $scope.formData.dynamicFields.length+1;
-        $scope.formData.dynamicFields.push( {name: 'Réponse '+newItemNum, val: ''});
-    }
+    $scope.addResponse= function () {
+        var newItemNum = $scope.reponses.length+1;
+        if(newItemNum>Max_Choix)
+        $scope.error=({message:"Il faut que "+Max_Choix+" réponses"});
+        else
+        $scope.reponses.push( {name: 'Réponse '+newItemNum,rep:'', val: ''});
+    };
+    $scope.removeResponse= function () {
+        var lastItem = $scope.reponses.length-1;
+        if(lastItem>=Min_Choix){
+            $scope.reponses.splice(lastItem);
+        }else
+            $scope.error=({message:"Il faut au moins "+Min_Choix+" réponses"});
+
+
+    };
+
 }]);

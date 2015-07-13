@@ -232,6 +232,22 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             return $http.post('/modifyUser',user);
         }
     };
+    /**
+     * Les sondages
+     */
+    auth.registerSondage= function (sondage,responses) {
+        if(auth.isAdmin()){
+            var reponses=[];
+            angular.forEach(responses, function (reponse) {
+                reponses.push({name:reponse.name,rep:reponse.rep})
+            });
+            var questionRep=({question:sondage.question,reponses:reponses});
+            console.log("La liste");
+            console.log(questionRep);
+            return $http.post('/sondage/create',questionRep);
+        }
+    }
+    
 
     return auth;
 }]);

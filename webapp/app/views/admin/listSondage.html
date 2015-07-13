@@ -8,7 +8,7 @@
                     <div>
                         <legend>Création des sondages :</legend>
 
-                        <form name="sondageForm" ng-submit="registerSondage()">
+                        <form name="sondageForm">
                             <div class="alert alert-danger" ng-show="error">
                                 {{ error.message }}
                             </div>
@@ -26,31 +26,29 @@
                             <span class="help-block" data-ng-show="sondageForm.question.$error.required && sondageForm.question.$dirty">This is required.</span>
                             <span class="help-block" ng-show="!sondageForm.question.$error.required
                             && (sondageForm.question.$error.minlength || sondageForm.question.$error.maxlength)
-                            && sondageForm.question.$dirty">username must be between 4 and 50 characters.</span>
+                            && sondageForm.question.$dirty">question entre 4 et 50 caractéres.</span>
 
                             <!--Réponses-->
                             <div class="input-group">
                                 <span><h4>Vos réponses :</h4></span>
                                 <div class="form-group">
-                                    <button ng-click="addField()" class="btn btn-info">Ajouter une réponse</button>
+                                    <button ng-click="addResponse()" ng-disabled="!sondageForm.question.$valid" class="btn btn-info">Ajouter une réponse</button>
                                 </div>
-                                <div class="form-group col-sm-12" ng-repeat="formfield in formData.dynamicFields">
-                                    <label class="col-sm-3 control-label">
-                                        {{formfield.name}}
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="formfield.val" ng-model="formfield.val">
-                                    </div>
-                                </div>
+                                <div class="form-group col-sm-12" ng-repeat="reponse in reponses">
+                                    <fieldset>
+                                        <label class="col-sm-3 control-label">
+                                            {{reponse.name}}
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" type="text" ng-model="reponse.rep"
+                                                   placeholder="La réponse" ng-maxlength="20" required>
+                                            <button  class="form-control glyphicon glyphicon-remove-circle" ng-disabled="sondageForm.reponse.$valid" ng-show="$last" ng-click="removeResponse()"/>
+                                        </div>
+                                    </fieldset>
 
+                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <input id="typereponse" name="typereponse" type="checkbox" ng-model="sondageForm.typereponse.multi">
-                                <label for="typereponse"> Multi réponses</label>
-                            </div>
-
-                            <button class="btn btn-primary" ng-disabled="!sondageForm.$valid" >Valider</button>
+                            <button class="btn btn-primary" ng-click="registerDetailSondage(sondage)" ng-disabled="!sondageForm.$valid" >Valider</button>
                         </form>
                     </div>
                 </aside>

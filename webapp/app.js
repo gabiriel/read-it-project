@@ -32,6 +32,7 @@ require('./models/Users');
 require('./models/UsersForgotPassword');
 require('./models/CalendarEvent');
 require('./models/Commentaire');
+require('./models/Sondages');
 require('./config/passport');
 
 /** TSV import
@@ -78,3 +79,4 @@ var UserForgotPwd = mongoose.model('UserForgotPassword');
 var CalendarEvent = mongoose.model('CalendarEvent');
 var OeuvreModel = mongoose.model('Oeuvre');
 var Commentaire = mongoose.model('Commentaires');
+var Sondages = mongoose.model('Sondages');

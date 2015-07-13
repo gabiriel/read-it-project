@@ -17,6 +17,7 @@ var UserForgotPwd = mongoose.model('UserForgotPassword');
 var CalendarEvent = mongoose.model('CalendarEvent');
 var OeuvreModel = mongoose.model('Oeuvre');
 var Commentaires = mongoose.model('Commentaires');
+var Sondages = mongoose.model('Sondages');
 
 /** Mail config
  *************************************************/
@@ -762,6 +763,7 @@ router.get('/DetailUser',function(req,res) {
         }
     );
 });
+
 router.post('/oeuvre/create',function(req,res) {
     OeuvreModel.create(req.body.oeuvre,function(err, data){
         if(err) {
@@ -877,4 +879,22 @@ router.post('/oeuvre/read/all',function(req,res) {
         });
 });
 
+
+router.post('/sondage/create', function (req,res) {
+    var questionSondage=req.body.question;
+    var responseSondage=req.body.reponses;
+    console.log("Le question est : "+questionSondage);
+    console.log(responseSondage.length);
+    var newSondage=new Sondages({
+        question:questionSondage,
+        reponses:responseSondage
+    });
+    console.log("New Sondage !");
+
+    newSondage.save(function (err) {
+        if (err) {
+            return res.status(400).json({message: 'Error when saving Sondage : ' + err});
+        }
+    });
+});
 module.exports = router;
