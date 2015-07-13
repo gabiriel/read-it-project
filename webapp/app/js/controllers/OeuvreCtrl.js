@@ -28,10 +28,16 @@ ReadIT.controller('searchCtrl',['$scope','$stateParams','auth', 'serviceDetails'
 }]);
 ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
     $scope.logged = auth.isLoggedIn();
+    $scope.ratings = [];
     serviceDetails.getOeuvre($stateParams.id).success (function(data) {
         $scope.oeuvre = data;
         $scope.rating = $scope.oldRating = data.ratings.reduce(function(x,y) { return x + y.rating; },0) / data.ratings.length
                                             || 0;
+        $scope.ratings = data.chapters.map(function(chapter) {
+            return chapter.ratings.reduce(function(c,n) {
+                return c + n.rating;
+            }, 0);
+        });
         if($scope.logged) {
             serviceDetails.getReadChapter(auth.currentUser(),$stateParams.id).success(function(data) {
                 for(var i in $scope.oeuvre.chapters) {
@@ -131,13 +137,36 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
             serviceDetails.removeFavorite(params);
         }
     };
+    $scope.saveChapterRating = function(index) {
+        if(!$scope.oeuvre.chapters[index].read) {
+            alert('vous devez avoir lu un chapitre pour pouvoir la noter');
+            $scope.reinitChapterRating(index);
+            return;
+        }
+        $scope.oeuvre.chapters[index].rating = $scope.ratings[index];
+        serviceDetails.saveChapterRating($scope.oeuvre._id,$scope.oeuvre.chapters[index]._id,$scope.ratings[index],auth.currentUserId())
+            .success(function(data) {
+                console.log(data);
+                $scope.oeuvre.chapters[index].rating = parseInt(data);
+            })
+            .error(function(err) {
+                alert('une erreur est survenue lors de l\'enregistrement de la note');
+            });
+    };
     //newRating is the new rate of the user, not the new average rate
     $scope.setRating = function(newRating) {
         $scope.rating = newRating;
     };
+    $scope.reinitChapterRating = function(index) {
+        $scope.ratings[index] = $scope.oeuvre.chapters[index].rating || 0;
+    };
     //here, rating is how much the user rate the content
     $scope.saveRating = function() {
-        if(!$scope.oeuvre.chapters.some(function(item) {return item.reads}))
+        if(!$scope.oeuvre.chapters.some(function(item) {return item.read})) {
+            alert('vous devez avoir commencer a lire l\'oeuvre pour la noter');
+            $scope.reinitRating();
+            return;
+        }
         //on enregistre
         serviceDetails.rate($scope.oeuvre._id, auth.currentUser(), $scope.rating)
             .success(function(data) {

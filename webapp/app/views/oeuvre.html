@@ -105,6 +105,13 @@
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapse-{{chapter._id}}" aria-expanded="false" aria-controls="collapseTwo">
                                    {{chapter.number}} : {{chapter.name}}
                                 </a>
+                                <div style="float:right;">
+                                    <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 1" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index] > 0 ? '' : '-empty'}}"></i></a>
+                                    <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 2" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index] > 1 ? '' : '-empty'}}"></i></a>
+                                    <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 3" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index]> 2 ? '' : '-empty'}}"></i></a>
+                                    <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 4" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index] > 3 ? '' : '-empty'}}"></i></a>
+                                    <a ng-click="saveChapterRating($index)" ng-mouseenter="ratings[$index] = 5" ng-mouseleave="reinitChapterRating($index)"><i class="glyphicon glyphicon-star{{ratings[$index] > 4 ? '' : '-empty'}}"></i></a>
+                                </div>
                             </h4>
                         </div>
                         <div id="collapse-{{chapter._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{chapter._id}}">

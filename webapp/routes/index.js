@@ -248,7 +248,19 @@ router.get('/oeuvre', function(req,res){
         function (err, oeuvre) {
             if (err) { throw err;}
             console.log("[Mongoose] oeuvre has been successfuly retrieved");
-            //console.log(oeuvre);
+            //console.log(oeuvre.chapters)
+            console.log(oeuvre);
+            for(var i in oeuvre.chapters) {
+                //on modifie oeuvre pour avoir le numero a chaque fois
+                if(oeuvre.chapters[i].ratings) {
+                    //oeuvre.chapters[i].rating = oeuvre.chapters[i].ratings.reduce(
+                    //        function(c,n) {
+                    //            return c + n;
+                    //        }, 0) / oeuvre.chapters[i].ratings.length;
+                    //oeuvre.chapters[i].ratings = undefined;
+                }
+            }
+            console.log(oeuvre);
             res.json(oeuvre);
         }
     );
@@ -718,11 +730,17 @@ router.post('/messageRead',function(req,res){
 
 });
 router.post('/message/remove',function(req,res) {
-    User.update({username: req.body.username},
+    User.update(
+        {
+            username: req.body.username
+        },
         {
             $pull:
-            {'messages':
-                 {_id: req.body.id_message}
+            {
+                'messages':
+                 {
+                     _id: req.body.id_message
+                 }
             }
         },
         function(err,user) {
@@ -745,7 +763,6 @@ router.get('/DetailUser',function(req,res) {
     );
 });
 router.post('/oeuvre/create',function(req,res) {
-    console.log(req.body.oeuvre);
     OeuvreModel.create(req.body.oeuvre,function(err, data){
         if(err) {
             res.end('error');
@@ -753,5 +770,63 @@ router.post('/oeuvre/create',function(req,res) {
         }
         res.end('success');
     });
+});
+router.post('/oeuvre/rate/chapter',function(req,res) {
+
+   OeuvreModel.findOneAndUpdate(
+        {
+            _id:req.body.oeuvreId,
+            'chapters._id':req.body.chapterId
+        },
+        {
+           $pull: {
+                'chapters.$.ratings':{
+                   userId: req.userId
+                }
+            }
+        },
+        function(err, data) {
+           if(err) {
+               throw err;
+           }
+           OeuvreModel.findOneAndUpdate(
+               {
+                   _id: req.body.oeuvreId,
+                   'chapters._id': req.body.chapterId
+               },
+               {
+                   $addToSet: {
+                       'chapters.$.ratings':{
+                           userId: req.body.userId,
+                           rating: req.body.rating
+                       }
+                   }
+               },
+               {
+                   safe: true,
+                   'new':true
+               },
+               function(err,data) {
+                   if(err) {
+                       throw err;
+                   }
+                   console.log(data.chapters.constructor);
+                   var ratings;
+                   for (var i in data.chapters) {
+                       if(data.chapters[i]._id == req.body.chapterId) {
+                           ratings = data.chapters[i].ratings;
+                           break;
+                       }
+                   }
+                   res.json(
+                       ratings
+                           .reduce(function(cur,next) {
+                               return cur + next.rating;
+                           }, 0)/ratings.length
+                   );
+               }
+           );
+        }
+   )
 });
 module.exports = router;

@@ -20,17 +20,18 @@ var mongoose = require('mongoose');
 var url = 'mongodb://localhost:27017/my_database_name';
 var util = require('util');
 
+var RatingSchema = new mongoose.Schema({
+    user : String,
+    rating : Number
+});
 var ChapterSchema =new mongoose.Schema({
     pageNumber : Number,
     name : String,
     number : Number,
     resume : String,
-    date : Date
+    date : Date,
+    ratings: [RatingSchema]
 });
-var RatingSchema = new mongoose.Schema({
-    user : String,
-    rating : Number
-})
 var OeuvreSchema = new  mongoose.Schema({
     type : String,
     title :String,

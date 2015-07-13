@@ -108,6 +108,14 @@ app.factory('serviceDetails', ['$http',function($http){
             oeuvre:oeuvre
         });
     };
+    Details.saveChapterRating = function(oeuvreId, chapterId, rating,userId) {
+        return $http.post("/oeuvre/rate/chapter",{
+            oeuvreId: oeuvreId,
+            chapterId: chapterId,
+            rating: rating,
+            userId: userId
+        })
+    };
     return Details;
 }]);
 
