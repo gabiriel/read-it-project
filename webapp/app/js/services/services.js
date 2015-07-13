@@ -185,9 +185,11 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         });
        };
     auth.deleteUser = function(deleteUser) {
-        return $http.get('/usersDelete', {
-            params: {deleteUser: deleteUser}
-        });
+        if(auth.isAdmin()){
+            return $http.get('/usersDelete', {
+                params: {deleteUser: deleteUser}
+            });
+        }
     };
     auth.sendMessageto = function(message){
         return $http.post('/messages',message);
@@ -209,7 +211,9 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         return $http.post('/message/remove',id_message);
     };
     auth.modifyUser=function(user){
-        return $http.post('/modifyUser',user);
+        if(auth.isAdmin()){
+            return $http.post('/modifyUser',user);
+        }
     };
 
     return auth;

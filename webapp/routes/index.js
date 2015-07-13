@@ -633,42 +633,26 @@ router.get('/usersDelete',function(req,res){
     })
 });
 router.post("/modifyUser" ,function (req,res){
-    var detailUser = req.body;
-    if(!detailUser.firstname || !detailUser.lastname || !detailUser.mail){
-        return res.status(400).json({message: 'Please fill out all fields'});
-    }
-    var newUser = new User({
-        username: detailUser.username,
-        mail: detailUser.mail,
-        firstname: detailUser.firstname,
-        lastname: detailUser.lastname,
-        roles: {
-            user: true,
-            admin: false
-        }
-    });
-    if(detailUser.roles != undefined )
-    {
-        newUser.roles.admin = detailUser.roles.admin;
-    }
+    var formUser = req.body;
 
-    console.log("Check if mail doesn't already exists");
-    User.find({mail: newUser.mail}, function (err, user) {
-        if (err) { return res.status(400).json({message: err }); }
-        if (user.length>0){
-            console.log("mail already exists !");
-            return res.status(400).json({message: 'This mail already exists' });
-        }
-        console.log("Update user !");
-        var updateUser={mail:newUser.mail,firstname:newUser.firstname,lastname:newUser.lastname,roles:{admin:newUser.roles.admin,user:newUser.roles.user}};
-        User.update({username: newUser.username },updateUser,function(err){
-            if(err){return res.status(400).json({message: 'Error when updating user (' + newUser.username + ') : ' + err});}
-            else{
-                console.log("Update success");
-                res.status(200).send("l\'utilisateur est modifié");
+    if( !(formUser.firstname || formUser.lastname || formUser.mail) ){
+        return res.status(400).json({message: 'Veuillez renseigner tout les champs'});
             }
 
-        })
+    var query = {_id: formUser._id};
+    var updates = {
+        username: formUser.username,
+        firstname: formUser.firstname,
+        lastname: formUser.lastname,
+        mail: formUser.mail,
+        roles:{ user: formUser.roles.user, admin: formUser.roles.admin}
+    };
+
+    User.findOneAndUpdate(query, updates, function (err, user) {
+        if(err) return res.status(400).json({message: 'Error when updating user (' + formUser._id + ') : ' + err});
+
+        console.log("Update success");
+        res.status(200).send("l'utilisateur a été modifié");
     });
 });
 
