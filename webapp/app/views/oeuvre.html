@@ -28,6 +28,10 @@
             <!--ng-click="readAll()"-->
             <!--/>-->
             <div>{{oeuvre.chapters | readingStatus}}</div>
+            <div ng-show="auth.isLoggedIn()">
+                <button class="btn btn-default" ng-click="finir()" ng-show="notFinished()">Finit</button>
+                <button class="btn btn-default" ng-click="interested()" ng-show="notReadOrInterested()">Intéressé</button>
+            </div>
             <!--<label for="rbtn-advancement-finished">Finis</label>-->
         </div>
     </aside>

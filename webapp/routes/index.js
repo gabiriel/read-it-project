@@ -829,4 +829,52 @@ router.post('/oeuvre/rate/chapter',function(req,res) {
         }
    )
 });
+
+router.post('/oeuvre/read/all',function(req,res) {
+    var idOeuvre = req.body.idOeuvre;
+    var userId = req.body.user;
+    OeuvreModel
+        .findOne({_id: idOeuvre})
+        .select('chapters')
+        .exec(function(err,data) {
+            if(err) throw err;
+            console.log(data.chapters.map(function(elem) {
+                return {
+                    idOeuvre: idOeuvre,
+                    idChapter: elem._id
+                }
+            }));
+            User.findOneAndUpdate(
+                {
+                    _id:userId
+                },
+                {
+                    $addToSet:
+                    {
+                        reads:
+                        {
+                            $each: data.chapters.map(function(elem) {
+                                return {
+                                    idOeuvre: idOeuvre,
+                                    idChapter: elem._id
+                                }
+                            })
+                        }
+                    }
+                },
+                {
+                    safe: true
+                },
+                function(err,data) {
+                    if(err) {
+                        console.log('error during read saving : ' + err);
+                        res.end("failure");
+                        return;
+                    }
+                    res.end('success');
+                }
+            );
+        });
+});
+
 module.exports = router;

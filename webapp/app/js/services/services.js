@@ -97,12 +97,7 @@ app.factory('serviceDetails', ['$http',function($http){
             }
         });
     };
-    Details.readAll = function(user,idOeuvre) {
-        return $http.post('/oeuvre/read/all',{
-            user: user,
-            idOeuvre: idOeuvre
-        });
-    };
+
     Details.saveOeuvre = function(oeuvre) {
         return $http.post('/oeuvre/create', {
             oeuvre:oeuvre
@@ -116,6 +111,15 @@ app.factory('serviceDetails', ['$http',function($http){
             userId: userId
         })
     };
+
+    Details.readAll = function(user, idOeuvre) {
+        return $http.post('/oeuvre/read/all', {
+            user:user,
+            idOeuvre: idOeuvre
+        });
+    };
+
+
     return Details;
 }]);
 

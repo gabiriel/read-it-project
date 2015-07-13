@@ -29,6 +29,26 @@ ReadIT.controller('searchCtrl',['$scope','$stateParams','auth', 'serviceDetails'
 ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
     $scope.logged = auth.isLoggedIn();
     $scope.ratings = [];
+    $scope.notFinished = function() {
+        return $scope.oeuvre.chapters.every(function(elem) {
+            return !elem.read;
+        });
+    };
+    $scope.notReadOrInterested = function() {
+        return $scope.oeuvre.chapters.every(function(elem) {
+            return !elem.read;
+        });
+    };
+    $scope.finir = function() {
+        serviceDetails.readAll(auth.currentUserId(), $scope.oeuvre._id)
+            .success(function() {
+                for(var i in $scope.oeuvre.chapters)
+                    $scope.oeuvre.chapters[i].read = true;
+            })
+            .error(function(data) {
+                alert('une erreure est survenue lors de l\'engeristrement de la lecure');
+            });
+    }
     serviceDetails.getOeuvre($stateParams.id).success (function(data) {
         $scope.oeuvre = data;
         $scope.rating = $scope.oldRating = data.ratings.reduce(function(x,y) { return x + y.rating; },0) / data.ratings.length
