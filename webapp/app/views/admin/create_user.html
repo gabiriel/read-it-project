@@ -1,7 +1,7 @@
 <div class="row readit_block">
-    <input type="radio" ng-model="userCreat" value="create"> Création d'utilisateur
-    <input type="radio" ng-model="userCreat" value="delete"> Suppression/Modification d'utilisateurs
-    <div ng-show="userCreat=='create'">
+    <input type="radio" ng-model="userCreate" value="create"> Création d'utilisateur
+    <input type="radio" ng-model="userCreate" value="delete"> Suppression/Modification d'utilisateurs
+    <div ng-show="userCreate=='create'">
         <div>
             <legend>Création d'utilisateur :</legend>
 
@@ -75,7 +75,7 @@
 
     </div> <!-- user create -->
 
-    <div ng-show="userCreat=='delete'">
+    <div ng-show="userCreate=='delete'">
         <div>
             <legend>Liste des utilisateurs :</legend>
             <input type="text" class="form-control col-sm-5" placeholder="Chercher un utilisateur" ng-model="userDelete">

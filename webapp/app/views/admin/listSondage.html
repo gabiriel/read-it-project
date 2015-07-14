@@ -63,11 +63,11 @@
             <div ng-show="sondageCreate=='update'">
                 <aside class="col-sm-9" > <!-- Center Large Column -->
                     <div>
-                        <legend> Liste des utilisateurs : </legend>
+                        <legend> Liste des sondages : </legend>
                         <form name="FormListUsers">
-                            <div class="col-sm-offset-1" ng-repeat="UserDisplay in Users">
-                                <input type="radio" name="radioListUsers" ng-checked="" value="Ok" ng-model="radioOk" > {{UserDisplay.username}}
-                                <button class=" col-sm-offset-3 glyphicon glyphicon-trash" ng-click="removeUser(UserDisplay.username)" ng-show="radioOk=='Ok'"></button></button>
+                            <div class="col-sm-offset-1" ng-repeat="sondage in sondages">
+                                <input type="radio" name="radioListUsers" ng-checked="" value="Ok" ng-model="radioOk" > {{sondage.question}}
+                                <button class=" col-sm-offset-3 glyphicon glyphicon-trash" ng-click="removeSondage(sondage)" ng-show="radioOk=='Ok'"></button></button>
                                 <button class="glyphicon glyphicon-pencil" ng-show="radioOk=='Ok'" value="modify" ng-model="Modifybutton" ng-click="detailsUser(UserDisplay)"></button>
                             </div>
                         </form>

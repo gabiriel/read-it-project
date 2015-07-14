@@ -45,12 +45,11 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
    };
     auth.getAllUser(auth.currentUser())
         .success(function(data){
-            console.log(data);
             $scope.Users = data;
         });
 
     $scope.detailsUser=function(detailuser){
-        $scope.Diplaydetailsuser="modify";
+        $scope.Displaydetailsuser="modify";
         $scope.modifyuser=detailuser;
 
     };
@@ -75,10 +74,17 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
     $scope.reponses = reponse;
     
     $scope.registerDetailSondage=function(detailSondageForm){
-        auth.registerSondage(detailSondageForm,$scope.reponses).error(function(err){
-            $scope.error=err;
-        }).success(function () {
-            $state.go("/sondage/create")
+        auth.registerSondage(detailSondageForm,$scope.reponses)
+            .error(function(err){
+                $scope.error=err;
+        })
+            .then(function () {
+                auth.getAllSondages()
+                    .success(function(data){
+                        $scope.sondages = data;
+
+                    });
+
         })
     };
     $scope.addResponse= function () {
@@ -94,7 +100,21 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
             $scope.reponses.splice(lastItem);
         }else
             $scope.error=({message:"Il faut au moins "+Min_Choix+" réponses"});
+    };
+    auth.getAllSondages()
+        .success(function(data){
+            $scope.sondages = data;
+        });
 
+    $scope.removeSondage = function(sondage){
+        console.log("Id"+sondage._id);
+        auth.deleteSondage(sondage)
+            .success(function(){
+                auth.getAllSondages()
+                    .success(function(data){
+                        $scope.sondages = data;
+                });
+        });
 
     };
 

@@ -888,10 +888,32 @@ router.post('/sondage/create', function (req,res) {
         reponses:responseSondage
     });
     console.log("New Sondage !");
-    newSondage.save(function (err) {
+    newSondage.save(function (err,sondages) {
         if (err) {
             return res.status(400).json({message: 'Error when saving Sondage : ' + err});
+        }else
+            return res.json(sondages);
+    });
+});
+router.get('/Sondages',function(req,res) {
+    Sondages.find({}
+        ,function (err, sondages)
+        {
+            res.json(sondages);
+        }
+    );
+});
+router.post('/sondageDelete',function(req,res){
+    console.log("remove sondage");
+    console.log("Id router :"+req.body.id);
+    console.log("Question router :"+req.body.question);
+    Sondages.findOneAndRemove({_id: req.body._id},function(err,sondages){
+        if (err) {
+            console.log(err);
+        }else{
+           res.json(sondages);
         }
     });
 });
+
 module.exports = router;
