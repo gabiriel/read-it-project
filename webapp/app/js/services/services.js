@@ -243,14 +243,56 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             var questionRep=({question:sondage.question,reponses:reponses});
             return $http.post('/sondage/create',questionRep);
 
-    }
+    };
     auth.getAllSondages= function () {
         return $http.get('/Sondages');
     };
     auth.deleteSondage = function(sondage) {
             return $http.post('/sondageDelete',sondage);
     };
-
+    auth.getFriends = function(username){
+        return $http.get('/friends',{
+            params : {username : username}
+        });
+    };
+    auth.getUsersFriends = function(username){
+        return $http.get('/user/friends',{
+            params : {username : username}
+        });
+    };
+    auth.postAddFriends = function(info){
+        return $http.post('/user/friends/add',info);
+    };
+    auth.getAddRequest = function(username){
+        return $http.get('/user/friends/requests',{
+            params : {username : username}
+        });
+    };
+    auth.getCountAddRequests = function(username){
+        return $http.get('/user/friends/requests/count',{
+            params : {username : username}
+        });
+    };
+    auth.postRequestFriends = function(username){
+        return $http.post('/user/friends/requestAdd',username);
+    };
+    auth.postRemoveRequestFriends = function(info){
+        return $http.post('/user/friends/requestRemove',info);
+    };
+    auth.alreadyFriends = function(user,userFriends){
+        return $http.get('/user/friends/already',{
+            params :{user : user, userFriends : userFriends}
+        })
+    };
+    auth.removeFriends = function(infoFriends){
+       return $http.post('/user/friends/remove',infoFriends);
+    };
+    auth.existeUser = function(username,currentUser){
+        return $http.get('/user/exist'
+            ,{
+                params:{username : username,currentUser:currentUser}
+            });
+    };
     return auth;
 }]);
 

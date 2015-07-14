@@ -13,7 +13,7 @@ ReadIt.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,
         ['link']
     ];
     $scope.sendMessage = function(username, objet, message){
-
+  console.log(username);
         var MessageBody = {
             usernameSender : auth.currentUser(),
             Username : username,
@@ -21,6 +21,7 @@ ReadIt.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,
             Message : message
         };
         auth.sendMessageto(MessageBody).success(function(data){
+            console.log(data);
             if (data =="success") {
                 $scope.message_return = "message envoyé";
                 $scope.username="";
@@ -59,6 +60,9 @@ ReadIt.controller('messageListCtrl',['$scope','$state','auth',function($scope,$s
         messageCorps.reads = true;
         $scope.message = messageCorps.message;
         $scope.messageShow ='true';
+        auth.getCountMessageUnread(auth.currentUser()).success(function(data){
+            $scope.numberMessage= data;
+        });
         var messageObject =
         {
             id_message : messageCorps._id,

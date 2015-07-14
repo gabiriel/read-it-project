@@ -1,0 +1,25 @@
+<div class="container ng-scope">
+      <div class="row">
+               <div class="col-m-10">
+                       <aside class="col-sm-9">
+                                 <!--Center Large Column-->
+                                        <div id="listDemandes">
+                                            <legend>
+
+                                                Liste des demandes :
+
+                                            </legend>
+                                            <ul class="example-animate-container"  ng-repeat="request in requests">
+                                                   <li>
+                                                       <a> {{request.name}}</a>
+                                                       <button ng-click="valideRequest(auth.currentUser(),request.name)" class="glyphicon glyphicon-ok"></button>
+                                                        <button ng-click="removeRequest(auth.currentUser(),request.name)" class="glyphicon glyphicon-remove"></button>
+                                                   </li>
+                                            </ul>
+                                        </div>
+                                    </aside>
+                                </div>
+                            </div>
+                        </div>
+
+

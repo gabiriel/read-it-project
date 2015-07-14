@@ -181,5 +181,10 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
                 }
             }]
         })
-       ;
+        .state('friendAskList', {
+            url: '/friends/requests',
+            templateUrl: 'views/addRequests.html',
+            controller: 'addRequestsCtrl'
+        }) ;
+
     });

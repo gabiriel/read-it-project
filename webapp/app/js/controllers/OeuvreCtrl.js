@@ -13,7 +13,6 @@ ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, servi
 }]);
 ReadIT.controller('searchCtrl',['$scope','$stateParams','auth', 'serviceDetails',function($scope,$stateParams, auth, serviceDetails) {
     serviceDetails.getListOeuvre("").success (function(data) {
-        console.log("data",data);
         $scope.Oeuvres = data;
         $scope.searchText = $stateParams.title;
     });
@@ -216,6 +215,7 @@ ReadIT.controller('navBarCtrl',function($scope){
     $scope.search = function(){
         var searchTxt = $scope.mytxt;
         document.location.href='/#/search/'+ searchTxt ;
+        $scope.mytxt = "";
     };
 });
 ReadIT.controller('popular-controller',['$scope','serviceDetails',function($scope,serviceDetails) {

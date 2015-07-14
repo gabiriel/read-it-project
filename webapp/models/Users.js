@@ -28,6 +28,10 @@ var UserSchema = new mongoose.Schema({
         message : String,
         reads: {type: Boolean, default: false},
         date: Date
+    }],
+    friends:[{
+        name: String,
+        accepted :{type : Boolean, default: false}
     }]
 });
 

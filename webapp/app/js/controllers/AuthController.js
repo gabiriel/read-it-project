@@ -10,7 +10,13 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
                 });
         },
         1000 * 60 );
-
+    setInterval(function(){
+        if(auth.isLoggedIn())
+        auth.getCountAddRequests(auth.currentUser()).success(function(data){
+            $scope.numberAddRequests= data;
+            console.log(data);
+        });
+}, 1000 * 30 );
     $scope.user = {};
     $scope.auth = auth;
 
@@ -115,5 +121,15 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
                 });
         });
     };
+    if(auth.isLoggedIn())
+        auth.getCountMessageUnread(auth.currentUser()).success(function(data){
+        $scope.numberMessage= data;
+
+    });
+    if(auth.isLoggedIn())
+        auth.getCountAddRequests(auth.currentUser()).success(function(data){
+            $scope.numberAddRequests= data;
+            console.log(data);
+        });
 
 }]);
