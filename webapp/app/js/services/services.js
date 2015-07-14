@@ -248,11 +248,7 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         return $http.get('/Sondages');
     };
     auth.deleteSondage = function(sondage) {
-        console.log("Id service:"+sondage._id);
-        console.log("Questin service:"+sondage.question);
-
             return $http.post('/sondageDelete',sondage);
-
     };
 
     return auth;

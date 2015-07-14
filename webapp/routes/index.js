@@ -904,9 +904,6 @@ router.get('/Sondages',function(req,res) {
     );
 });
 router.post('/sondageDelete',function(req,res){
-    console.log("remove sondage");
-    console.log("Id router :"+req.body.id);
-    console.log("Question router :"+req.body.question);
     Sondages.findOneAndRemove({_id: req.body._id},function(err,sondages){
         if (err) {
             console.log(err);

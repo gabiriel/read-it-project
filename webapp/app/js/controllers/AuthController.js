@@ -107,7 +107,6 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
         });
 
     $scope.removeSondage = function(sondage){
-        console.log("Id"+sondage._id);
         auth.deleteSondage(sondage)
             .success(function(){
                 auth.getAllSondages()
@@ -115,7 +114,6 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
                         $scope.sondages = data;
                 });
         });
-
     };
 
 }]);
