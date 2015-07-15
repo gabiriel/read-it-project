@@ -895,7 +895,7 @@ router.get('/Sondages',function(req,res) {
         }
     );
 });
-router.post('/sondageDelete',function(req,res){
+router.post('/sondage/delete',function(req,res){
     Sondages.findOneAndRemove({_id: req.body._id},function(err,sondages){
         if (err) {
             console.log(err);
@@ -904,6 +904,31 @@ router.post('/sondageDelete',function(req,res){
         }
     });
 });
+router.post('/sondage/modify',function(req,res){
+    var detail = req.body;
+
+    var query = {_id: detail._id};
+    var updates = {
+        question: detail.question,
+        reponses: detail.reponses
+        };
+
+    Sondages.findOneAndUpdate(query, updates, function (err, user) {
+        if (err) return res.status(400).json({message: 'Error when updating sondage (' + detail._id + ') : ' + err});
+
+        console.log("Update success");
+        res.status(200);
+    })
+});
+router.post("/sondage", function (req,res) {
+    var id = req.body._id;
+    Sondages.findOne({_id: id
+    },function (err, user) {
+        if (err) return res.status(400).json({message: 'Error when display sondage (' + req.body.id + ') : ' + err});
+        res.json(user);
+    });
+});
+
 router.get('/friends',function(req,res){
     User.findOne({'username': req.query.username},function(err, user){
         res.json(user.friends.filter(function(elem) {

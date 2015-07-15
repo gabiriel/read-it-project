@@ -71,6 +71,47 @@
                                 <button class="glyphicon glyphicon-pencil" ng-show="radioOk=='Ok'" value="modify" ng-model="Modifybutton" ng-click="detailsSondage(sondage)"></button>
                             </div>
                         </form>
+
+                        <div name="Showmodifyuser" ng-show="Displaydetailsondage=='modify'">
+                            <legend>
+                                Modification du sondage :
+                            </legend>
+                            <form name="Modifysondageform" ng-submit="modifyDetailsSondage(modifysondage)">
+                                <div class="alert alert-danger" ng-show="Modifyerror">
+                                    {{ Modifyerror.message }}
+                                </div>
+
+                                <!-- Question -->
+                                <div class="input-group">
+                                    <span>Question : {{modifysondage.question}}</span>
+                                </div>
+
+                                <!--Réponses-->
+                                <div class="input-group">
+                                    <span><h4>Vos réponses :</h4></span>
+                                    <div class="form-group">
+                                        <button ng-click="addResponseToSondage()" class="btn btn-info">Ajouter une réponse</button>
+                                    </div>
+
+                                    <div class="form-group col-sm-12" ng-repeat="reponse in modifysondage.reponses">
+                                        <fieldset>
+                                            <label class="col-sm-3 control-label">
+                                                {{reponse.name}}
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" type="text" ng-model="reponse.rep"
+                                                       placeholder="La réponse" ng-maxlength="20" required>
+                                                <button  class="form-control glyphicon glyphicon-remove-circle" ng-disabled="sondageForm.reponse.$valid" ng-show="$last" ng-click="removeResponseToSondage()"/>
+                                            </div>
+                                        </fieldset>
+
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" ng-disabled="!Modifysondageform.$valid" >Valider</button>
+                            </form>
+
+                        </div>
+
                     </div>
                 </aside>
             </div>

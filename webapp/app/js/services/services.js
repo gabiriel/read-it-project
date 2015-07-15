@@ -248,8 +248,27 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         return $http.get('/Sondages');
     };
     auth.deleteSondage = function(sondage) {
-            return $http.post('/sondageDelete',sondage);
+            return $http.post('/sondage/delete',sondage);
     };
+    auth.modifySondage= function (detail) {
+
+        var reponses=[];
+        angular.forEach(detail.reponses, function (reponse) {
+            reponses.push({name:reponse.name,rep:reponse.rep})
+        });
+        var questionRep=({_id:detail._id,question:detail.question,reponses:reponses});
+        return $http.post("/sondage/modify",questionRep)
+    };
+    auth.getSondage = function (id) {
+        var idToSend={_id:id};
+        return $http.post("/sondage",idToSend);
+    };
+    auth.voteSondage=function (detailVote,vote){
+        angular.forEach(detailVote.reponses, function (reponse) {
+            if(reponse._id==vote) reponse.Numvote++;
+        });
+    };
+    
     auth.getFriends = function(username){
         return $http.get('/friends',{
             params : {username : username}

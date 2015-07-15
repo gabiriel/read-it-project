@@ -45,6 +45,7 @@
   <script src="js/controllers/UiCalendarController.js"></script>
   <script src="js/controllers/MessageCtrl.js"></script>
   <script src="js/controllers/OeuvreCtrl.js"></script>
+  <script src="js/controllers/SondagesCtrl.js"></script>
   <script src="js/services/services.js"></script>
   <script src="js/directives/directive.js"></script>
   <script src="bower_components/handlebars/handlebars.min.js"></script>
@@ -77,7 +78,7 @@
         <li ui-sref-active="active" ui-sref="about"><a>About</a></li>
         <li ui-sref-active="active" ui-sref="contact"><a>Contact</a></li>
         <li class="dropdown" ng-show="auth.isAdmin()">
-          <a ui-sref="adminInterface" class="dropdown-toggle" data-toggle="dropdown"
+          <a class="dropdown-toggle" data-toggle="dropdown"
              role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a ui-sref="ListOeuvre">Liste des oeuvres</a></li>
@@ -146,8 +147,11 @@
         <ui-view></ui-view>
       </aside>
       <aside class="col-sm-3"> <!-- Right Column -->
-        <div id="sondage"  class="readit_block" ng-model="sondage">
+        <div id="sondages" class="readit_block" ng-controller="sondages-controller">
           <h3>Sondage</h3>
+          <div ng-repeat="sondage in sondages">
+            <a ui-sref="sondage({ id: sondage._id})">{{sondage.question}}</a>
+          </div>
         </div>
         <div id="recommendation" class="readit_block" ng-controller="wellRated-controller">
           <h3>Les mieux notés</h3>

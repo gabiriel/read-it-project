@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 
 var Sondages = new mongoose.Schema({
     question : String,
-    reponses : [{name:String,rep:String}]
+    reponses : [{name:String,rep:String,Numvote:{type:Number,default: 0}}]
 });
 
 mongoose.model('Sondages', Sondages);
