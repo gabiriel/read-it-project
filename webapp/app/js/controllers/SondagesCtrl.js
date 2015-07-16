@@ -50,6 +50,7 @@ app.controller('SondagesCtrl',['$scope', '$state', 'auth', function($scope, $sta
 
     $scope.addResponse= function () {
         var newItemNum = $scope.reponses.length+1;
+        $scope.error=false;
         if(newItemNum>Max_Choix)
             $scope.error=({message:"Il faut que "+Max_Choix+" réponses"});
         else
@@ -58,6 +59,7 @@ app.controller('SondagesCtrl',['$scope', '$state', 'auth', function($scope, $sta
     };
     $scope.removeResponse= function () {
         var lastItem = $scope.reponses.length-1;
+        $scope.error=false;
         if(lastItem>=Min_Choix){
             $scope.reponses.splice(lastItem);
         }else
