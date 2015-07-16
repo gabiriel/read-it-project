@@ -97,7 +97,12 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
         .state('import', {
             url : '/import',
             templateUrl : '/views/import.html',
-            controller: 'ImportTsvController'
+            controller: 'ImportTsvController',
+            onEnter: ['$state', 'auth', function($state, auth){
+                if(!auth.isAdmin()){
+                    $state.go('error');
+                }
+            }]
         })
         .state('adminevent', {
             url: '/admin/event',

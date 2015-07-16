@@ -658,7 +658,7 @@ router.post("/modifyUser" ,function (req,res){
 
     if( !(formUser.firstname || formUser.lastname || formUser.mail) ){
         return res.status(400).json({message: 'Veuillez renseigner tout les champs'});
-            }
+    }
 
     var query = {_id: formUser._id};
     var updates = {

@@ -57,7 +57,7 @@ function stringToCsv(toParse,separator) {
     if(typeof toParse !== 'string')
         throw new WrongArgumentException('stringToCsv', 'toParse','string',typeof toParse);
     if(typeof separator !== 'string')
-        throw new WrongArgumentException(('stringToCsv','separator','string',typeof  separator))
+        throw new WrongArgumentException('stringToCsv','separator','string', typeof separator);
     var result = [];
     var lines = toParse.split('\n');
     var titles = lines[0].split(separator);
@@ -84,7 +84,7 @@ function stringToTsv(toParse) {
                 csv[i].Date_de_parution_originale
             ));
         }else {
-            //on ajoute un nouvel oeuvre
+            //on ajoute une nouvelle oeuvre
             Oeuvres.push(new Oeuvre(
                 csv[i].Titre_de_la_série,
                 csv[i]["Type_d'oeuvre"],

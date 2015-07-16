@@ -65,7 +65,7 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
             .error(function (err) {
             $scope.Modifyerror=err;
         }).success(function(){
-            $state.go('home');
+               $state.go($state.current, {Modifyerror: 'Utilisateur modifié'}, {reload: true});
         })
     };
 

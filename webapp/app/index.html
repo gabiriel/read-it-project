@@ -81,10 +81,18 @@
           <a class="dropdown-toggle" data-toggle="dropdown"
              role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a ui-sref="ListOeuvre">Liste des oeuvres</a></li>
-            <li><a ui-sref="adminevent">Calendrier</a></li>
-            <li><a ui-sref="adminUserCreate">Gestion des utilisateurs</a></li>
-            <li><a ui-sref="adminSondageCreate">Gestion des sondages</a></li>
+            <li><a ui-sref="ListOeuvre">
+              <i class="glyphicon glyphicon-book"></i> Oeuvres
+            </a></li>
+            <li><a ui-sref="adminevent">
+              <i class="glyphicon glyphicon-calendar"></i> Evenement
+            </a></li>
+            <li><a ui-sref="adminUserCreate">
+              <i class="glyphicon glyphicon-user"></i> Utilisateurs
+            </a></li>
+            <li><a ui-sref="adminSondageCreate">
+              <i class="glyphicon glyphicon-list-alt"></i> Sondages
+            </a></li>
           </ul>
         </li>
       </ul>
@@ -131,9 +139,6 @@
 
           </li>
         </ul>
-
-          </li>
-        </ul>
       </div>
     </div><!--/.nav-collapse -->
   </div>
@@ -144,6 +149,9 @@
   <div id="home_view" class="container">
     <div class="row col-m-10">
       <aside class="col-sm-9" ng-controller="AuthController"> <!-- Center Large Column -->
+        <div ng-show="alertMessage">
+          <p class="alert alert-{{alertMessage.type}}">{{alertMessage.text}}</p>
+        </div>
         <ui-view></ui-view>
       </aside>
       <aside class="col-sm-3"> <!-- Right Column -->
