@@ -1,22 +1,17 @@
 var app = angular.module('readIt');
 app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $state, auth){
     setInterval(function(){
-
-            if(auth.isLoggedIn())
-
-                auth.getCountMessageUnread(auth.currentUser()).success(function(data){
-                    $scope.numberMessage= data;
-
+            if(auth.isLoggedIn()){
+                auth.getCountMessageUnread(auth.currentUser()).success(function(nbUnreadMsg){
+                    $scope.numberMessage = nbUnreadMsg;
                 });
+                auth.getCountAddRequests(auth.currentUser()).success(function(nbFriendRequests){
+                    $scope.numberAddRequests = nbFriendRequests;
+                });
+            }
         },
-        1000 * 60 );
-    setInterval(function(){
-        if(auth.isLoggedIn())
-        auth.getCountAddRequests(auth.currentUser()).success(function(data){
-            $scope.numberAddRequests= data;
-            console.log(data);
-        });
-}, 1000 * 30 );
+        1000 * 120 ); // every 2 minutes
+
     $scope.user = {};
     $scope.auth = auth;
 
@@ -39,16 +34,16 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
     $scope.reset = function(){
         $scope.user.clear();
     };
-   $scope.removeUser = function(name){
-       auth.deleteUser(name).success(function(data){
-           auth.getAllUser(auth.currentUser())
-               .success(function(data){
-                   console.log(data);
-                   $scope.Users = data;
-               });
-       });
+    $scope.removeUser = function(name){
+        auth.deleteUser(name).success(function(data){
+            auth.getAllUser(auth.currentUser())
+                .success(function(data){
+                    console.log(data);
+                    $scope.Users = data;
+                });
+        });
 
-   };
+    };
     auth.getAllUser(auth.currentUser())
         .success(function(data){
             $scope.Users = data;
@@ -61,24 +56,22 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
     };
 
     $scope.modifyDetailsUser=function(detailuser){
-       auth.modifyUser(detailuser)
+        auth.modifyUser(detailuser)
             .error(function (err) {
-            $scope.Modifyerror=err;
-        }).success(function(){
-               $state.go($state.current, {Modifyerror: 'Utilisateur modifié'}, {reload: true});
-        })
+                $scope.Modifyerror=err;
+            }).success(function(){
+                $state.go($state.current, {Modifyerror: 'Utilisateur modifié'}, {reload: true});
+            })
     };
-
-
-
-    if(auth.isLoggedIn())
+    
+    if(auth.isLoggedIn()){
         auth.getCountMessageUnread(auth.currentUser()).success(function(data){
-        $scope.numberMessage= data;
+            $scope.numberMessage= data;
+        });
 
-    });
-    if(auth.isLoggedIn())
         auth.getCountAddRequests(auth.currentUser()).success(function(data){
             $scope.numberAddRequests= data;
         });
+    }
 
 }]);
