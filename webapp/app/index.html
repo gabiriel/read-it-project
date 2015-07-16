@@ -155,7 +155,7 @@
         <ui-view></ui-view>
       </aside>
       <aside class="col-sm-3"> <!-- Right Column -->
-        <div id="sondages" class="readit_block" ng-controller="sondages-controller">
+        <div id="sondages" class="readit_block" ng-controller="SondagesCtrl">
           <h3>Sondage</h3>
           <div ng-repeat="sondage in sondages">
             <a ui-sref="sondage({ id: sondage._id})">{{sondage.question}}</a>

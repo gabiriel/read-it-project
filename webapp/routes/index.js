@@ -881,11 +881,10 @@ router.post('/oeuvre/read/all',function(req,res) {
         });
 });
 router.post('/sondage/create', function (req,res) {
-    var questionSondage=req.body.question;
-    var responseSondage=req.body.reponses;
-    var newSondage=new Sondages({
-        question:questionSondage,
-        reponses:responseSondage
+    var form = req.body;
+    var newSondage = new Sondages({
+        question: form.question,
+        reponses: form.reponses
     });
     console.log("New Sondage !");
     newSondage.save(function (err,sondages) {
@@ -896,30 +895,25 @@ router.post('/sondage/create', function (req,res) {
     });
 });
 router.get('/Sondages',function(req,res) {
-    Sondages.find({}
-        ,function (err, sondages)
-        {
+    Sondages.find({},function (err, sondages){
             res.json(sondages);
         }
     );
 });
 router.post('/sondage/delete',function(req,res){
     Sondages.findOneAndRemove({_id: req.body._id},function(err,sondages){
-        if (err) {
-            console.log(err);
-        }else{
-           res.json(sondages);
-        }
+        if (err) { console.log(err); return; }
+
+        res.json(sondages);
     });
 });
 router.post('/sondage/modify',function(req,res){
-    var detail = req.body;
-
-    var query = {_id: detail._id};
+    var form = req.body;
+    var query = {_id: form._id};
     var updates = {
-        question: detail.question,
-        reponses: detail.reponses
-        };
+        question: form.question,
+        reponses: form.reponses
+    };
 
     Sondages.findOneAndUpdate(query, updates, function (err, user) {
         if (err) return res.status(400).json({message: 'Error when updating sondage (' + detail._id + ') : ' + err});
@@ -928,11 +922,12 @@ router.post('/sondage/modify',function(req,res){
         res.status(200);
     })
 });
+
 router.post("/sondage", function (req,res) {
     var id = req.body._id;
-    Sondages.findOne({_id: id
-    },function (err, user) {
-        if (err) return res.status(400).json({message: 'Error when display sondage (' + req.body.id + ') : ' + err});
+    var query = {_id: id };
+    Sondages.findOne(query, function (err, user) {
+        if (err) return res.status(400).json({message: 'Error when display sondage (' + id + ') : ' + err});
         res.json(user);
     });
 });

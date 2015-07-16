@@ -1,120 +1,103 @@
-<br/>
-<input type="radio" ng-model="sondageCreate" value="create"> Création des sondages
-<div ng-show="sondageCreate=='create'">
-    <div class="container">
-        <div class="row">
-            <div class="col-m-10">
-                <aside class="col-sm-9"> <!-- Center Large Column -->
-                    <div>
-                        <legend>Création des sondages :</legend>
+<div class="row readit_block">
+    <input type="radio" ng-model="sondageCreate" value="create"> Création des sondages
+    <input type="radio" ng-model="sondageCreate" value="update"> Modification des sondages
 
-                        <form name="sondageForm">
-                            <div class="alert alert-danger" ng-show="error">
-                                {{ error.message }}
-                            </div>
+    <div ng-show="sondageCreate=='create'">
+        <h3>Création des sondages :</h3>
+        <hr/>
+        <form name="sondageForm">
 
-                            <!-- Question -->
-                            <div class="input-group" data-ng-class="{'has-error':!sondageForm.question.$valid && sondageForm.question.$dirty }">
-                                <span class="input-group-addon" >Question :</span>
-                                <input id="question"  type="text" class="form-control"
-                                       name="question"
-                                       placeholder="La question"
-                                       ng-minlength="4" ng-maxlength="50"
-                                       ng-model="sondage.question"
-                                       required>
-                            </div>
-                            <span class="help-block" data-ng-show="sondageForm.question.$error.required && sondageForm.question.$dirty">This is required.</span>
+            <div class="alert alert-danger" ng-show="error">
+                {{ error.message }}
+            </div>
+
+            <!-- Question -->
+            <div class="input-group" data-ng-class="{'has-error':!sondageForm.question.$valid && sondageForm.question.$dirty }">
+                <span class="input-group-addon" >Question :</span>
+                <input id="question"  type="text" class="form-control"
+                       name="question"
+                       placeholder="La question"
+                       ng-minlength="4" ng-maxlength="50"
+                       ng-model="sondage.question"
+                       required>
+            </div>
+            <span class="help-block" data-ng-show="sondageForm.question.$error.required && sondageForm.question.$dirty">This is required.</span>
                             <span class="help-block" ng-show="!sondageForm.question.$error.required
                             && (sondageForm.question.$error.minlength || sondageForm.question.$error.maxlength)
-                            && sondageForm.question.$dirty">question entre 4 et 50 caractéres.</span>
+                            && sondageForm.question.$dirty">Entre 4 et 50 caractères.</span>
 
-                            <!--Réponses-->
-                            <div class="input-group">
-                                <span><h4>Vos réponses :</h4></span>
-                                <div class="form-group">
-                                    <button ng-click="addResponse()" ng-disabled="!sondageForm.question.$valid" class="btn btn-info">Ajouter une réponse</button>
-                                </div>
-                                <div class="form-group col-sm-12" ng-repeat="reponse in reponses">
-                                    <fieldset>
-                                        <label class="col-sm-3 control-label">
-                                            {{reponse.name}}
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input class="form-control" type="text" ng-model="reponse.rep"
-                                                   placeholder="La réponse" ng-maxlength="20" required>
-                                            <button  class="form-control glyphicon glyphicon-remove-circle" ng-disabled="sondageForm.reponse.$valid" ng-show="$last" ng-click="removeResponse()"/>
-                                        </div>
-                                    </fieldset>
-
-                                 </div>
-                            </div>
-                            <button class="btn btn-primary" ng-click="registerDetailSondage(sondage)" ng-disabled="!sondageForm.$valid" >Valider</button>
-                        </form>
-                    </div>
-                </aside>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-m-10">
-            <input type="radio" ng-model="sondageCreate" value="update"> Suppression/Modification des sondages
-            <div ng-show="sondageCreate=='update'">
-                <aside class="col-sm-9" > <!-- Center Large Column -->
-                    <div>
-                        <legend> Liste des sondages : </legend>
-                        <form name="FormListSondages">
-                            <div class="col-sm-offset-1" ng-repeat="sondage in sondages">
-                                <input type="radio" name="radioListSondages" ng-checked="" value="Ok" ng-model="radioOk" > {{sondage.question}}
-                                <button class=" col-sm-offset-3 glyphicon glyphicon-trash" ng-click="removeSondage(sondage)" ng-show="radioOk=='Ok'"></button></button>
-                                <button class="glyphicon glyphicon-pencil" ng-show="radioOk=='Ok'" value="modify" ng-model="Modifybutton" ng-click="detailsSondage(sondage)"></button>
-                            </div>
-                        </form>
-
-                        <div name="Showmodifyuser" ng-show="Displaydetailsondage=='modify'">
-                            <legend>
-                                Modification du sondage :
-                            </legend>
-                            <form name="Modifysondageform" ng-submit="modifyDetailsSondage(modifysondage)">
-                                <div class="alert alert-danger" ng-show="Modifyerror">
-                                    {{ Modifyerror.message }}
-                                </div>
-
-                                <!-- Question -->
-                                <div class="input-group">
-                                    <span>Question : {{modifysondage.question}}</span>
-                                </div>
-
-                                <!--Réponses-->
-                                <div class="input-group">
-                                    <span><h4>Vos réponses :</h4></span>
-                                    <div class="form-group">
-                                        <button ng-click="addResponseToSondage()" class="btn btn-info">Ajouter une réponse</button>
-                                    </div>
-
-                                    <div class="form-group col-sm-12" ng-repeat="reponse in modifysondage.reponses">
-                                        <fieldset>
-                                            <label class="col-sm-3 control-label">
-                                                {{reponse.name}}
-                                            </label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" type="text" ng-model="reponse.rep"
-                                                       placeholder="La réponse" ng-maxlength="20" required>
-                                                <button  class="form-control glyphicon glyphicon-remove-circle" ng-disabled="sondageForm.reponse.$valid" ng-show="$last" ng-click="removeResponseToSondage()"/>
-                                            </div>
-                                        </fieldset>
-
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary" ng-disabled="!Modifysondageform.$valid" >Valider</button>
-                            </form>
-
+            <!--Réponses-->
+            <div class="input-group">
+                <span><h4>Vos réponses :</h4></span>
+                <div class="form-group">
+                    <button ng-click="addResponse()" ng-disabled="!sondageForm.question.$valid" class="btn btn-info">Ajouter une réponse</button>
+                </div>
+                <div class="form-group col-sm-12" ng-repeat="reponse in reponses">
+                    <fieldset>
+                        <label class="col-sm-3 control-label">
+                            {{reponse.name}}
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" ng-model="reponse.rep"
+                                   placeholder="La réponse" ng-maxlength="20" required>
+                            <button  class="form-control glyphicon glyphicon-remove-circle" ng-disabled="sondageForm.reponse.$valid" ng-show="$last" ng-click="removeResponse()"/>
                         </div>
+                    </fieldset>
+
+                </div>
+            </div>
+            <button class="btn btn-primary" ng-click="registerDetailSondage(sondage)" ng-disabled="!sondageForm.$valid" >Valider</button>
+        </form>
+    </div>
+
+    <div ng-show="sondageCreate=='update'">
+
+        <h3> Liste des sondages : </h3>
+        <hr/>
+        <form name="FormListSondages">
+            <div class="col-sm-offset-1" ng-repeat="sondage in sondages">
+                <input type="radio" name="radioListSondages" ng-checked="" value="Ok" ng-model="radioOk" > {{sondage.question}}
+                <button class="col-sm-offset-3 glyphicon glyphicon-trash" ng-click="removeSondage(sondage)" ng-show="radioOk=='Ok'"></button></button>
+                <button class="glyphicon glyphicon-pencil" ng-show="radioOk=='Ok'" value="modify" ng-model="Modifybutton" ng-click="detailsSondage(sondage)"></button>
+            </div>
+        </form>
+
+        <div name="Showmodifyuser" ng-show="Displaydetailsondage=='modify'">
+            <h3>Modification du sondage :</h3>
+            <hr/>
+            <form name="Modifysondageform" ng-submit="modifyDetailsSondage(modifysondage)">
+                <div class="alert alert-danger" ng-show="Modifyerror">
+                    {{ Modifyerror.message }}
+                </div>
+
+                <!-- Question -->
+                <div class="input-group">
+                    <span>Question : {{modifysondage.question}}</span>
+                </div>
+
+                <!--Réponses-->
+                <div class="input-group">
+                    <span><h4>Vos réponses :</h4></span>
+                    <div class="form-group">
+                        <button ng-click="addResponseToSondage()" class="btn btn-info">Ajouter une réponse</button>
+                    </div>
+
+                    <div class="form-group col-sm-12" ng-repeat="reponse in modifysondage.reponses">
+                        <fieldset>
+                            <label class="col-sm-3 control-label">
+                                {{reponse.name}}
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" ng-model="reponse.rep"
+                                       placeholder="La réponse" ng-maxlength="20" required>
+                                <button  class="form-control glyphicon glyphicon-remove-circle" ng-disabled="sondageForm.reponse.$valid" ng-show="$last" ng-click="removeResponseToSondage()"/>
+                            </div>
+                        </fieldset>
 
                     </div>
-                </aside>
-            </div>
+                </div>
+                <button class="btn btn-primary" ng-disabled="!Modifysondageform.$valid" >Valider</button>
+            </form>
         </div>
     </div>
 </div>

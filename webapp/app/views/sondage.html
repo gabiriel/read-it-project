@@ -1,37 +1,13 @@
-<br/>
-<div class="container">
-    <div class="row">
-        <div class="col-m-10">
-            <div>
-                <div>
-                    <form name="Sondageform" ng-submit="voteSondage(sondage)">
-                        <!-- Question -->
-                        <div class="input-group">
-                            <span><h3>Question : {{sondage.question}}</h3></span>
-                        </div>
-
-                        <!--Réponses-->
-                        <div class="input-group">
-                            <span><h4>Les réponses :</h4></span>
-
-                            <div class="form-group col-sm-12" ng-repeat="reponse in sondage.reponses">
-                                <fieldset>
-
-                                    <input type="radio" name="vote" ng-model="sondage.vote" value="{{reponse._id}}"> {{reponse.name}} : {{reponse.rep}}
-
-                                </fieldset>
-
-                            </div>
-
-                        </div>
-
-
-                        <button class="btn btn-primary" ng-disabled="!Sondageform.$valid" >Voter</button>
-                    </form>
-
-                </div>
-
+<div class="row readit_block">
+    <form name="Sondageform" ng-submit="voteSondage(sondage)">
+        <h3>Question : {{sondage.question}}</h3>
+        <!--Réponses-->
+        <div class="input-group">
+            <h4>Les réponses :</h4>
+            <div class="form-group col-sm-12" ng-repeat="reponse in sondage.reponses">
+                <input type="radio" name="vote" ng-model="sondage.vote" value="{{reponse._id}}"> {{reponse.name}} : {{reponse.rep}}
             </div>
         </div>
-    </div>
+        <button class="btn btn-primary" ng-disabled="!Sondageform.$valid" >Voter</button>
+    </form>
 </div>
