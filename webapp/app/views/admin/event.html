@@ -1,114 +1,246 @@
-<div id="admin_event_view" class="container">
-    <div class="row">
-        <div class="col-m-10">
-            <aside class="col-sm-9"> <!-- Center Large Column -->
-                <div class="row">
-                    <div ng-hide="events != null && events.length">
-                        <p class="alert alert-info">Il n'y a aucun évenement à valider</p>
-                    </div>
+<div class="row readit_block">
+    <input type="radio" ng-model="eventInterface" value="create"> Création d'evenement
+    <input type="radio" ng-model="eventInterface" value="update"> Modification d'evenement
 
-                    <div ng-show="events != null && events.length" >
-                        <h3 ng-show="events.length > 1">Valider les {{events.length}} évenements suivants:</h3>
-                        <h3 ng-show="events.length == 1">Valider l'évenement suivant:</h3>
-                        <button ng-init="selectedEvent=events[0]" type="button" class="btn btn-default"
-                                ng-model="selectedEvent" data-html="1"
-                                bs-options="event.title for event in events"
-                                bs-select >
-                            Evenement <span class="caret"></span>
-                        </button>
-                        <hr>
+    <div ng-show="eventInterface=='create'">
+        <h3>Créer un evenement</h3>
+        <hr/>
+        <ng-form class="col-sm-8 admin_block"
+                 name="createEventFormular"
+                 role="form"
+                 ng-model="eventSelected">
 
-                        <ng-form ng-show="selectedEvent != null" class="col-sm-8 admin_block" name="validEventForm" role="form" ng-model="eventSelected">
+            <div class="input-group col-xs-12" ng-hide="true">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input type="text" class="form-control"
+                       name="author"
+                       disabled
+                       ng-model="createEventForm.author"
+                       placeholder="{{selectedEvent.author}}" >
+            </div>
 
-                            <div id="author_event" class="input-group col-xs-12">
-                                <span class="input-group-addon" id="basic-addon-author"><i class="glyphicon glyphicon-user"></i></span>
-                                <input type="text" class="form-control" aria-describedby="basic-addon-author"
-                                       name="title"
-                                       disabled
-                                       ng-model="authorEvent"
-                                       placeholder="{{selectedEvent.author}}" >
-                            </div>
+            <div class="input-group col-xs-12">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                <input type="text" class="form-control"
+                       name="title"
+                       ng-model="createEventForm.title"
+                       placeholder="Titre"
+                       ng-minlength="3"
+                       ng-maxlength="50" >
+            </div>
 
-                            <div id="title_event" class="input-group col-xs-12">
-                                <span class="input-group-addon" id="basic-addon-title"><i class="glyphicon glyphicon-tag"></i></span>
-                                <input type="text" class="form-control" aria-describedby="basic-addon-title"
-                                       name="title"
-                                       ng-model="titleEvent"
-                                       placeholder="{{selectedEvent.title}}"
-                                       ng-minlength="3"
-                                       ng-maxlength="50" >
-                            </div>
+            <div class="input-group col-xs-12">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-book"></i></span>
+                <button type="button" class="btn btn-block"
+                        ng-model="createEventForm.oeuvre" data-html="1"
+                        bs-options="oeuvre.name for oeuvre in oeuvres"
+                        bs-select >
+                    Oeuvre <span class="caret"></span>
+                </button>
+            </div>
 
-                            <div id="date_event" class="input-group col-xs-12" >
-                                <span class="input-group-addon" id="basic-addon-calendar"><i class="glyphicon glyphicon-calendar"></i></span>
-                                <input type="text" class="form-control" aria-describedby="basic-addon-calendar"
-                                       name="date"
-                                       ng-model="dateEvent"
-                                       placeholder="{{ selectedEvent.date | date:'dd/MM/yyyy' }}"
-                                       data-date-format="dd/MM/yyyy"
-                                       data-date-type="number"
-                                       data-autoclose="1"
-                                       bs-datepicker >
-                            </div>
+            <div class="input-group col-xs-12" >
+                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                <input type="text" class="form-control"
+                       name="date"
+                       placeholder="Date"
+                       ng-model="createEventForm.date"
+                       data-date-format="dd/MM/yyyy"
+                       data-date-type="number"
+                       data-autoclose="1"
+                       bs-datepicker >
+            </div>
 
-                            <div id="description_event" class="input-group col-xs-12" >
-                                <span class="input-group-addon" id="basic-addon-description"><i class="glyphicon glyphicon-align-left"></i></span>
-                                <textarea type="text" class="form-control" aria-describedby="basic-addon-description"
-                                      name='description'
-                                      ng-model='descriptionEvent'
-                                      placeholder="{{selectedEvent.description}}"
-                                      ng-maxlength="400" ></textarea>
-                            </div>
+            <div class="input-group col-xs-12" >
+                <span class="input-group-addon"><i class="glyphicon glyphicon-align-left"></i></span>
+                <textarea type="text" class="form-control"
+                          name='description'
+                          placeholder="Description"
+                          ng-model='createEventForm.description'
+                          ng-maxlength="400" ></textarea>
+            </div>
 
-                            <div id="url_event" class="input-group col-xs-12">
-                                <span class="input-group-addon" id="basic-addon-url"><i class="glyphicon glyphicon-link"></i></span>
-                                <input type="text" class="form-control" aria-describedby="basic-addon-url"
-                                       name="url"
-                                       ng-model="urlEvent"
-                                       placeholder="{{selectedEvent.url || 'ex: http://monurl.com' }}" >
-                            </div>
+            <div class="input-group col-xs-12">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-link"></i></span>
+                <input type="text" class="form-control"
+                       name="url"
+                       ng-model="createEventForm.url"
+                       placeholder="{{ 'ex: http://monurl.com' }}" >
+            </div>
 
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon-textColor">
-                                    <i class="glyphicon glyphicon-text-color"></i>
-                                </span>
-                                <button type="button" class="btn btn-block" aria-describedby="basic-addon-textColor"
-                                        ng-style="{'background-color':textColor}"
-                                        ng-model="textColor" data-html="1"
-                                        bs-options="tcolor for tcolor in textColors"
-                                        bs-select >
-                                    Action <span class="caret"></span>
-                                </button>
-                            </div>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-text-color"></i>
+                </span>
+                <button type="button" class="btn btn-block"
+                        ng-style="{'background-color':createEventForm.textColor.value}"
+                        ng-model="createEventForm.textColor" data-html="1"
+                        ng-init="selectedEvent.textColor"
+                        bs-options="tcolor.name for tcolor in colors"
+                        bs-select >
+                    Action <span class="caret"></span>
+                </button>
+            </div>
 
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon-backgroundColor">
-                                    <i class="glyphicon glyphicon-text-background"></i>
-                                </span>
-                                <button type="button" class="btn btn-block pull-right" aria-describedby="basic-addon-backgroundColor"
-                                        ng-style="{'background-color':backgroundColor}"
-                                        ng-model="backgroundColor" data-html="1"
-                                        bs-options="bcolor for bcolor in backgroundColors"
-                                        bs-select >
-                                    Action <span class="caret"></span>
-                                </button>
-                            </div>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-text-background"></i>
+                </span>
+                <button type="button" class="btn btn-block pull-right"
+                        ng-style="{'background-color':createEventForm.backgroundColor.value}"
+                        ng-model="createEventForm.backgroundColor" data-html="1"
+                        bs-options="bcolor.name for bcolor in colors"
+                        bs-select >
+                    Action <span class="caret"></span>
+                </button>
+            </div>
 
-                            <div id="display_event" class="input-group">
-                                <input id="checkboxDisplay" type="checkbox" ng-model="displayEvent" ng-checked="selectedEvent.display==true">
-                                <label for="checkboxDisplay">
-                                    Afficher dans le calendrier
-                                </label>
-                            </div>
+            <div class="input-group btn btn-default">
+                <input id="checkboxDisplay" type="checkbox"
+                       ng-model="createEventForm.display" >
+                <label for="checkboxDisplay">
+                    Afficher dans le calendrier
+                </label>
+            </div>
 
-                            <button class="btn btn-primary" type="submit"  ng-click="validEvent()"
-                                    ng-disabled="!validEventForm.$valid">Valider</button>
+            <button class="btn btn-primary" type="submit"
+                    ng-click="createEvent()"
+                    ng-disabled="!createEventFormular.$valid">Créer</button>
 
-                            <button class="btn btn-danger pull-right" ng-click="deleteEvent()">Supprimer</button>
-                        </ng-form>
-                    </div>
+        </ng-form>
+    </div>
+
+    <div ng-show="eventInterface=='update'">
+        <h3>Liste des évenements :</h3>
+        <input type="text" class="form-control col-sm-5" placeholder="Chercher un evenement" ng-model="eventSeach">
+        <form name="selectEventForm">
+            <div ng-repeat="event in events | filter : eventSearch">
+                <input type="radio" name="eventRadio"
+                       value="{{event._id}}" ng-model="radio" >
+                <div class="btn btn-default">
+                    <span ng-show="event.display" class="glyphicon glyphicon-calendar"></span>
+                    <span ng-hide="event.display" class="glyphicon glyphicon-eye-close"></span>
+                    {{event.title}}
                 </div>
-            </aside>
-        </div>
+                <div class="pull-right" ng-show="radio==event._id">
+                    <button class="glyphicon glyphicon-trash btn btn-danger"
+                            ng-click="deleteEvent(event)" ></button>
+                    <button class="glyphicon glyphicon-pencil btn btn-primary"
+                            ng-click="chooseEvent(event)" ></button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <div ng-show="eventInterface=='update' && selectedEvent != null">
+        <form class="col-sm-8 admin_block"
+              name="updateEventForm"
+              role="form"
+              ng-submit="updateSelectedEvent()"
+              ng-model="eventSelected" >
+
+            <div id="author_event" class="input-group col-xs-12">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input type="text" class="form-control"
+                       name="title"
+                       disabled
+                       ng-model="selectedEvent.author"
+                       placeholder="{{selectedEvent.author}}" >
+            </div>
+
+            <div id="title_event" class="input-group col-xs-12">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                <input type="text" class="form-control"
+                       name="title"
+                       ng-model="selectedEvent.title"
+                       placeholder="{{selectedEvent.title}}"
+                       ng-minlength="3"
+                       ng-maxlength="50" >
+            </div>
+
+            <div id="oeuvre_id" class="input-group col-xs-12">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-book"></i></span>
+                <button type="button" class="btn btn-block"
+                        ng-model="selectedEvent.oeuvre" data-html="1"
+                        bs-options="oeuvre.name for oeuvre in oeuvres"
+                        required=""
+                        bs-select >
+                    Oeuvre <span class="caret"></span>
+                </button>
+            </div>
+
+            <div id="date_event" class="input-group col-xs-12" >
+                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                <input type="text" class="form-control"
+                       name="date"
+                       ng-model="selectedEvent.date"
+                       placeholder="{{ selectedEvent.date | date:'dd/MM/yyyy' }}"
+                       data-date-format="dd/MM/yyyy"
+                       data-date-type="number"
+                       data-autoclose="1"
+                       bs-datepicker >
+            </div>
+
+            <div id="description_event" class="input-group col-xs-12" >
+                <span class="input-group-addon"><i class="glyphicon glyphicon-align-left"></i></span>
+                <textarea type="text" class="form-control"
+                          name='description'
+                          ng-model='selectedEvent.description'
+                          placeholder="{{selectedEvent.description}}"
+                          ng-maxlength="400" ></textarea>
+            </div>
+
+            <div id="url_event" class="input-group col-xs-12">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-link"></i></span>
+                <input type="text" class="form-control"
+                       name="url"
+                       ng-model="selectedEvent.url"
+                       placeholder="{{selectedEvent.url || 'ex: http://monurl.com' }}" >
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-text-color"></i>
+                </span>
+                <button type="button" class="btn btn-block"
+                        ng-style="{'background-color':selectedEvent.textColor.value}"
+                        ng-model="selectedEvent.textColor" data-html="1"
+                        ng-init="selectedEvent.textColor"
+                        bs-options="tcolor.name for tcolor in colors"
+                        bs-select >
+                    Action <span class="caret"></span>
+                </button>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-text-background"></i>
+                </span>
+                <button type="button" class="btn btn-block pull-right"
+                        ng-style="{'background-color':selectedEvent.backgroundColor.value}"
+                        ng-model="selectedEvent.backgroundColor" data-html="1"
+                        bs-options="bcolor.name for bcolor in colors"
+                        bs-select >
+                    Action <span class="caret"></span>
+                </button>
+            </div>
+
+            <div id="display_event" class="input-group btn btn-default">
+                <label>
+                    <input type="checkbox"
+                           ng-model="selectedEvent.display"
+                           ng-checked="selectedEvent.display==true" >
+                    Afficher dans le calendrier
+                </label>
+            </div>
+
+            <button class="btn btn-primary" type="submit"
+                    ng-disabled="!updateEventForm.$valid">Valider</button>
+
+            <button class="btn btn-danger pull-right"
+                    ng-click="deleteEvent(selectedEvent)">Supprimer</button>
+
+        </form>
     </div>
 </div>

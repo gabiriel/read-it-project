@@ -177,7 +177,7 @@ router.post('/user/reset/', function(req,res) {
     });
 });
 /**
- * Create event from home.html (form near calendar)
+ * Event (calendar)
  */
 router.post('/event/create', auth, function(req, res, next) {
     var event = new CalendarEvent(req.body);
@@ -192,11 +192,12 @@ router.post('/event/update', function(req, res, next) {
 
     var updatedEvent = req.body,
         query = {_id: updatedEvent._id},
+        updates = {$set: updatedEvent},
         options = { multi: true };
 
     console.log("[Query] update event (id = " + updatedEvent._id + ")");
 
-    CalendarEvent.update(query, {$set: updatedEvent}, options, function(err, event){
+    CalendarEvent.update(query, updates, options, function(err, event){
         if(err){ return next(err); }
         console.log("[Mongoose] event successfuly updated");
         res.json(event);
@@ -226,6 +227,13 @@ router.get('/events/new', function(req, res, next) {
     CalendarEvent.find({display: false}, function(err, events){
         if(err){ return next(err); }
         console.log("[Mongoose] new events successfuly retrieved");
+        res.json(events);
+    });
+});
+router.get('/events/displayed', function(req, res, next) {
+    CalendarEvent.find({display: true}, function(err, events){
+        if(err){ return next(err); }
+        console.log("[Mongoose] Displayed events successfuly retrieved");
         res.json(events);
     });
 });

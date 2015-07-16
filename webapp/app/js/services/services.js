@@ -16,14 +16,13 @@ app.factory('serviceDetails', ['$http',function($http){
     Details.forgot = function (userDetail) {
         return $http.post("/forgotpassword", userDetail);
     };
-    
+
     Details.reset = function (userDetail) {
         return $http.post("/user/reset/", userDetail);
     };
-    Details.getListOeuvre = function (titleOeuvre) {
-        return $http.get("/oeuvres", {
-            params: {Oeuvre: titleOeuvre}
-        });
+
+    Details.getListOeuvre = function () {
+        return $http.get("/oeuvres");
     };
 
     Details.getOeuvre = function (id_oeuvre) {
@@ -333,9 +332,15 @@ app.factory('events', ['$http', 'auth', function($http, auth){
       });
     };
 
+    o.getDisplayed = function(){
+        return $http.get('/events/displayed').success(function(data){
+            angular.copy(data, o.events);
+        });
+    };
+
     o.create = function(event) {
         return $http.post('/event/create', event, {
-            headers: {Authorization: 'Bearer '+auth.getToken()}
+            headers: {Authorization: 'Bearer '+ auth.getToken()}
         }).success(function(data){
             o.getAll();
         });
@@ -343,17 +348,17 @@ app.factory('events', ['$http', 'auth', function($http, auth){
 
     o.update = function(event) {
         return $http.post('/event/update', event, {
-            headers: {Authorization: 'Bearer '+auth.getToken()}
+            headers: {Authorization: 'Bearer ' + auth.getToken()}
         }).success(function(data){
-            o.getNews();
+            o.getAll();
         });
     };
 
     o.delete = function(event) {
         return $http.post('/event/delete', event, {
-            headers: {Authorization: 'Bearer '+auth.getToken()}
+            headers: {Authorization: 'Bearer ' + auth.getToken()}
         }).success(function(data){
-            o.getNews();
+            o.getAll();
         });
     };
 

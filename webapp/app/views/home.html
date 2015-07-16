@@ -16,12 +16,16 @@
     </div>
     <div class="col-md-5">
         <div class="row">
-            <p ng-show="eventClicked != null" class="alert alert-success"><b>{{eventClicked.title}}</b> | {{eventClicked.start | date: format : date}}<br/>{{eventClicked.description}}</p>
+            <p ng-show="eventClicked != null" class="alert alert-success">
+                <b>{{eventClicked.title}}</b><br/>
+                {{eventClicked.oeuvre}}<br/>
+                {{eventClicked.description}}
+            </p>
             <p ng-hide="eventClicked != null" class="alert alert-warning">Selectionnez un évenement pour afficher ses détails</p>
         </div>
-        <div class="row">
+        <div class="row" ng-show="auth.isAdmin()">
             <h3>Proposer un évenement :</h3>
-            <div ng-show="auth.isLoggedIn()">
+            <div>
                 <form name="purposeEventForm" class="form-inline" role="form" ng-submit="addEvent()">
                     <div id="title_event" class="input-group col-xs-12" ng-class="{'has-error': purposeEventForm.title.$invalid}">
                         <span class="input-group-addon" id="basic-addon-title"><i class="glyphicon glyphicon-tag"></i></span>
@@ -57,9 +61,6 @@
                     <button class="btn btn-primary" type="submit"  ng-disabled="!purposeEventForm.$valid">Valider</button>
                 </form>
             </div>
-            <p class="alert alert-info" ng-hide="auth.isLoggedIn()">Voici un calendrier des sorties. Il faut être <a ui-sref="login">authentifié</a> pour pouvoir proposer une date.</p>
-            <p class="alert alert-info" ng-show="alertMessage!=null">{{alertMessage}}</p>
-
         </div>
     </div>
 </div>

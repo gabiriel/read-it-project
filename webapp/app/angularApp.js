@@ -25,7 +25,7 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             templateUrl: 'views/home.html',
             resolve: {
                 postPromise: ['events', function(events){
-                    return events.getAll();
+                    return events.getDisplayed();
                 }]
             }
         })
@@ -110,7 +110,7 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             }],
             resolve: {
                 postPromise: ['events', function(events){
-                    return events.getNews();
+                    return events.getAll();
                 }]
             }
         })

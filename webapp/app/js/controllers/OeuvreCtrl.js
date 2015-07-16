@@ -5,18 +5,19 @@ var ReadIT = angular.module('readIt');
 
 ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, serviceDetails){
 
- serviceDetails.getListOeuvre("").success (function(data) {
+    serviceDetails.getListOeuvre().success(function(oeuvres) {
+        $scope.oeuvres = oeuvres;
+    });
 
-     $scope.oeuvres = data;
-
- });
 }]);
 ReadIT.controller('searchCtrl',['$scope','$stateParams','auth', 'serviceDetails',function($scope,$stateParams, auth, serviceDetails) {
-    serviceDetails.getListOeuvre("").success (function(data) {
-        $scope.Oeuvres = data;
+    serviceDetails.getListOeuvre().success(function(oeuvres) {
+        console.log("oeuvres", oeuvres);
+        $scope.Oeuvres = oeuvres;
+
         $scope.searchText = $stateParams.title;
     });
-    //alert('ok');
+
     auth.searchUsers($stateParams.title)
         .success(function(data) {
             $scope.users = data;
@@ -25,6 +26,7 @@ ReadIT.controller('searchCtrl',['$scope','$stateParams','auth', 'serviceDetails'
             alert(err);
         })
 }]);
+
 ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
     $scope.logged = auth.isLoggedIn();
     $scope.ratings = [];
@@ -269,7 +271,7 @@ ReadIt.controller('add-oeuvre-controller',['$scope','serviceDetails',function($s
         ['link']
     ];
     $scope.save = function() {
-        if (!confirm('etes vous sure de vouloir sauvegarder ' + $scope.name + ' ?'))
+        if (!confirm('Êtes vous sûr de vouloir sauvegarder ' + $scope.name + ' ?'))
             return;
         $scope.newNumber = Math.floor($scope.newNumber) + 1;
         serviceDetails.saveOeuvre({
@@ -286,7 +288,6 @@ ReadIt.controller('add-oeuvre-controller',['$scope','serviceDetails',function($s
                                 })
             })
             .success(function(data) {
-                //alert("success");
                 $scope.name = '';
                 $scope.type= '';
                 $scope.chapters= [];
@@ -294,7 +295,7 @@ ReadIt.controller('add-oeuvre-controller',['$scope','serviceDetails',function($s
                 $scope.authors = [];
             })
             .error(function(err) {
-                alert('une erreure est survenue lors de la sauvegarde');
+                alert('Une erreur est survenue lors de la sauvegarde');
             });
     };
 }]);
