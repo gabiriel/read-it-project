@@ -1,25 +1,18 @@
-<div class="container ng-scope">
-      <div class="row">
-               <div class="col-m-10">
-                       <aside class="col-sm-9">
-                                 <!--Center Large Column-->
-                                        <div id="listDemandes">
-                                            <legend>
-
-                                                Liste des demandes :
-
-                                            </legend>
-                                            <ul class="example-animate-container"  ng-repeat="request in requests">
-                                                   <li>
-                                                       <a> {{request.name}}</a>
-                                                       <button ng-click="valideRequest(auth.currentUser(),request.name)" class="glyphicon glyphicon-ok"></button>
-                                                        <button ng-click="removeRequest(auth.currentUser(),request.name)" class="glyphicon glyphicon-remove"></button>
-                                                   </li>
-                                            </ul>
-                                        </div>
-                                    </aside>
-                                </div>
-                            </div>
-                        </div>
+<div class="row readit_block">
+    <div id="listDemandes">
+        <h3>Liste des demandes :</h3>
+        <hr/>
+        <div ng-hide="requests.length">
+            <p class="alert alert-info">Vous n'avez aucune demande d'ajout</p>
+        </div>
+        <ul class="example-animate-container"  ng-repeat="request in requests">
+            <li>
+                <a> {{request.name}}</a>
+                <button ng-click="valideRequest(auth.currentUser(),request.name)" class="glyphicon glyphicon-ok"></button>
+                <button ng-click="removeRequest(auth.currentUser(),request.name)" class="glyphicon glyphicon-remove"></button>
+            </li>
+        </ul>
+    </div>
+</div>
 
 

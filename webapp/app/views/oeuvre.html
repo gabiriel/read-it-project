@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="readit_block pull-right col-xs-5 col-sm-12">
-            <p>Note : </p>
+            <span>Note : </span>
             <a ng-click="saveRating()" ng-mouseenter="setRating(1)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 0 ? '' : '-empty'}}"></i></a>
             <a ng-click="saveRating()" ng-mouseenter="setRating(2)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 1 ? '' : '-empty'}}"></i></a>
             <a ng-click="saveRating()" ng-mouseenter="setRating(3)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 2 ? '' : '-empty'}}"></i></a>
@@ -16,17 +16,7 @@
             <a ng-click="saveRating()" ng-mouseenter="setRating(5)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 4 ? '' : '-empty'}}"></i></a>
         </div>
         <div class="readit_block pull-right col-xs-5 col-sm-12">
-            <h4>Avancement Etat </h4>
-            <!--<input type="radio" ng-model="readingState" value="not interested" id="rbtn-advancement-no_interset" /><label for="rbtn-advancement-no_interset">Pas interessé</label><br />-->
-            <!--<input type="radio" ng-model="readingState" value="interested" id="rbtn-advancement-interested" /><label for="rbtn-advancement-interested">Interessé</label><br />-->
-            <!--<input type="radio" ng-model="readingState" value="reading" id="rbtn-advancement-reading"/><label for="rbtn-advancement-reading">Lut</label><br />-->
-            <!--<input-->
-            <!--value="finished"-->
-            <!--type="radio"-->
-            <!--id="rbtn-advancement-finished"-->
-            <!--ng-model="readingState"-->
-            <!--ng-click="readAll()"-->
-            <!--/>-->
+            <h4>Etat d'avancement</h4>
             <div>{{oeuvre.chapters | readingStatus}}</div>
             <div ng-show="auth.isLoggedIn()">
                 <button class="btn btn-default" ng-click="finir()" ng-show="notFinished()">Finit</button>
@@ -93,10 +83,10 @@
             </div>
         </div>
 
-        <div class="readit_block" ng-show="comments.length">
+        <div id="comments_list" class="readit_block" ng-show="comments.length">
             <h4>Commentaires: </h4>
             <div ng-repeat="comment in comments">
-                <b id="user">{{comment.user}} </b> : <br/>
+                <p class="user_name">{{comment.user}} :</p>
                 <div ng-bind-html="comment.commentaire"></div>
                 <hr/>
             </div>
@@ -104,7 +94,9 @@
 
         <div id="comments" class="readit_block">
 
-            <button class="pull-right btn btn-default" id="displayComments" ng-click="displayComments()" >Afficher les commentaires </button>
+            <button class="pull-right btn btn-default" id="displayComments" ng-click="displayComments()" >
+                <i class="glyphicon glyphicon-eye-open"></i> Commentaires
+            </button>
 
             <div class="clearfix"></div>
 

@@ -50,6 +50,7 @@ img{
 }
 h1,h2,h3,h4,h5{
   font-family:"Vollkorn", serif;
+  margin-top: 0.3em;
 }
 /** Override bootstrap with custom layout
 ------------------*/
@@ -93,7 +94,7 @@ main#content{
   text-align: center;
 }
 .large a{
-  margin-right: 1em;
+  margin: 0.5em;
 }
 .input-group{
   margin-bottom: 15px;
@@ -148,7 +149,6 @@ main#content{
 ------------------------------------------------------*/
 #home_view{ }
 
-
 /**
 * Calendar
 ------------------*/
@@ -158,28 +158,29 @@ main#content{
 .fc-day-grid-container {
   height: auto !important;
 }
-#commentTxt  {
-width: 85%;
-}/* prevent selection of text. Added for read Selector */
-/*.no-select {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}*//*if we do this then drag&drop. worse, checking for another solution*/
-#user{
-  font-family: 'Open Sans';
+
+#comments_list .user_name{
+  font-size: 1.2em;
   color: #6FC2F4;
-   }
+}
+
+#scrollBar{
+  position: absolute;
+  left: 18px;
+  overflow: auto;
+  height: 580px;
+  width: 340px;
+}
 #message{
-  font-size: 120%;
+  font-size: 1.2em;
 }
 #off{
-  font-size: 120%;
+  font-size: 1.2em;
 }
-.unreaded { font-weight:bold; }
+.unreaded {
+  font-weight:bold;
+}
+
 
 /** OEUVRE
 ------------------------------------------------------*/

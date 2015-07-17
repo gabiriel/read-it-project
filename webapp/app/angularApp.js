@@ -72,11 +72,6 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             url:'/user/reset/:token',
             templateUrl: 'views/resetpassword.html',
             controller: 'UserResetPasswordController'
-           /* onEnter: ['$state', 'auth', function($state, auth){
-                if(!auth.isLoggedIn()){
-                    $state.go('home');
-                }
-            }]*/
         })
         .state('userDisplay', {
             url: "/user/display/:user",
@@ -158,7 +153,6 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             url:'/oeuvre/:id',
             templateUrl:'views/oeuvre.html',
             controller: 'OeuvreDetailCtrl'
-
         })
         .state('search',{
             url:'/search/:title',
@@ -170,7 +164,6 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             templateUrl:'views/message.html',
             controller: 'messageCtrl'
         })
-
         .state('messageList', {
             url: '/messages/list',
             templateUrl: 'views/listMessages.html',
@@ -190,12 +183,16 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             url:'/sondage/:id',
             templateUrl:'views/sondage.html',
             controller: 'sondagesDetailsController'
-
         })
         .state('friendAskList', {
             url: '/friends/requests',
             templateUrl: 'views/addRequests.html',
-            controller: 'addRequestsCtrl'
+            controller: 'addRequestsCtrl',
+            onEnter: ['$state', 'auth', function($state, auth){
+                if(!auth.isLoggedIn()){
+                    $state.go('error');
+                }
+            }]
         }) ;
 
     });

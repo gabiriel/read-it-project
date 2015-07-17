@@ -1,14 +1,9 @@
-<div class="container" ng-show="message_return">
-    <div class="row">
-        <div class="col-m-10">
-            <aside class="col-sm-9"> <!-- Center Large Column -->
-                <div>
-                    {{message_return}}
-                </div>
-            </aside>
-        </div>
+<div class="row readit_block">
+    <div ng-show="message_return">
+        {{message_return}}
     </div>
 </div>
+
 <form method="POST" ng-submit="sendMessage(username,objet,newMessage)" >
     <div class="container">
         <div class="row">
