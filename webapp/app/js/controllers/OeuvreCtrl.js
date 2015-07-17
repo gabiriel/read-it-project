@@ -49,7 +49,7 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
             .error(function(data) {
                 alert('une erreure est survenue lors de l\'engeristrement de la lecure');
             });
-    }
+    };
     serviceDetails.getOeuvre($stateParams.id).success (function(data) {
         $scope.oeuvre = data;
         $scope.rating = $scope.oldRating = data.ratings.reduce(function(x,y) { return x + y.rating; },0) / data.ratings.length
@@ -240,7 +240,8 @@ ReadIT.controller('wellRated-controller',['$scope','serviceDetails',function($sc
             alert('erreur : ' + data);
         });
 }]);
-ReadIt.controller('add-oeuvre-controller',['$scope','serviceDetails',function($scope, serviceDetails) {
+
+ReadIT.controller('add-oeuvre-controller',['$scope','serviceDetails',function($scope, serviceDetails) {
     $scope.newComment = {};
     $scope.chapters = [];
     $scope.categories = [];

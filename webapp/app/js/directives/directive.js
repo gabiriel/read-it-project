@@ -38,7 +38,8 @@ readIt.directive('fileModel', ['$parse', function ($parse) {
         }
     };
 }]);
-ReadIt.directive('ngEnter', function () {
+
+readIt.directive('ngEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
             if(event.which === 13) {
