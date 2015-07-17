@@ -52,6 +52,9 @@ h1,h2,h3,h4,h5{
   font-family:"Vollkorn", serif;
   margin-top: 0.3em;
 }
+li{
+  list-style-type: none;
+}
 /** Override bootstrap with custom layout
 ------------------*/
 .btn-primary{
@@ -95,6 +98,10 @@ main#content{
 }
 .large a{
   margin: 0.5em;
+}
+.large a:hover{
+  text-decoration: none;
+  color: #6fc2f4;
 }
 .input-group{
   margin-bottom: 15px;
@@ -164,24 +171,6 @@ main#content{
   color: #6FC2F4;
 }
 
-#scrollBar{
-  position: absolute;
-  left: 18px;
-  overflow: auto;
-  height: 580px;
-  width: 340px;
-}
-#message{
-  font-size: 1.2em;
-}
-#off{
-  font-size: 1.2em;
-}
-.unreaded {
-  font-weight:bold;
-}
-
-
 /** OEUVRE
 ------------------------------------------------------*/
 /**
@@ -204,4 +193,37 @@ main#content{
   margin-bottom: 30px;
 }
 
+/** USER
+------------------------------------------------------*/
 
+/**
+* Message
+------------------*/
+#messageShow {
+  border: 2px #e9ebf8 solid;
+  padding: 1em;
+}
+.messageCorps,
+.messageContent{
+  padding: 1em;
+}
+.messageContent span{
+  padding-bottom: 0.3em;
+  padding-top: 0.3em;
+}
+.messageContent .user{
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.messageContent .object{
+  display: block;
+  text-decoration: underline;
+  font-weight: bolder;
+}
+#message,
+#off{
+  font-size: 1.2em;
+}
+.unreaded {
+  font-weight:bold;
+}

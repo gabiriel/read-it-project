@@ -5,22 +5,22 @@
 
                 <div id="imgPanel" class="readit_block">
                     <h2 id="userName"> {{userName}} </h2>
-                    <img  ng-src="{{imgSource[$index]}}}" alt="Photo_de_profil" style="width:200px;height:200px;">
+                    <img  ng-src="{{imgSource[$index]}}}" alt="Photo_de_profil">
                     <div class="large">
                         <a class="ng-pristine ng-valid ng-hide" ui-sref="message"
                            ng-model="message" ng-show="message=='sendMessage'"
                            value="sendMessage">
                             <i class="glyphicon glyphicon-envelope"></i>
                         </a>
-                        <a class="ng-pristine ng-valid ng-hide" ng-click="removeFromFriend()"
+                        <a class="ng-pristine ng-valid ng-hide" href="#" ng-click="removeFromFriend()"
                            ng-model="remove" ng-show="remove=='removeFriends'">
                             <i class="glyphicon glyphicon-minus"></i>
                         </a>
-                        <a class="ng-pristine ng-valid ng-hide" ng-click="addFriend()"
+                        <a class="ng-pristine ng-valid ng-hide" href="#" ng-click="addFriend()"
                            ng-model="add" ng-show="add=='addFriends'" value="addFriend">
                             <i class="glyphicon glyphicon-plus"></i>
                         </a>
-                        <a class="ng-pristine ng-valid ng-hide"
+                        <a class="ng-pristine ng-valid ng-hide" href="#"
                            ng-model="bloc" ng-show="bloc=='blocUser'" value="blocUser">
                             <i class="glyphicon glyphicon-ban-circle"></i>
                         </a>

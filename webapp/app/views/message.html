@@ -2,46 +2,34 @@
     <div ng-show="message_return">
         {{message_return}}
     </div>
-</div>
 
-<form method="POST" ng-submit="sendMessage(username,objet,newMessage)" >
-    <div class="container">
-        <div class="row">
-            <div class="col-m-10">
-                <aside class="col-sm-9"> <!-- Center Large Column -->
-                    <div>
-                        <div class="row">
-                            <label class="col-sm-2">Username : </label>
-                            <input class="col-sm-2" type="text" ng-model="username" required>
-                            <br/>
-                            <br/>
-                        </div>
-                        <div class="row">
-                                <label class="col-sm-2">Objet: </label>
-                                <input class="col-sm-2" type="text" ng-model="objet">
-                        </div>
-                        <br/>
-                        <br/>
-                        <div class="row">
-                            <label class="col-sm-2">Message : </label>
-                            <wysiwyg
-                                        class="col-sm-10"
-                                        textarea-id="message"
-                                        textarea-class="form-control"
-                                        textarea-height="80px"
-                                        textarea-name="textareamessage"
-                                        textarea-required
-                                        ng-model="newMessage"
-                                        enable-bootstrap-title="true"
-                                        textarea-menu="messageMenu"
-                                        required>
-                             </wysiwyg>
-                        </div>
-                        <br/>
-                        <button class="col-md-offset-11"  ng-model="sendMessageButton" type ="submit" > Envoyé</button>
-                    </div>
-                </aside>
-            </div>
+    <form method="POST" ng-submit="sendMessage(username,objet,newMessage)" class="col-md-9" >
+        <div class="input-group">
+            <span class="input-group-addon" >Utilisateur :</span>
+            <input class="form-control" type="text"
+                   placeholder="Pseudo" ng-model="username" required>
         </div>
-    </div>
-</form>
+        <div class="input-group">
+            <span class="input-group-addon" >Objet :</span>
+            <input class="form-control" type="text"
+                   placeholder="Objet" ng-model="objet" required>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon" >Message :</span>
+            <wysiwyg
+                    textarea-id="message"
+                    textarea-class="form-control"
+                    textarea-height="80px"
+                    textarea-name="textareamessage"
+                    textarea-required
+                    ng-model="newMessage"
+                    enable-bootstrap-title="true"
+                    textarea-menu="messageMenu"
+                    required >
+            </wysiwyg>
+        </div>
+
+        <button class="pull-right btn btn-primary"
+                ng-model="sendMessageButton" type ="submit" > Envoyer</button>
+    </form>
+</div>

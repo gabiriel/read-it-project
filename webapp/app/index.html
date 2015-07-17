@@ -119,13 +119,13 @@
               <span>{{auth.currentUser()}}</span>
             </a>
           </li>
-          <li ng-show="auth.isLoggedIn()">
+          <li ng-show="auth.isLoggedIn()" class="hidden-sm">
             <a ui-sref="friendAskList" id="btn_friends" id="btn_user_add" >
               <i id="friendAsk"  class="glyphicon glyphicon-user"></i>
               <span class="badge">{{numberAddRequests}}</span>
             </a>
           </li>
-          <li ng-show="auth.isLoggedIn()">
+          <li ng-show="auth.isLoggedIn()" class="hidden-sm">
             <a ui-sref="messageList" id="btn_message">
               <i id="message" class="glyphicon glyphicon-envelope"></i>
               <span class="badge">{{numberMessage}}</span>
@@ -134,7 +134,6 @@
           <li ng-show="auth.isLoggedIn()" ui-sref="logout">
             <a id="btn_logout">
               <i id="off" class="glyphicon glyphicon-off"></i>
-              <span class="visible-sm-inline visible-xs-inline">Disconnect</span>
             </a>
 
           </li>

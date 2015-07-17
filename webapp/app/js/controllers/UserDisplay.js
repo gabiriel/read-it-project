@@ -2,7 +2,9 @@ var readIt = angular.module('readIt');
 readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope, $stateParams, auth){
     var user = $stateParams.user;
 
-    //=== Variables ===//
+    $scope.imgSource ="img.jpg";//donnée le lien vers limage de profile de chaque utilisateur
+    $scope.auth = auth;
+
     auth.getUser(user).success(function(data){
         $scope.userName = data.username;
         if($scope.userName == auth.currentUser())
@@ -16,10 +18,12 @@ readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope,
             $scope.add='addFriends';
             $scope.bloc = 'blocUser';
             $scope.message='sendMessage';
-        };
+        }
+
         auth.getFriends($scope.userName).success(function(friends){
             $scope.friends = friends;
         });
+
         auth.alreadyFriends(auth.currentUser(),$scope.userName)
             .success
         (
@@ -33,6 +37,7 @@ readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope,
             }
         );
     });
+
     $scope.removeFromFriend=function(){
         var info ={
             user : auth.currentUser(),
@@ -50,32 +55,28 @@ readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope,
             }
         );
     };
-    $scope.imgSource ="img.jpg";//donnée le lien vers limage de profile de chaque utilisateur ;
-    $scope.auth = auth;
 
     $scope.addFriend = function(){
 
         auth.existeUser(auth.currentUser(),$scope.userName)
             .success(function(data)
-        {
-            if(data=="false"){
-                var friends ={
-                    friendsUsername : $scope.userName,
-                    Username : auth.currentUser()
-                };
-            auth.postRequestFriends(friends);
-            alert('demande envoyé');
-            $scope.add='false';
+            {
+                if(data=="false"){
+                    var friends ={
+                        friendsUsername : $scope.userName,
+                        Username : auth.currentUser()
+                    };
+                    auth.postRequestFriends(friends);
+                    alert('Demande envoyée');
+                    $scope.add='false';
+                }
+                else alert("Demande déja envoyée");
             }
-            else alert("demande déja envoyé");
-        }
         )
     };
 
-    $scope.imgSource ="img.jpg"//donnée le lien vers limage de profile de chaque utilisateur ;
-    $scope.auth = auth;
-
 }]);
+
 readIt.controller('addRequestsCtrl',['$scope', 'auth', function($scope, auth) {
     var username = auth.currentUser();
     if(auth.isLoggedIn()) {
@@ -93,10 +94,10 @@ readIt.controller('addRequestsCtrl',['$scope', 'auth', function($scope, auth) {
                 {
                     auth.postAddFriends(infoUser);
                     auth.getAddRequest(username).success(function (user) {
-                    $scope.requests = user;
-                    console.log(user);
-                });
-            }
+                        $scope.requests = user;
+                        console.log(user);
+                    });
+                }
                 else alert("demande déja envoyé");
             });
 
@@ -120,6 +121,6 @@ readIt.controller('addRequestsCtrl',['$scope', 'auth', function($scope, auth) {
             $scope.requests = user;
 
         });
-    };
+    }
 
 }]);

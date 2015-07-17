@@ -1,8 +1,8 @@
 /**
  * Created by macbookpro on 07/07/15.
  */
-var ReadIt = angular.module('readIt');
-ReadIt.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,$stateParams, auth) {
+var app = angular.module('readIt');
+app.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,$stateParams, auth) {
 
     $scope.username = $stateParams.username;
     $scope.messageMenu = [
@@ -12,8 +12,9 @@ ReadIt.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,
         ['quote'],
         ['link']
     ];
+
     $scope.sendMessage = function(username, objet, message){
-  console.log(username);
+        console.log(username);
         var MessageBody = {
             usernameSender : auth.currentUser(),
             Username : username,
@@ -32,9 +33,9 @@ ReadIt.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,
             else if(data =="echec") $scope.message_return = "l'utilisateur "+ MessageBody.Username +" n'a pas été trouvé, message non envoyé";
         });
     }
-
 }]);
-ReadIt.controller('messageListCtrl',['$scope','$state','auth',function($scope,$state, auth) {
+
+app.controller('messageListCtrl',['$scope','$state','auth',function($scope,$state, auth) {
     auth.getMessage(auth.currentUser()).success(function(data) {
         $scope.messages= data
             .map(function(elem){
@@ -48,18 +49,16 @@ ReadIt.controller('messageListCtrl',['$scope','$state','auth',function($scope,$s
                 }
             })
             .sort(function(elem1,elem2){
-            return elem2.date - elem1.date;
+                return elem2.date - elem1.date;
 
-        });
+            });
         console.log($scope.messages);
     });
-    $scope.displayMessage = function(reciver,messageCorps)
+    $scope.displayMessage = function(reciver, messageCorps)
     {
-        $scope.sender = messageCorps.sender;
-        $scope.objet = messageCorps.objet;
         messageCorps.reads = true;
-        $scope.message = messageCorps.message;
-        $scope.messageShow ='true';
+        $scope.messageShow = messageCorps;
+
         auth.getCountMessageUnread(auth.currentUser()).success(function(data){
             $scope.numberMessage= data;
         });
@@ -70,19 +69,22 @@ ReadIt.controller('messageListCtrl',['$scope','$state','auth',function($scope,$s
         };
 
         auth.postReadMessage(messageObject).success(function(data){
-         console.log(data);
+            console.log(data);
         });
 
 
-    }
-    $scope.ansewer = function(user){
+    };
+
+    $scope.answer = function(user){
         $scope.user = $scope.sender;
-    }
+    };
+
     $scope.removeMessage = function(username,id_message){
         var infoMessage ={
             username : username,
             id_message : id_message
-        }
+        };
+        $scope.messageShow = null;
         auth.removeMessage(infoMessage);
         auth.getMessage(auth.currentUser()).success(function(data) {
             $scope.messages= data
@@ -103,5 +105,4 @@ ReadIt.controller('messageListCtrl',['$scope','$state','auth',function($scope,$s
             console.log($scope.messages);
         });
     }
-
 }]);
