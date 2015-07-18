@@ -5,7 +5,7 @@ app.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, serviceD
         $scope.oeuvres = oeuvres;
     });
     $scope.remove = function(oeuvre) {
-        if(!confirm('etes vous sur de vouloir supprimer cette oeuvre ?'))
+        if(!confirm('Êtes vous sûr de vouloir supprimer cette oeuvre ?'))
             return;
 
         serviceDetails.removeOeuvre(oeuvre._id)
@@ -329,7 +329,7 @@ app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetai
         ['link']
     ];
     $scope.save = function() {
-        if (!confirm('etes vous sure de vouloir sauvegarder ' + $scope.name + ' ?'))
+        if (!confirm('Êtes vous sûr de vouloir sauvegarder ' + $scope.name + ' ?'))
             return;
         $scope.newNumber = Math.floor($scope.newNumber) + 1;
         serviceDetails.updateOeuvre({

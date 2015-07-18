@@ -13,7 +13,7 @@
             <ul class="example-animate-container">
                 <li id="listOeuvre" ng-repeat="oeuvre in oeuvres">
                     <a class="btn" ui-sref="oeuvre({ id: oeuvre._id})"> {{oeuvre.name}}</a>
-                    <span class="pull-right">
+                    <span ng-show="auth.isAdmin()" class="pull-right">
                         <i class="glyphicon glyphicon-pencil btn btn-primary"
                            ui-sref="adminUpdateOeuvre({id: oeuvre._id})"></i>
                         <i class="glyphicon glyphicon-trash btn btn-danger"

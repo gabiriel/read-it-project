@@ -112,6 +112,13 @@ main#content{
 .input-group-addon {
   min-width: 100px;
 }
+.form_block {
+  border: 2px #e9ebf8 solid;
+  padding: 1em;
+}
+.readit_block .btn{
+  margin-top: 0.2em;
+}
 /** Form Forgot
 ------------------*/
 #forgot_view form{
