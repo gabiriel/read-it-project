@@ -1,11 +1,11 @@
-var ReadIT = angular.module('readIt');
-ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, serviceDetails){
+var app = angular.module('readIt');
+app.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, serviceDetails){
 
     serviceDetails.getListOeuvre().success(function(oeuvres) {
         $scope.oeuvres = oeuvres;
     });
     $scope.remove = function(oeuvre) {
-        if(!confirm('etes vous sur de vouloires supprimer cette oeuvre ?'))
+        if(!confirm('etes vous sur de vouloir supprimer cette oeuvre ?'))
             return;
 
         serviceDetails.removeOeuvre(oeuvre._id)
@@ -16,11 +16,9 @@ ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, servi
                 alert('une erreur est survenue lors de la suppresion de l\'ouevre : ' +err);
             });
     };
-     $scope.oeuvres = data;
-
 }]);
 
-ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
+app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
     $scope.logged = auth.isLoggedIn();
     $scope.ratings = [];
     $scope.notFinished = function() {
@@ -205,7 +203,7 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
 
 }]);
 
-ReadIT.controller('popular-controller',['$scope','serviceDetails',function($scope,serviceDetails) {
+app.controller('popular-controller',['$scope','serviceDetails',function($scope,serviceDetails) {
     serviceDetails.getPopular()
         .success(function(data) {
             //alert(JSON.stringify(data));
@@ -215,7 +213,7 @@ ReadIT.controller('popular-controller',['$scope','serviceDetails',function($scop
             alert('erreur : ' + data);
         });
 }]);
-ReadIT.controller('wellRated-controller',['$scope','serviceDetails',function($scope,serviceDetails) {
+app.controller('wellRated-controller',['$scope','serviceDetails',function($scope,serviceDetails) {
     serviceDetails.getWellRated()
         .success(function(data) {
             //alert(JSON.stringify(data));
@@ -226,7 +224,7 @@ ReadIT.controller('wellRated-controller',['$scope','serviceDetails',function($sc
         });
 }]);
 
-ReadIT.controller('add-oeuvre-controller',['$scope','serviceDetails',function($scope, serviceDetails) {
+app.controller('add-oeuvre-controller',['$scope','serviceDetails',function($scope, serviceDetails) {
     $scope.newComment = {};
     $scope.chapters = [];
     $scope.categories = [];
@@ -285,7 +283,8 @@ ReadIT.controller('add-oeuvre-controller',['$scope','serviceDetails',function($s
             });
     };
 }]);
-ReadIt.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetails',function($scope, $stateParams, serviceDetails) {
+
+app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetails',function($scope, $stateParams, serviceDetails) {
     $scope.newComment = {};
     $scope.chapters = [];
     $scope.categories = [];
