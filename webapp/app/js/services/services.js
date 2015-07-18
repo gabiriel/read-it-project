@@ -39,8 +39,8 @@ app.factory('serviceDetails', ['$http',function($http){
     };
     Details.removeFavorite = function(params) {
         return $http.post("/user/favorites/remove", {
-                idOeuvre: params.oeuvre._id,
-                idUser: params.user_id
+            idOeuvre: params.oeuvre._id,
+            idUser: params.user_id
         });
     };
     Details.isFavorite = function(user_id, oeuvre_id) {
@@ -190,16 +190,14 @@ app.factory('auth', ['$http', '$window', function($http, $window){
     };
     auth.searchUsers = function(searched) {
         return $http.get('/users/search',{
-            params: {
-                searched: searched
-            }
+            params: { searched: searched }
         });
     };
     auth.getAllUser = function(currentUser){
         return $http.get('/Users',{
             params: {currentUser: currentUser}
         });
-       };
+    };
     auth.deleteUser = function(deleteUser) {
         if(auth.isAdmin()){
             return $http.get('/usersDelete', {
@@ -207,9 +205,11 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             });
         }
     };
+
     auth.sendMessageto = function(message){
         return $http.post('/messages',message);
-    }
+    };
+
     auth.getMessage = function(userName){
         return $http.get('/messagesSend',{
             params : {username :  userName}
@@ -235,19 +235,19 @@ app.factory('auth', ['$http', '$window', function($http, $window){
      * Les sondages
      */
     auth.registerSondage= function (sondage,responses) {
-            var reponses=[];
-            angular.forEach(responses, function (reponse) {
-                reponses.push({name:reponse.name,rep:reponse.rep})
-            });
-            var questionRep=({question:sondage.question,reponses:reponses});
-            return $http.post('/sondage/create',questionRep);
+        var reponses=[];
+        angular.forEach(responses, function (reponse) {
+            reponses.push({name:reponse.name,rep:reponse.rep})
+        });
+        var questionRep=({question:sondage.question,reponses:reponses});
+        return $http.post('/sondage/create',questionRep);
 
     };
     auth.getAllSondages= function () {
         return $http.get('/Sondages');
     };
     auth.deleteSondage = function(sondage) {
-            return $http.post('/sondage/delete',sondage);
+        return $http.post('/sondage/delete',sondage);
     };
     auth.modifySondage= function (detail) {
 
@@ -267,7 +267,7 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             if(reponse._id==vote) reponse.Numvote++;
         });
     };
-    
+
     auth.getFriends = function(username){
         return $http.get('/friends',{
             params : {username : username}
@@ -303,7 +303,7 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         })
     };
     auth.removeFriends = function(infoFriends){
-       return $http.post('/user/friends/remove',infoFriends);
+        return $http.post('/user/friends/remove',infoFriends);
     };
     auth.existeUser = function(username,currentUser){
         return $http.get('/user/exist'
@@ -327,9 +327,9 @@ app.factory('events', ['$http', 'auth', function($http, auth){
     };
 
     o.getNews = function(){
-      return $http.get('/events/new').success(function(data){
-         angular.copy(data, o.events);
-      });
+        return $http.get('/events/new').success(function(data){
+            angular.copy(data, o.events);
+        });
     };
 
     o.getDisplayed = function(){
@@ -364,6 +364,7 @@ app.factory('events', ['$http', 'auth', function($http, auth){
 
     return o;
 }]);
+
 app.factory('commentaireService',['$http',function($http){
     var commentDetails ={};
     commentDetails.postComment = function(details){

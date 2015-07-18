@@ -10,22 +10,6 @@ ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, servi
     });
 
 }]);
-ReadIT.controller('searchCtrl',['$scope','$stateParams','auth', 'serviceDetails',function($scope,$stateParams, auth, serviceDetails) {
-    serviceDetails.getListOeuvre().success(function(oeuvres) {
-        console.log("oeuvres", oeuvres);
-        $scope.Oeuvres = oeuvres;
-
-        $scope.searchText = $stateParams.title;
-    });
-
-    auth.searchUsers($stateParams.title)
-        .success(function(data) {
-            $scope.users = data;
-        })
-        .error(function(err) {
-            alert(err);
-        })
-}]);
 
 ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
     $scope.logged = auth.isLoggedIn();
@@ -212,14 +196,6 @@ ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stat
 
 }]);
 
-ReadIT.controller('navBarCtrl',function($scope){
-    $scope.mytxt ='';
-    $scope.search = function(){
-        var searchTxt = $scope.mytxt;
-        document.location.href='/#/search/'+ searchTxt ;
-        $scope.mytxt = "";
-    };
-});
 ReadIT.controller('popular-controller',['$scope','serviceDetails',function($scope,serviceDetails) {
     serviceDetails.getPopular()
         .success(function(data) {

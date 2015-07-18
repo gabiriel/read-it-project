@@ -145,7 +145,7 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             }]
         })*/
         .state('ListOeuvre', {
-            url : '/ListOeuvre',
+            url : '/oeuvres',
             templateUrl : 'views/ListOeuvre.html',
             controller: 'OeuvreCtrl'
         })
@@ -157,7 +157,7 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
         .state('search',{
             url:'/search/:title',
             templateUrl:'views/SearchResults.html',
-            controller: 'searchCtrl'
+            controller: 'SearchCtrl'
         })
         .state('message',{
             url:'/message/:username',

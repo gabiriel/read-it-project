@@ -44,6 +44,7 @@
   <script src="js/controllers/UserResetPasswordController.js"></script>
   <script src="js/controllers/UiCalendarController.js"></script>
   <script src="js/controllers/MessageCtrl.js"></script>
+  <script src="js/controllers/SearchCtrl.js"></script>
   <script src="js/controllers/OeuvreCtrl.js"></script>
   <script src="js/controllers/SondagesCtrl.js"></script>
   <script src="js/services/services.js"></script>
@@ -75,8 +76,8 @@
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li ui-sref-active="active" ui-sref="about"><a>About</a></li>
-        <li ui-sref-active="active" ui-sref="contact"><a>Contact</a></li>
+        <li ui-sref-active="active" ui-sref="ListOeuvre"><a>Oeuvres</a></li>
+        <li ui-sref-active="active" ui-sref="about"><a>À propos</a></li>
         <li class="dropdown" ng-show="auth.isAdmin()">
           <a class="dropdown-toggle" data-toggle="dropdown"
              role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
@@ -100,7 +101,9 @@
       <div class="pull-right">
         <form class="navbar-form col-sm-3" role="search" ng-controller="navBarCtrl">
           <div class="input-group">
-            <input ng-model = "mytxt"  value="cherifa" type="text"  class="form-control" placeholder="Search" name="srch-term" id="srch-term" >
+            <input id="srch-term" class="form-control"
+                   type="text" placeholder="Recherche"
+                   ng-model="mytxt" name="srch-term">
             <div class="input-group-btn">
               <button class="btn btn-default" type="submit" ng-click="search()"><i class="glyphicon glyphicon-search"></i></button>
             </div>
