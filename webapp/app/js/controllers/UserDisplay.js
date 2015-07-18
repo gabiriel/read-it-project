@@ -48,9 +48,16 @@ readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope,
             {
                 if(data =="success")
                 {
-                    alert("ami suprimmé");
+                    $scope.return_add_friends_valide ="valide";
+                    $scope.return_add_friends_erreur="false";
+                    $scope.message_return = "cette utilisateur ne fait plus parti de votre liste d'ami";
                     $scope.add='addFriends';
                     $scope.remove='false';
+                }
+                else {
+                    $scope.return_add_friends_valide ="false";
+                    $scope.return_add_friends_erreur="erreur";
+                    $scope.message_return_error = "une erreur est servenu au moment de la suppression";
                 }
             }
         );
@@ -67,10 +74,17 @@ readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope,
                         Username : auth.currentUser()
                     };
                     auth.postRequestFriends(friends);
-                    alert('Demande envoyée');
+                    $scope.return_add_friends_valide ="valide";
+                    $scope.return_add_friends_erreur="false";
+                    $scope.message_return = "demande d'ami envoyé";
                     $scope.add='false';
                 }
-                else alert("Demande déja envoyée");
+                else {
+                    $scope.add='false';
+                    $scope.return_add_friends_valide ="false";
+                    $scope.return_add_friends_erreur="erreur";
+                    $scope.message_return_error = "Demande d'ami déja envoyé";
+                }
             }
         )
     };
@@ -82,7 +96,6 @@ readIt.controller('addRequestsCtrl',['$scope', 'auth', function($scope, auth) {
     if(auth.isLoggedIn()) {
         auth.getAddRequest(username).success(function (user) {
             $scope.requests = user;
-            console.log(user);
         });
         $scope.valideRequest = function (user, userToAdd) {
             var infoUser = {
@@ -98,7 +111,6 @@ readIt.controller('addRequestsCtrl',['$scope', 'auth', function($scope, auth) {
                         console.log(user);
                     });
                 }
-                else alert("demande déja envoyé");
             });
 
 

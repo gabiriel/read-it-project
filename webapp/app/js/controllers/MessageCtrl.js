@@ -21,17 +21,36 @@ app.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,$st
             Objet : objet,
             Message : message
         };
-        auth.sendMessageto(MessageBody).success(function(data){
-            console.log(data);
-            if (data =="success") {
-                $scope.message_return = "message envoyé";
-                $scope.username="";
-                $scope.objet ="";
-                $scope.newMessage=" ";
-            }
+        auth.alreadyFriends(MessageBody.Username, MessageBody.usernameSender).success(function(data){
+            if(data=="success") {
+                auth.sendMessageto(MessageBody).success(function (data) {
+                    console.log(data);
+                    if (data == "success") {
+                        $scope.message_return_valide = "valide";
+                        $scope.message_return_erreur = "false";
+                        $scope.message_return = "message envoyé ";
+                        $scope.objet = "";
+                        $scope.newMessage = " ";
 
-            else if(data =="echec") $scope.message_return = "l'utilisateur "+ MessageBody.Username +" n'a pas été trouvé, message non envoyé";
+                    }
+
+                    else if (data == "echec") {
+                        $scope.message_return_valide = "false";
+                        $scope.message_return_erreur = "erreur";
+                        $scope.message_return_error = "l'utilisateur " + MessageBody.Username + " n'a pas été trouvé, message non envoyé";
+
+
+                    }
+
+                });
+            }
+            else {
+                $scope.message_return_valide = "false";
+                $scope.message_return_erreur = "erreur";
+                $scope.message_return_error = "l'utilisateur " + MessageBody.Username + " n'est dans votre liste d'ami, message non envoyé";}
         });
+
+
     }
 }]);
 

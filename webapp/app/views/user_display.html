@@ -2,12 +2,13 @@
     <div class="row">
         <div class="col-m-10">
             <aside class="col-sm-3"> <!-- left Column -->
-
+                <div class="alert alert-success" role="alert" ng-show="return_add_friends_valide=='valide'" value="false">{{message_return}}</div>
+                <div class="alert alert-danger" role="alert" ng-show="return_add_friends_erreur=='erreur'" value="'false'"> {{message_return_error}}</div>
                 <div id="imgPanel" class="readit_block">
                     <h2 id="userName"> {{userName}} </h2>
                     <img  ng-src="{{imgSource[$index]}}}" alt="Photo_de_profil">
                     <div class="large">
-                        <a class="ng-pristine ng-valid ng-hide" ui-sref="message"
+                        <a class="ng-pristine ng-valid ng-hide" ui-sref="message({username : userName})"
                            ng-model="message" ng-show="message=='sendMessage'"
                            value="sendMessage">
                             <i class="glyphicon glyphicon-envelope"></i>

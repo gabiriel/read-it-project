@@ -679,9 +679,9 @@ router.post("/modifyUser" ,function (req,res){
 });
 
 router.post('/messages',function(req,res) {
-
+    console.log(req.body);
     var usernameSender = req.body.usernameSender;
-    var usernameReciver = req.body.username;
+    var usernameReciver = req.body.Username;
     var objet = req.body.Objet;
     var message = req.body.Message;
     User.findOneAndUpdate({username:usernameReciver},{
@@ -701,6 +701,7 @@ router.post('/messages',function(req,res) {
         }
 
         ,function(err,user){
+            console.log(user);
             if(user!=null)
                 res.end("success");
             else
@@ -711,6 +712,7 @@ router.post('/messages',function(req,res) {
 
 router.get('/messagesSend',function(req,res) {
     User.findOne({username:req.query.username},function(err,user){
+
         res.json(user.messages);
 
     });
@@ -1150,6 +1152,7 @@ router.post('/user/friends/remove',function(req,res){
         });
 });
 router.get('/user/exist',function(req,res){
+    var i=0;
     User.findOne(
         {
             username: req.query.currentUser,
@@ -1157,9 +1160,19 @@ router.get('/user/exist',function(req,res){
         },
         function(err,user){
             if(user!=null)
-                res.end("true");
-            res.end("false");
+                i++;
         }
-    )
+    );
+    User.findOne({
+            username: req.query.username,
+            'friends.name': req.query.currentUser
+        },
+        function(err,user){
+            if(user!=null)
+                i++;
+            if(i>=1) res.end("true");
+            res.end("false");
+    });
+
 });
 module.exports = router;

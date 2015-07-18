@@ -1,8 +1,6 @@
 <div class="row readit_block">
-    <div ng-show="message_return">
-        {{message_return}}
-    </div>
-
+    <div class="alert alert-success" role="alert" ng-show="message_return_valide=='valide'" value="false">{{message_return}}</div>
+    <div class="alert alert-danger" role="alert" ng-show="message_return_erreur=='erreur'" value="'false'"> {{message_return_error}}</div>
     <form method="POST" ng-submit="sendMessage(username,objet,newMessage)" class="col-md-9" >
         <div class="input-group">
             <span class="input-group-addon" >Utilisateur :</span>

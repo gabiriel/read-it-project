@@ -31,7 +31,8 @@ var UserSchema = new mongoose.Schema({
     }],
     friends:[{
         name: String,
-        accepted :{type : Boolean, default: false}
+        accepted :{type : Boolean, default: false},
+        _id:false
     }]
 });
 
