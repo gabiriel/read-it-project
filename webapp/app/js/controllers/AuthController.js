@@ -3,10 +3,12 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
     setInterval(function(){
             if(auth.isLoggedIn()){
                 auth.getCountMessageUnread(auth.currentUser()).success(function(nbUnreadMsg){
+                   if(nbUnreadMsg!=0)
                     $scope.numberMessage = nbUnreadMsg;
                 });
                 auth.getCountAddRequests(auth.currentUser()).success(function(nbFriendRequests){
-                    $scope.numberAddRequests = nbFriendRequests;
+                    if(nbFriendRequests!=0)
+                        $scope.numberAddRequests = nbFriendRequests;
                 });
             }
         },
@@ -66,10 +68,12 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
     
     if(auth.isLoggedIn()){
         auth.getCountMessageUnread(auth.currentUser()).success(function(data){
+            if(data!=0)
             $scope.numberMessage= data;
         });
 
         auth.getCountAddRequests(auth.currentUser()).success(function(data){
+            if(data!=0)
             $scope.numberAddRequests= data;
         });
     }
