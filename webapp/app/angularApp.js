@@ -193,7 +193,7 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
                     $state.go('error');
                 }
             }]
-        }) ;
+        })
 
         .state('adminUpdateOeuvre',{
             url:'/admin/oeuvre/upate/:id',

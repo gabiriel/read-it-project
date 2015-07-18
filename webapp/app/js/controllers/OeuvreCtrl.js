@@ -17,7 +17,6 @@ ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, servi
     };
      $scope.oeuvres = data;
 
- });
 }]);
 
 ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
