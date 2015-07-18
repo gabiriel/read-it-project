@@ -21,7 +21,11 @@ var ChapterSchema =new mongoose.Schema({
     number : Number,
     resume : String,
     date : Date,
-    ratings: [RatingSchema]
+    ratings: [RatingSchema],
+    cover:{
+        data: Buffer,
+        contentType: String
+    }
 });
 var OeuvreSchema = new  mongoose.Schema({
     type : String,
@@ -31,7 +35,12 @@ var OeuvreSchema = new  mongoose.Schema({
     category : [String],
     chapters : [ChapterSchema],
     ratings : [RatingSchema],
-    accessCount : Number
+    accessCount : Number,
+    cover:{
+        data: Buffer,
+        contentType: String
+    }
+
 });
 var OeuvreModel = mongoose.model('Oeuvre', OeuvreSchema);
 /* GET home page. */

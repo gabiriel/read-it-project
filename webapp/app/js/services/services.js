@@ -97,9 +97,13 @@ app.factory('serviceDetails', ['$http',function($http){
         });
     };
 
-    Details.saveOeuvre = function(oeuvre) {
-        return $http.post('/oeuvre/create', {
-            oeuvre:oeuvre
+    Details.saveOeuvre = function(oeuvre,image) {
+        var fd = new FormData();
+        fd.append('image', image);
+        fd.append('oeuvre', JSON.stringify(oeuvre));
+        return $http.post('/oeuvre/create', fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
         });
     };
     Details.saveChapterRating = function(oeuvreId, chapterId, rating,userId) {

@@ -8,6 +8,7 @@ var jwt = require('express-jwt');
 var auth = jwt({secret: '$eucrèt', userProperty: 'payload'});
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
+var fs = require("fs");
 
 
 var mongoose = require('mongoose');
@@ -775,13 +776,20 @@ router.get('/DetailUser',function(req,res) {
     );
 });
 router.post('/oeuvre/create',function(req,res) {
-    OeuvreModel.create(req.body.oeuvre,function(err, data){
-        if(err) {
-            res.end('error');
-            return;
-        }
-        res.end('success');
-    });
+    console.log(req.body);
+    var oeuvre = JSON.parse(req.body.oeuvre);
+    fs.readFile(req.files['to-import'].path,function(err, data) {
+        if(err)
+            throw err;
+        OeuvreModel.create(oeuvre.with({image: data}),function(err, data){
+            if(err) {
+                res.end('error');
+                return;
+            }
+            res.end('success');
+        });
+    })
+
 });
 router.post('/oeuvre/rate/chapter',function(req,res) {
 
