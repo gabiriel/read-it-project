@@ -9,6 +9,12 @@
                 <select ng-init="type = 'Manga'" id="cbx-type" ng-class="type" class="form-control" ng-model="type" ng-options="t for t in ['Manga','Comic','BD']">
                 </select>
             </div>
+            <div class="form-group">
+            <label for="ubtn-cover">Couverture</label>
+            <span class="btn btn-default btn-file">
+                Browse <input id="ubtn-cover" type="file" file-model="cover">
+            </span>
+            </div>
             <label for="txt-author">auteurs</label>
             <div ng-repeat="author in authors">
                 <p>

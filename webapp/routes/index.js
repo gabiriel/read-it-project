@@ -778,18 +778,16 @@ router.get('/DetailUser',function(req,res) {
 router.post('/oeuvre/create',function(req,res) {
     console.log(req.body);
     var oeuvre = JSON.parse(req.body.oeuvre);
-    fs.readFile(req.files['to-import'].path,function(err, data) {
-        if(err)
-            throw err;
-        OeuvreModel.create(oeuvre.with({image: data}),function(err, data){
+    fs.rename(req.files['image'].path, 'app/img/Covers/' + req.files['image'].name, function(err, data) {
+        oeuvre.cover = req.files['image'].name;
+        OeuvreModel.create(oeuvre,function(err, data){
             if(err) {
                 res.end('error');
                 return;
             }
             res.end('success');
         });
-    })
-
+    });
 });
 router.post('/oeuvre/rate/chapter',function(req,res) {
 

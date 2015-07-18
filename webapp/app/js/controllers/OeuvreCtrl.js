@@ -258,6 +258,7 @@ app.controller('add-oeuvre-controller',['$scope','serviceDetails',function($scop
         if (!confirm('Êtes vous sûr de vouloir sauvegarder ' + $scope.name + ' ?'))
             return;
         $scope.newNumber = Math.floor($scope.newNumber) + 1;
+        alert($scope.cover);
         serviceDetails.saveOeuvre({
                 name: $scope.name,
                 chapters: $scope.chapters,
@@ -270,7 +271,7 @@ app.controller('add-oeuvre-controller',['$scope','serviceDetails',function($scop
                                 .map(function(elem) {
                                     return elem.name;
                                 })
-            })
+            },$scope.cover)
             .success(function(data) {
                 $scope.name = '';
                 $scope.type= '';
