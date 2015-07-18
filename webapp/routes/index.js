@@ -912,7 +912,7 @@ router.post('/oeuvre/update',function(req,res) {
     );
 });
 router.post('/oeuvre/remove',function(req,res) {
-    var oeuvreId = req.body._id;
+    var oeuvreId = req.body.idOeuvre;
     OeuvreModel
         .find({_id: oeuvreId})
         .remove()
