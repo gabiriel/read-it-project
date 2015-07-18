@@ -1,3 +1,4 @@
+var ReadIT = angular.module('readIt');
 ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, serviceDetails){
 
     serviceDetails.getListOeuvre().success(function(oeuvres) {
