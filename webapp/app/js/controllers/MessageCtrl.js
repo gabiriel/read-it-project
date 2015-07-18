@@ -14,7 +14,6 @@ app.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,$st
     ];
 
     $scope.sendMessage = function(username, objet, message){
-        console.log(username);
         var MessageBody = {
             usernameSender : auth.currentUser(),
             Username : username,
@@ -23,9 +22,8 @@ app.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,$st
         };
         auth.alreadyFriends(MessageBody.Username, MessageBody.usernameSender).success(function(data){
             if(data=="success") {
-                auth.sendMessageto(MessageBody).success(function (data) {
-                    console.log(data);
-                    if (data == "success") {
+                auth.sendMessageto(MessageBody).success(function (send) {
+                    if (send == "success") {
                         $scope.message_return_valide = "valide";
                         $scope.message_return_erreur = "false";
                         $scope.message_return = "message envoyé ";
@@ -34,21 +32,24 @@ app.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,$st
 
                     }
 
-                    else if (data == "echec") {
-                        $scope.message_return_valide = "false";
-                        $scope.message_return_erreur = "erreur";
-                        $scope.message_return_error = "l'utilisateur " + MessageBody.Username + " n'a pas été trouvé, message non envoyé";
 
-
-                    }
 
                 });
             }
-            else {
+            else if(data=="echec"){
                 $scope.message_return_valide = "false";
                 $scope.message_return_erreur = "erreur";
-                $scope.message_return_error = "l'utilisateur " + MessageBody.Username + " n'est dans votre liste d'ami, message non envoyé";}
+                $scope.message_return_error = "l'utilisateur " + MessageBody.Username + " n'est dans votre liste d'ami, message non envoyé";
+            }
+            else{
+                $scope.message_return_valide = "false";
+                $scope.message_return_erreur = "erreur";
+                $scope.message_return_error = "l'utilisateur " + MessageBody.Username + " n'a pas été trouvé, message non envoyé";
+
+
+            }
         });
+
 
 
     }

@@ -1095,26 +1095,39 @@ router.get('/user/friends/requests',function(req,res){
     });
 });
 router.get('/user/friends/already',function(req,res){
-    var i=0;
-    User
-        .findOne(
-        {
-            username:req.query.user,
-            'friends.name': req.query.userFriends ,
-            'friends.accepted':true
-        }
-        ,function(err,user)
-        {
-            if(user!=null)
-                i++;
-        }
-    );
-    User.findOne({username:req.query.userFriends, 'friends.name': req.query.user,'friends.accepted':true },function(err,user){
-        if(user!=null)
-            i++;
-        if(i==2) res.end("success");
-        else res.end("echec");
-    });
+    User.findOne({
+        'username': req.query.user
+    },function(err,user){
+        console.log(user);
+            if(user!=null) {
+                var i = 0;
+                User
+                    .findOne(
+                    {
+                        username: req.query.user,
+                        'friends.name': req.query.userFriends,
+                        'friends.accepted': true
+                    }
+                    , function (err, user) {
+                        if (user != null)
+                            i++;
+                    }
+                );
+                User.findOne({
+                    username: req.query.userFriends,
+                    'friends.name': req.query.user,
+                    'friends.accepted': true
+                }, function (err, user) {
+                    if (user != null)
+                        i++;
+                    if (i == 2) res.end("success");
+                    else res.end("echec");
+                });
+            }
+        else res.end("echecUser");
+
+        });
+
 });
 router.post('/user/friends/remove',function(req,res){
     var i=0;
