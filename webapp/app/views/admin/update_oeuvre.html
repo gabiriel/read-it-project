@@ -1,0 +1,102 @@
+<aside class="col-sm-12 container"> <!-- Center Large Column -->
+    <div>
+        <form method="post">
+            <div class="form-group">
+                <label for="txt-name">nom</label>
+                <input class="form-control" type="text" id="txt-name" ng-model="name"/>
+            </div>
+            <div class="form-group">
+                <select ng-init="type = 'Manga'" id="cbx-type" ng-class="type" class="form-control" ng-model="type" ng-options="t for t in ['Manga','Comic','BD']">
+                </select>
+            </div>
+
+            <label for="txt-author">auteurs</label>
+            <div ng-repeat="author in authors">
+                <p>
+                    {{author.name}}
+                    <i ng-click="authors.splice($index, 1)" class="glyphicon glyphicon-remove" style="float:right"></i>
+                </p>
+            </div>
+            <div class="form-group">
+                <input type="text" id="txt-author" ng-model="newAuthor" ng-enter="addAuthor()" class="form-control"/>
+            </div>
+            <button ng-click="addAuthor()" class="btn btn-default">ajouter</button>
+
+
+            <div class="form-group">
+                <label for="txt-category">categories</label>
+                <div ng-repeat="category in categories">
+                    <p>
+                        {{category.name}}
+                        <i ng-click="categories.splice($index, 1)" class="glyphicon glyphicon-remove" style="float:right"></i>
+                    </p>
+                </div>
+                <input type="text" id="txt-category" ng-model="newCategory" ng-enter="addCategory()" class="form-control" />
+            </div>
+            <button ng-click="addCategory()" class="btn btn-default">ajouter</button>
+            <br/>
+            <label for="txt-chapter-name">Chapters</label>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default" ng-repeat="chapter in chapters">
+                    <div class="panel-heading" role="tab" id="heading-{{chapter._id}}">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapse-{{chapter._id}}" aria-expanded="false" aria-controls="collapseTwo">
+                                {{chapter.number}} : {{chapter.name}}({{chapter.date | date : 'dd/mm/yyyy'}})
+                                <i ng-click="chapters.splice($index, 1)" class="glyphicon glyphicon-remove" style="float:right"></i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse-{{chapter._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{chapter._id}}">
+                        <div class="panel-body" ng-bind-html="chapter.resume">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="txt-chapter-name">titre</label>
+                <input type="text" id="txt-chapter-name" ng-model="newChapter.name" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="txt-number" >Numéro</label>
+                <input type="number" id="txt-number" class="form-control" ng-model="newChapter.number" step="any" ng-init="newChapter.number = 1"/>
+            </div>
+            <div class="form-group">
+
+                <label for="dpk-date">date </label>
+                <input
+                        type="text" class="form-control" aria-describedby="basic-addon-calendar"
+                        name="date"
+                        ng-model="newChapter.date"
+                        placeholder="Date de sortie"
+                        data-date-format="dd/MM/yyyy"
+                        data-date-type="number"
+                        data-autoclose="1"
+                        bs-datepicker
+                        id="dpk-date"
+                        />
+                <label for="rtxt-resume">resume </label>
+                <wysiwyg
+                        id="rtxt-resume"
+                        textarea-id="rtxt-resume"
+                        textarea-class="form-control"
+                        textarea-height="80px"
+                        textarea-name="textareaQuestion"
+                        textarea-required
+                        ng-model="newChapter.resume"
+                        enable-bootstrap-title="true"
+                        textarea-menu="commentMenu"
+                        ></wysiwyg>
+                <label for="ckbx-ss">
+                    Hors serie
+                    <input type="checkbox" id="ckbx-ss" ng-model="chapter.sideStory"/>
+                </label>
+            </div>
+            <button class="btn btn-default" ng-click="addChapter()">Ajouter</button>
+            <br/>
+            <button type="submit" class="btn btn-primary" ng-click="save()">
+                modifier
+            </button>
+        </form>
+    </div>
+</aside>
+

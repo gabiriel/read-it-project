@@ -1,14 +1,23 @@
-/**
- * Created by macbookpro on 19/06/15.
- */
-var ReadIT = angular.module('readIt');
-
 ReadIT.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, serviceDetails){
 
     serviceDetails.getListOeuvre().success(function(oeuvres) {
         $scope.oeuvres = oeuvres;
     });
+    $scope.remove = function(oeuvre) {
+        if(!confirm('etes vous sur de vouloires supprimer cette oeuvre ?'))
+            return;
 
+        serviceDetails.removeOeuvre(oeuvre._id)
+            .success(function(data) {
+                $scope.oeuvres.splice($scope.oeuvres.indexOf(oeuvre),1);
+            })
+            .error(function(err) {
+                alert('une erreur est survenue lors de la suppresion de l\'ouevre : ' +err);
+            });
+    };
+     $scope.oeuvres = data;
+
+ });
 }]);
 
 ReadIT.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
@@ -273,6 +282,75 @@ ReadIT.controller('add-oeuvre-controller',['$scope','serviceDetails',function($s
             })
             .error(function(err) {
                 alert('Une erreur est survenue lors de la sauvegarde');
+            });
+    };
+}]);
+ReadIt.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetails',function($scope, $stateParams, serviceDetails) {
+    $scope.newComment = {};
+    $scope.chapters = [];
+    $scope.categories = [];
+    $scope.authors = [];
+    serviceDetails.getOeuvre($stateParams.id)
+        .success(function(data) {
+            $scope.chapters = data.chapters;
+            $scope.name = data.name;
+            $scope.categories = data.category.map(function(elem) {
+                return {name: elem}
+            });
+            $scope.authors = data.author.map(function(elem) {
+                return {name: elem}
+            });
+        })
+        .error(function(data) {
+            alert(data);
+        });
+    $scope.addAuthor =function() {
+        if($scope.newAuthor == '') return;
+        //alert(JSON.stringify($scope.authors));
+        $scope.authors.push({name: $scope.newAuthor});
+        $scope.newAuthor = '';
+        $("#txt-author").focus();
+    };
+    $scope.addCategory = function() {
+        if($scope.newCategory == '') return;
+        $scope.categories.push({name: $scope.newCategory});
+        $scope.newCategory = '';
+        $("#txt-category").focus();
+    };
+    $scope.addChapter = function() {
+        $scope.chapters.push($scope.newChapter);
+        $scope.newChapter = {};
+        $("#txt-chapter-name").focus();
+    };
+    $scope.commentMenu = [
+        ['bold', 'italic', 'underline', 'strikethrough'],
+        ['ordered-list', 'unordered-list', 'outdent', 'indent'],
+        ['left-justify', 'center-justify', 'right-justify'],
+        ['quote'],
+        ['link']
+    ];
+    $scope.save = function() {
+        if (!confirm('etes vous sure de vouloir sauvegarder ' + $scope.name + ' ?'))
+            return;
+        $scope.newNumber = Math.floor($scope.newNumber) + 1;
+        serviceDetails.updateOeuvre({
+            _id:$stateParams.id,
+            name: $scope.name,
+            chapters: $scope.chapters,
+            type: $scope.type,
+            category: $scope.categories
+                .map(function(elem) {
+                    return elem.name;
+                }),
+            author: $scope.authors
+                .map(function(elem) {
+                    return elem.name;
+                })
+        })
+            .success(function(data) {
+            })
+            .error(function(err) {
+                alert('une erreure est survenue lors de la sauvegarde');
             });
     };
 }]);

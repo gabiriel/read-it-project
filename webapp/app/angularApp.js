@@ -195,4 +195,15 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
             }]
         }) ;
 
+        .state('adminUpdateOeuvre',{
+            url:'/admin/oeuvre/upate/:id',
+            templateUrl: "views/admin/update_oeuvre.html",
+            controller: 'update-oeuvre-controller',
+            onEnter: ['$state', 'auth', function($state, auth){
+                if(!auth.isAdmin()) {
+                    $state.go('error');
+                }
+            }]
+        })
+       ;
     });

@@ -13,6 +13,8 @@
             <ul class="example-animate-container">
                 <li id="listOeuvre" ng-repeat="oeuvre in oeuvres">
                     <a ui-sref="oeuvre({ id: oeuvre._id})"> {{oeuvre.name}} </a>
+                    <i class="glyphicon glyphicon-remove" style="float: right;" ng-click="remove(oeuvre)"></i>
+                    <i class="glyphicon glyphicon-pencil" style="float: right;" ui-sref="adminUpdateOeuvre({id: oeuvre._id})"></i>
                 </li>
             </ul>
         </div>

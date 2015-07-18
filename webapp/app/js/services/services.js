@@ -117,7 +117,16 @@ app.factory('serviceDetails', ['$http',function($http){
             idOeuvre: idOeuvre
         });
     };
-
+    Details.updateOeuvre = function(oeuvre) {
+        return $http.post('/oeuvre/update', {
+            oeuvre: oeuvre
+        });
+    };
+    Details.removeOeuvre = function(idOeuvre) {
+        return $http.post('/oeuvre/remove', {
+            idOeuvre:idOeuvre
+        });
+    };
 
     return Details;
 }]);

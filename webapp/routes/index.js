@@ -17,7 +17,6 @@ var UserForgotPwd = mongoose.model('UserForgotPassword');
 var CalendarEvent = mongoose.model('CalendarEvent');
 var OeuvreModel = mongoose.model('Oeuvre');
 var Commentaires = mongoose.model('Commentaires');
-var Sondages = mongoose.model('Sondages');
 
 /** Mail config
  *************************************************/
@@ -177,7 +176,7 @@ router.post('/user/reset/', function(req,res) {
     });
 });
 /**
- * Event (calendar)
+ * Create event from home.html (form near calendar)
  */
 router.post('/event/create', auth, function(req, res, next) {
     var event = new CalendarEvent(req.body);
@@ -192,12 +191,11 @@ router.post('/event/update', function(req, res, next) {
 
     var updatedEvent = req.body,
         query = {_id: updatedEvent._id},
-        updates = {$set: updatedEvent},
         options = { multi: true };
 
     console.log("[Query] update event (id = " + updatedEvent._id + ")");
 
-    CalendarEvent.update(query, updates, options, function(err, event){
+    CalendarEvent.update(query, {$set: updatedEvent}, options, function(err, event){
         if(err){ return next(err); }
         console.log("[Mongoose] event successfuly updated");
         res.json(event);
@@ -227,13 +225,6 @@ router.get('/events/new', function(req, res, next) {
     CalendarEvent.find({display: false}, function(err, events){
         if(err){ return next(err); }
         console.log("[Mongoose] new events successfuly retrieved");
-        res.json(events);
-    });
-});
-router.get('/events/displayed', function(req, res, next) {
-    CalendarEvent.find({display: true}, function(err, events){
-        if(err){ return next(err); }
-        console.log("[Mongoose] Displayed events successfuly retrieved");
         res.json(events);
     });
 });
@@ -658,7 +649,7 @@ router.post("/modifyUser" ,function (req,res){
 
     if( !(formUser.firstname || formUser.lastname || formUser.mail) ){
         return res.status(400).json({message: 'Veuillez renseigner tout les champs'});
-    }
+            }
 
     var query = {_id: formUser._id};
     var updates = {
@@ -680,7 +671,7 @@ router.post("/modifyUser" ,function (req,res){
 router.post('/messages',function(req,res) {
 
     var usernameSender = req.body.usernameSender;
-    var usernameReciver = req.body.Username;
+    var usernameReciver = req.body.username;
     var objet = req.body.Objet;
     var message = req.body.Message;
     User.findOneAndUpdate({username:usernameReciver},{
@@ -716,7 +707,11 @@ router.get('/messagesSend',function(req,res) {
 });
 router.get('/messagesUnread',function(req,res) {
     User.findOne({username:req.query.username},function(err,user){
-
+      console.log("lenght", user.messages
+            .filter(function(elem) {
+                return ! elem.reads;
+            })
+            .length);
 
         res.json(user.messages
             .filter(function(elem) {
@@ -834,6 +829,7 @@ router.post('/oeuvre/rate/chapter',function(req,res) {
         }
    )
 });
+
 router.post('/oeuvre/read/all',function(req,res) {
     var idOeuvre = req.body.idOeuvre;
     var userId = req.body.user;
@@ -880,6 +876,42 @@ router.post('/oeuvre/read/all',function(req,res) {
             );
         });
 });
+router.post('/oeuvre/update',function(req,res) {
+    var oeuvreId = req.body.oeuvre._id;
+    var authors = req.body.oeuvre.author;
+    var categories = req.body.oeuvre.category;
+    var name = req.body.oeuvre.name;
+    var chapters = req.body.oeuvre.chapters;
+    OeuvreModel.findOneAndUpdate(
+        {
+            _id:oeuvreId
+        },
+        {
+            $set:
+            {
+                category: categories,
+                author: authors,
+                name: name
+            }
+        },
+        function(err,data) {
+            if(err) throw err;
+            console.log('succeded')
+            res.end('ok');
+        }
+    );
+});
+router.post('/oeuvre/remove',function(req,res) {
+    var oeuvreId = req.body._id;
+    OeuvreModel
+        .find({_id: oeuvreId})
+        .remove()
+        .exec(function(err,data) {
+            if(err) throw err;
+            res.end('ok');
+        });
+});
+
 router.post('/sondage/create', function (req,res) {
     var form = req.body;
     var newSondage = new Sondages({
