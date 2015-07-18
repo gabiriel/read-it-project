@@ -22,9 +22,10 @@ var Commentaires = mongoose.model('Commentaires');
  *************************************************/
 var sender_email = {
     user: "social.readit",
-    address: this.user + "@gmail.com",
+    address: "social.readit@gmail.com",
     password: "ChuckN0rr1s"
 };
+
 var mailTransport = nodemailer.createTransport({
     service:'Gmail',
     auth:{
