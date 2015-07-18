@@ -20,8 +20,9 @@ var UserSchema = new mongoose.Schema({
     favoris:[String],
     picture: String,
     reads:[{
-        idOeuvre:String,
-        idChapter:String
+        idOeuvre: String,
+        idChapter: String,
+        date: { type: Date, default: Date.now }
     }],
     messages:[{
         sender : String,
