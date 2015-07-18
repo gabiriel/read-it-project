@@ -90,6 +90,9 @@
                     </div>
                     <div id="collapse-{{chapter._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{chapter._id}}">
                         <div class="panel-body">
+                            <div class=" col-xs-5 " ng-show="chapter.cover">
+                                <img style="width:200px;height:200px;" ng-src="img/Covers/{{chapter.cover}}" />
+                            </div>
                             {{chapter.resume}}
                         </div>
                     </div>

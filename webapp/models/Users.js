@@ -18,6 +18,7 @@ var UserSchema = new mongoose.Schema({
     hashpass: String,
     salt: String,
     favoris:[String],
+    picture: String,
     reads:[{
         idOeuvre:String,
         idChapter:String

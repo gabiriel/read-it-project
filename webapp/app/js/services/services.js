@@ -100,6 +100,13 @@ app.factory('serviceDetails', ['$http',function($http){
     Details.saveOeuvre = function(oeuvre,image) {
         var fd = new FormData();
         fd.append('image', image);
+        for(var i in oeuvre.chapters) {
+            if(oeuvre.chapters[i].cover) {
+                fd.append('image-' + i, oeuvre.chapters[i].cover);
+                oeuvre.chapters[i].cover = undefined;
+            }
+        }
+
         fd.append('oeuvre', JSON.stringify(oeuvre));
         return $http.post('/oeuvre/create', fd, {
             transformRequest: angular.identity,
@@ -323,6 +330,15 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             ,{
                 params:{username : username,currentUser:currentUser}
             });
+    };
+    auth.changePicture = function(userId,picture) {
+        var fd = new FormData();
+        fd.append('picture', picture);
+        fd.append('userId', userId);
+        return $http.post('/user/picture/change', fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        });
     };
     return auth;
 }]);

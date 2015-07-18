@@ -780,6 +780,13 @@ router.post('/oeuvre/create',function(req,res) {
     var oeuvre = JSON.parse(req.body.oeuvre);
     fs.rename(req.files['image'].path, 'app/img/Covers/' + req.files['image'].name, function(err, data) {
         oeuvre.cover = req.files['image'].name;
+        var i;
+        for(var i in oeuvre.chapters) {
+            if(req.files['image-' + i]) {
+                fs.rename(req.files['image-' + i].path, 'app/img/Covers/' + req.files['image-' + i].name, function(err, data) {if(err) throw err;});
+                oeuvre.chapters[i].cover = req.files['image-' + i].name;
+            }
+        }
         OeuvreModel.create(oeuvre,function(err, data){
             if(err) {
                 res.end('error');
@@ -1193,5 +1200,28 @@ router.get('/user/exist',function(req,res){
             res.end("false");
     });
 
+});
+
+router.post('/user/picture/change',function(req,res) {
+    console.log("change user picture !")
+    var id = req.body.userId;
+    fs.rename(req.files['picture'].path, 'app/img/UserPictures/' + req.files['picture'].name, function(err, data) {
+        if(err) throw err;
+        User.findOneAndUpdate(
+            {
+                _id:id
+            },
+            {
+                picture: req.files['picture'].name
+            },
+            {
+                safe:true
+            },
+            function(err,data) {
+                if(err) throw err;
+                res.end(req.files['picture'].name);
+            }
+        )
+    });
 });
 module.exports = router;

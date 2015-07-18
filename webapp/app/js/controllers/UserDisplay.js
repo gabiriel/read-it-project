@@ -1,11 +1,11 @@
 var readIt = angular.module('readIt');
 readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope, $stateParams, auth){
     var user = $stateParams.user;
-
     $scope.imgSource ="img.jpg";//donnée le lien vers limage de profile de chaque utilisateur
     $scope.auth = auth;
 
     auth.getUser(user).success(function(data){
+        $scope.user = data;
         $scope.userName = data.username;
         if($scope.userName == auth.currentUser())
         {
@@ -62,7 +62,17 @@ readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope,
             }
         );
     };
+    $scope.changePicture = function(files) {
+        //alert("test");
+        //alert(files);
+        auth.changePicture(auth.currentUserId(),files[0])
+            .success(function(data) {
+                $scope.user.picture = data;
+            })
+            .error(function() {
 
+            });
+    };
     $scope.addFriend = function(){
 
         auth.existeUser(auth.currentUser(),$scope.userName)
