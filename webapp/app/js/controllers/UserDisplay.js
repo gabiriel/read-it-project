@@ -7,12 +7,14 @@ readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope,
     auth.getUser(user).success(function(data){
         $scope.user = data;
         $scope.userName = data.username;
+        $scope.isCurrentUserPage = $scope.userName == auth.currentUser();
         if($scope.userName == auth.currentUser())
         {
             $scope.add='false';
             $scope.remove='false';
             $scope.bloc = 'false';
             $scope.message='false';
+
         }
         else{
             $scope.add='addFriends';
