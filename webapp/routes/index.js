@@ -280,7 +280,8 @@ router.post('/commentaire', function(req,res) {
     var commentaire = new Commentaires({
      user : req.body.user,
      id_oeuvre : req.body.id,
-     commentaire :req.body.commentaire
+     commentaire :req.body.commentaire,
+     date: new Date()
      });
     commentaire.save(function (err) {
         if (err) { throw err; }
@@ -702,7 +703,6 @@ router.post('/messages',function(req,res) {
         }
 
         ,function(err,user){
-            console.log(user);
             if(user!=null)
                 res.end("success");
             else
@@ -1009,8 +1009,8 @@ router.post('/user/friends/add',function(req,res) {
                 friends  :
                 {
                     name : req.body.user,
-                    accepted : true
-
+                    accepted : true,
+                    date : new Date()
                 }
             }
         },
@@ -1019,16 +1019,18 @@ router.post('/user/friends/add',function(req,res) {
         }
 
         ,function(err,user){
-            console.log("userna",user);
+
             if(user!=null)
                 i++;
         });
-    console.log("usertoadd",req.body.user);
     User.findOneAndUpdate({username:req.body.user, 'friends.name':req.body.userToAdd},
         {
             $set:
             {
-                'friends.$.accepted' :true}
+                'friends.$.accepted' :true,
+                 'friends.$.date' : new Date()
+
+            }
         },
         {
             safe: true

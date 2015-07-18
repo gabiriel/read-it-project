@@ -117,7 +117,8 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
         var CommentDetails ={
             id : $stateParams.id,
             user : auth.currentUser(),
-            commentaire : $scope.newComment
+            commentaire : $scope.newComment,
+            date : new Date()
 
         };
         commentaireService.postComment(CommentDetails).success(function(data){
@@ -197,7 +198,16 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
     $scope.displayComments = function(){
         var id_oeuvre=$stateParams.id;
         commentaireService.getComments(id_oeuvre).success(function(data){
-            $scope.comments = data;
+            $scope.comments = data
+                .map(function(elem){
+                return {
+                    _id: elem._id,
+                    user :elem.user ,
+                    id_oeuvre : elem.id_oeuvre ,
+                    commentaire : elem.commentaire,
+                    date : new Date(elem.date)
+                }
+            });
         });
     };
 

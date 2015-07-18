@@ -33,6 +33,7 @@ var UserSchema = new mongoose.Schema({
     friends:[{
         name: String,
         accepted :{type : Boolean, default: false},
+        date: Date,
         _id:false
     }]
 });

@@ -105,6 +105,7 @@
             <div ng-repeat="comment in comments">
                 <p class="user_name">{{comment.user}} :</p>
                 <div ng-bind-html="comment.commentaire"></div>
+                <span class="pull-right">{{comment.date.toLocaleString()}}</span>
                 <hr/>
             </div>
         </div>
