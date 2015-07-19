@@ -157,7 +157,7 @@
         <ui-view></ui-view>
       </aside>
       <aside class="col-sm-3"> <!-- Right Column -->
-        <div id="sondages" class="readit_block" ng-controller="SondagesCtrl">
+        <div id="sondages" class="readit_block" ng-controller="SondagesCtrl" ng-show="sondages.length">
           <h3>Sondage</h3>
           <div ng-repeat="sondage in sondages">
             <a ui-sref="sondage({ id: sondage._id})">{{sondage.question}}</a>
@@ -165,12 +165,14 @@
         </div>
         <div id="recommendation" class="readit_block" ng-controller="wellRated-controller">
           <h3>Les mieux notés</h3>
+          <p ng-hide="wellRated.length" class="alert alert-info">Aucun contenu</p>
           <div ng-repeat="oeuvre in wellRated">
             <a ui-sref="oeuvre({ id: oeuvre._id})">{{oeuvre.name}}</a>
           </div>
         </div>
         <div id="populaires" class="readit_block" ng-controller="popular-controller">
-          <h3>Les plus vues</h3>
+          <h3>Les plus populaires</h3>
+            <p ng-hide="populars.length" class="alert alert-info">Aucun contenu</p>
           <div ng-repeat="popular in populars">
             <a ui-sref="oeuvre({ id: popular._id})">{{popular.name}}</a>
           </div>
