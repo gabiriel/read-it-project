@@ -45,11 +45,14 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
         $scope.oeuvre = data;
 
         $scope.rating = $scope.oldRating = data.ratings.reduce(function(x,y) { return x + y.rating; },0) / data.ratings.length
-            || 0;
-        $scope.ratings = data.chapters.map(function(chapter) {
-            return chapter.ratings.reduce(function(c,n) {
+                                            || 0;
+        for(var i in data.chapters) {
+            $scope.oeuvre.chapters[i].rating = data.chapters[i].ratings.reduce(function(c,n) {
                 return c + n.rating;
             }, 0);
+        }
+        $scope.ratings = $scope.oeuvre.chapters.map(function(chapter) {
+            return chapter.rating;
         });
         if(auth.isLoggedIn()) {
             serviceDetails.getReadChapter(auth.currentUser(),$stateParams.id)
@@ -153,7 +156,7 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
             return;
         }
         $scope.oeuvre.chapters[index].rating = $scope.ratings[index];
-        serviceDetails.saveChapterRating($scope.oeuvre._id,$scope.oeuvre.chapters[index]._id,$scope.ratings[index],auth.currentUserId())
+        serviceDetails.saveChapterRating($scope.oeuvre._id,$scope.oeuvre.chapters[index]._id,$scope.ratings[index],auth.currentUser())
             .success(function(data) {
                 console.log(data);
                 $scope.oeuvre.chapters[index].rating = parseInt(data);

@@ -13,7 +13,8 @@ var util = require('util');
 
 var RatingSchema = new mongoose.Schema({
     user : String,
-    rating : Number
+    rating : Number,
+    date : {type: Date, default: Date.now}
 });
 var ChapterSchema =new mongoose.Schema({
     pageNumber : Number,

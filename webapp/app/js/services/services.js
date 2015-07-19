@@ -118,7 +118,7 @@ app.factory('serviceDetails', ['$http',function($http){
             oeuvreId: oeuvreId,
             chapterId: chapterId,
             rating: rating,
-            userId: userId
+            user: userId
         })
     };
 
@@ -340,6 +340,11 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             headers: {'Content-Type': undefined}
         });
     };
+    auth.getActivity = function(userName) {
+        return $http.get('/user/activity',{
+            params:{userName:userName}
+        })
+    }
     return auth;
 }]);
 

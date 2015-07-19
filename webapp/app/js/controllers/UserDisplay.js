@@ -39,7 +39,17 @@ readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope,
             }
         );
     });
-
+    auth.getActivity(user)
+        .success(function(data) {
+            console.dir(data.ratings);
+            $scope.activities = data.reads
+                        .concat(data.friends)
+                        .concat(data.comments)
+                        .concat(data.ratings);
+                                //.sort(function(e1,e2) {
+                                //    return e2.date - e1.date;
+                                //});
+        });
     $scope.removeFromFriend=function(){
         var info ={
             user : auth.currentUser(),

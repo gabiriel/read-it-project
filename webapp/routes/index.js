@@ -806,7 +806,7 @@ router.post('/oeuvre/rate/chapter',function(req,res) {
         {
            $pull: {
                 'chapters.$.ratings':{
-                   userId: req.userId
+                   user: req.body.user
                 }
             }
         },
@@ -822,7 +822,7 @@ router.post('/oeuvre/rate/chapter',function(req,res) {
                {
                    $addToSet: {
                        'chapters.$.ratings':{
-                           userId: req.body.userId,
+                           user: req.body.user,
                            rating: req.body.rating
                        }
                    }
@@ -934,6 +934,17 @@ router.post('/oeuvre/remove',function(req,res) {
         .exec(function(err,data) {
             if(err) throw err;
             res.end('ok');
+            User
+                .find()
+                .update({
+                    $pull: {
+                        reads: {idOeuvre: oeuvreId}
+                    }
+                })
+                .exec(function(err,data) {
+                    if(err) throw err;
+                    res.end('ok');
+                })
         });
 });
 
@@ -1205,7 +1216,6 @@ router.get('/user/exist',function(req,res){
 });
 
 router.post('/user/picture/change',function(req,res) {
-    console.log("change user picture !")
     var id = req.body.userId;
     fs.rename(req.files['picture'].path, 'app/img/UserPictures/' + req.files['picture'].name, function(err, data) {
         if(err) throw err;
@@ -1225,5 +1235,103 @@ router.post('/user/picture/change',function(req,res) {
             }
         )
     });
+});
+
+router.get('/user/activity',function(req,res) {
+    var user = req.query.userName;
+    Commentaires
+        .find({user: user})
+        .lean()
+        .exec(function(err, comments) {
+            if(err) throw err;
+            User
+                .findOne({username: user})
+                .select('_id friends reads')
+                .lean()
+                .exec(function(err,users) {
+                    if(err) throw err;
+                    OeuvreModel
+                        .find
+                        ({
+                            $or :
+                            [
+                                {
+                                    _id:{
+                                        $in: comments
+                                            .map(function(elem) {
+                                                return elem.id_oeuvre;
+                                            })
+                                            .concat(users.reads
+                                                .map(function(elem) {
+                                                    return elem.idOeuvre;
+                                                })
+                                            )
+                                    }
+                                },
+                                {
+                                    'chapter.$.ratings.idUser':user._id
+                                }
+                            ]
+                        })
+                        .lean()
+                        .exec(function(err,data) {
+                            if(err) throw err;
+                            for(var i in comments) {
+                                var oeuvres = data.filter(function(elem) {
+                                    return elem._id == comments[i].id_oeuvre;
+                                });
+                                comments[i].oeuvre = oeuvres[0];
+                            }
+                            for(var i in users.reads) {
+                                users.reads[i].oeuvre = data.filter(function(elem) {
+                                    return elem._id == users.reads[i].idOeuvre;
+                                })[0];
+                            }
+                            var ratings = [];
+                            for(var i in data) {
+                                for(var j in data[i].chapters) {
+                                    for(var h in data[i].chapters[j].ratings) {
+                                        console.log('user', data[i].chapters[j].ratings[h]);
+                                        if(data[i].chapters[j].ratings[h].user = user) {
+                                            ratings.push({
+                                                date: data[i].chapters[j].ratings[h].date,
+                                                rating: data[i].chapters[j].ratings[h].rating,
+                                                idChapter: data[i].chapters[j]._id,
+                                                idOeuvre: data[i]._id,
+                                                nomOeuvre: data[i].name,
+                                                nomChapitre: data[i].chapters[j].name
+                                            });
+                                            break;
+                                        }
+                                    }
+                                }
+                                for(var k in data[i].ratings) {
+                                    if(data[i].ratings.user == user) {
+                                        ratings.push ({
+                                            date: data[i].ratings[h].date,
+                                            rating: data[i].ratings[k].rating,
+                                            idOeuvre: data[i]._id,
+                                            nomOeuvre: data[i].name
+                                        });
+                                        break;
+                                    }
+                                }
+                            }
+                            res.json({
+                                comments: comments.filter(function(elem) {
+                                    return elem.oeuvre;
+                                }),
+                                friends: users.friends.filter(function(elem) {
+                                    return elem.accepted;
+                                }),
+                                reads: users.reads.filter(function(elem) {
+                                    return elem.oeuvre;
+                                }),
+                                ratings: ratings
+                            });
+                        });
+                });
+        });
+
 });
 module.exports = router;
