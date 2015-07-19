@@ -257,7 +257,7 @@ router.get('/oeuvre', function(req,res){
         { $inc: { accessCount: 1 } },
         { safe: true },
         function (err, oeuvre) {
-            if (err) { throw err;}
+            if (err) { return res.status(424).end();}
             console.log("[Mongoose] oeuvre has been successfuly retrieved");
             //console.log(oeuvre.chapters)
             console.log(oeuvre);
@@ -284,7 +284,8 @@ router.post('/commentaire', function(req,res) {
      date: new Date()
      });
     commentaire.save(function (err) {
-        if (err) { throw err; }
+        if (err) { return res.status(400).end(err); }
+        res.end("success");
     });
 
 });
@@ -293,7 +294,7 @@ router.get('/comments', function(req,res) {
     var query = Commentaires.find(null);
     query.where("id_oeuvre", req.query.id_Oeuvre);
     query.exec(function (err, comms) {
-        if (err) { throw err;}
+        if (err) { return res.status(424).end();}
         res.json(comms);
     });
 
@@ -309,7 +310,12 @@ router.post('/user/favorites/add',function(req,res) {
     var update = { $push: {favoris: idOeuvre} };
     var option = { safe: true};
     User.findOneAndUpdate(query, update, option, function(err, model) {
-            if (err) console.log("[Mongoose] - " + err);
+            if (err) {
+                console.log("[Mongoose] - " + err);
+                res.end('error');
+                return;
+            }
+            res.end('success');
         }
     );
 });
@@ -323,7 +329,12 @@ router.post('/user/favorites/remove',function(req,res) {
     var update = { $pull: {favoris: idOeuvre} };
     var option = { safe: true };
     User.findOneAndUpdate(query, update, option, function(err, model) {
-            if (err) console.log("[Mongoose] - " + err);
+            if (err) {
+                console.log("[Mongoose] - " + err);
+                res.end('error');
+                return;
+            }
+            res.end('success');
         }
     );
 });
@@ -377,7 +388,7 @@ router.post('/oeuvre/rate', function(req,res) {
             }
         },
         function(err, d) {
-            if(err) throw err;
+            if(err) return res.status(424).end();
             OeuvreModel.findOneAndUpdate(
                 {
                     _id: idOeuvre
@@ -396,48 +407,11 @@ router.post('/oeuvre/rate', function(req,res) {
                 },
                 function(err,data) {
                     if(err)
-                        throw err;
+                        return res.status(424).end();
                     res.json({rating: data.ratings.reduce(function(x,y) { return x + y.rating; }, 0) /data.ratings.length});
-                    ////thread safe ?
-                    //OeuvreModel.findOneAndUpdate(
-                    //    {
-                    //        id: idOeuvre
-                    //    },
-                    //    {
-                    //        averageRating:
-                    //    },
-                    //    {
-                    //        safe: true
-                    //    },
-                    //    function(err,data) {
-                    //        if(err)
-                    //            throw err;
-                    //    }
-                    //)
                 });
         }
     );
-    //OeuvreModel
-    //    .findOneAndUpdate(
-    //        {
-    //            _id: idOeuvre,
-    //            'ratings.$.user':user
-    //        },
-    //        {
-    //            'ratings.rating':rating
-    //        },
-    //        {
-    //            safe:true
-    //        }
-    //    )
-    //    .exec(function(err, populaires) {
-    //        if(err) {
-    //            console.log(err);
-    //            res.json({failure:true});
-    //            return;
-    //        }
-    //        res.json(populaires);
-    //    });
 });
 //il vaut mieux utiliser oeuvre lorsqu'on charge l'oeuvre, mais on peut laisser cette données la
 router.post('/oeuvre/rating', function(req,res) {
@@ -720,11 +694,11 @@ router.get('/messagesSend',function(req,res) {
 });
 router.get('/messagesUnread',function(req,res) {
     User.findOne({username:req.query.username},function(err,user){
-      console.log("lenght", user.messages
-            .filter(function(elem) {
-                return ! elem.reads;
-            })
-            .length);
+      //console.log("lenght", user.messages
+      //      .filter(function(elem) {
+      //          return ! elem.reads;
+      //      })
+      //      .length);
 
         res.json(user.messages
             .filter(function(elem) {
@@ -739,6 +713,8 @@ router.post('/messageRead',function(req,res){
     var id = req.body.id_message;
     User.update({username: req.body.reciver , 'messages._id': id },{$set: {'messages.$.reads' :true}},function(err,user){
         console.log(user);
+        if(err) return res.status(424).end();
+        res.end('success');
     })
 
 });
@@ -758,7 +734,9 @@ router.post('/message/remove',function(req,res) {
         },
         function(err,user) {
             console.log(user);
-    });
+            if(err) return res.status(424).end();
+            res.end('sucess');
+        });
 
 });
 router.get('/DetailUser',function(req,res) {
@@ -776,14 +754,14 @@ router.get('/DetailUser',function(req,res) {
     );
 });
 router.post('/oeuvre/create',function(req,res) {
-    console.log(req.body);
+    //console.log(req.body);
     var oeuvre = JSON.parse(req.body.oeuvre);
     fs.rename(req.files['image'].path, 'app/img/Covers/' + req.files['image'].name, function(err, data) {
         oeuvre.cover = req.files['image'].name;
         var i;
         for(var i in oeuvre.chapters) {
             if(req.files['image-' + i]) {
-                fs.rename(req.files['image-' + i].path, 'app/img/Covers/' + req.files['image-' + i].name, function(err, data) {if(err) throw err;});
+                fs.rename(req.files['image-' + i].path, 'app/img/Covers/' + req.files['image-' + i].name, function(err, data) {if(err) return res.status(424).end();});
                 oeuvre.chapters[i].cover = req.files['image-' + i].name;
             }
         }
@@ -812,7 +790,7 @@ router.post('/oeuvre/rate/chapter',function(req,res) {
         },
         function(err, data) {
            if(err) {
-               throw err;
+               return res.status(424).end();
            }
            OeuvreModel.findOneAndUpdate(
                {
@@ -833,7 +811,7 @@ router.post('/oeuvre/rate/chapter',function(req,res) {
                },
                function(err,data) {
                    if(err) {
-                       throw err;
+                       return res.status(424).end();
                    }
                    console.log(data.chapters.constructor);
                    var ratings;
@@ -862,7 +840,7 @@ router.post('/oeuvre/read/all',function(req,res) {
         .findOne({_id: idOeuvre})
         .select('chapters')
         .exec(function(err,data) {
-            if(err) throw err;
+            if(err) return res.status(424).end();
             console.log(data.chapters.map(function(elem) {
                 return {
                     idOeuvre: idOeuvre,
@@ -920,8 +898,8 @@ router.post('/oeuvre/update',function(req,res) {
             }
         },
         function(err,data) {
-            if(err) throw err;
-            console.log('succeded')
+            if(err) return res.status(424).end();
+            console.log('succeded');
             res.end('ok');
         }
     );
@@ -932,7 +910,7 @@ router.post('/oeuvre/remove',function(req,res) {
         .find({_id: oeuvreId})
         .remove()
         .exec(function(err,data) {
-            if(err) throw err;
+            if(err) return res.status(424).end();
             res.end('ok');
             User
                 .find()
@@ -942,7 +920,7 @@ router.post('/oeuvre/remove',function(req,res) {
                     }
                 })
                 .exec(function(err,data) {
-                    if(err) throw err;
+                    if(err) return res.status(424).end();
                     res.end('ok');
                 })
         });
@@ -970,7 +948,10 @@ router.get('/Sondages',function(req,res) {
 });
 router.post('/sondage/delete',function(req,res){
     Sondages.findOneAndRemove({_id: req.body._id},function(err,sondages){
-        if (err) { console.log(err); return; }
+        if (err) {
+            console.log(err);
+            return res.status(400).json({message: 'Error where removing user'});
+        }
 
         res.json(sondages);
     });
@@ -988,6 +969,7 @@ router.post('/sondage/modify',function(req,res){
 
         console.log("Update success");
         res.status(200);
+        res.end();
     })
 });
 
@@ -1090,6 +1072,7 @@ router.post('/user/friends/requestRemove',function(req,res){
         },
         function(err,user) {
             console.log(user);
+            res.end();
         });
 });
 router.get('/user/friends/requests/count',function(req,res){
@@ -1218,7 +1201,7 @@ router.get('/user/exist',function(req,res){
 router.post('/user/picture/change',function(req,res) {
     var id = req.body.userId;
     fs.rename(req.files['picture'].path, 'app/img/UserPictures/' + req.files['picture'].name, function(err, data) {
-        if(err) throw err;
+        if(err) return res.status(424).end();
         User.findOneAndUpdate(
             {
                 _id:id
@@ -1230,7 +1213,7 @@ router.post('/user/picture/change',function(req,res) {
                 safe:true
             },
             function(err,data) {
-                if(err) throw err;
+                if(err) return res.status(424).end();
                 res.end(req.files['picture'].name);
             }
         )
@@ -1243,13 +1226,13 @@ router.get('/user/activity',function(req,res) {
         .find({user: user})
         .lean()
         .exec(function(err, comments) {
-            if(err) throw err;
+            if(err) return res.status(424).end();
             User
                 .findOne({username: user})
                 .select('_id friends reads')
                 .lean()
                 .exec(function(err,users) {
-                    if(err) throw err;
+                    if(err) return res.status(424).end();
                     OeuvreModel
                         .find
                         ({
@@ -1275,7 +1258,7 @@ router.get('/user/activity',function(req,res) {
                         })
                         .lean()
                         .exec(function(err,data) {
-                            if(err) throw err;
+                            if(err) return res.status(424).end();
                             for(var i in comments) {
                                 var oeuvres = data.filter(function(elem) {
                                     return elem._id == comments[i].id_oeuvre;
