@@ -152,7 +152,7 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
     };
     $scope.saveChapterRating = function(index) {
         if(!$scope.oeuvre.chapters[index].read) {
-            alert("Vous devez avoir lu ce chapitre pour pouvoir le noter");
+            $('#connectedToRateError').modal('show');
             $scope.reinitChapterRating(index);
             return;
         }
@@ -176,7 +176,8 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
     //here, rating is how much the user rate the content
     $scope.saveRating = function() {
         if(!$scope.oeuvre.chapters.some(function(item) {return item.read})) {
-            alert("Vous devez avoir commencer à lire l'oeuvre pour la noter");
+            $('#connectedToRateError').modal('show');
+            //alert('vous devez avoir commencer a lire l\'oeuvre pour la noter');
             $scope.reinitRating();
             return;
         }
