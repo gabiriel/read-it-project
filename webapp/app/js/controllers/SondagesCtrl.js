@@ -22,6 +22,8 @@ app.controller('SondagesCtrl', ['$scope', '$state', 'auth', function($scope, $st
             })
             .then(function () {
                 $scope.retrieveSondages();
+                $state.go('home');
+
             })
     };
 
@@ -73,6 +75,7 @@ app.controller('SondagesCtrl', ['$scope', '$state', 'auth', function($scope, $st
         auth.deleteSondage(sondage)
             .success(function(){
                 $scope.retrieveSondages();
+                $state.go('home');
             });
     };
 
@@ -85,6 +88,7 @@ app.controller('SondagesCtrl', ['$scope', '$state', 'auth', function($scope, $st
         auth.modifySondage(detailsondage)
             .success(function(){
                 $scope.retrieveSondages();
+                $state.go('home');
             }).error(function (err) {
                 $scope.Modifyerror=err;
             });
@@ -92,7 +96,7 @@ app.controller('SondagesCtrl', ['$scope', '$state', 'auth', function($scope, $st
 
 }]);
 
-app.controller('sondagesDetailsController',['$scope','auth','$stateParams',function($scope,auth,$stateParams) {
+app.controller('sondagesDetailsController',['$scope','auth','$stateParams','$state',function($scope,auth,$stateParams,$state) {
     var id=$stateParams.id;
     auth.getSondage(id)
         .success(function (data) {
@@ -103,7 +107,16 @@ app.controller('sondagesDetailsController',['$scope','auth','$stateParams',funct
         });
     $scope.voteSondage= function (detailVote) {
         var vote =$scope.sondage.vote;
-        auth.voteSondage(detailVote,vote);
+        console.log(detailVote);
+        console.log(vote);
+
+        auth.voteSondage(detailVote,vote)
+            .success(function () {
+                $state.go('home');
+            })
+            .error(function (err) {
+                $scope.error=err;
+            })
     };
 
 }]);

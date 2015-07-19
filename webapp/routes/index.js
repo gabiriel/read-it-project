@@ -941,7 +941,7 @@ router.post('/sondage/create', function (req,res) {
         if (err) {
             return res.status(400).json({message: 'Error when saving Sondage : ' + err});
         }else
-            return res.json(sondages);
+            return res.status(200).json(sondages);
     });
 });
 router.get('/Sondages',function(req,res) {
@@ -965,7 +965,8 @@ router.post('/sondage/modify',function(req,res){
     var query = {_id: form._id};
     var updates = {
         question: form.question,
-        reponses: form.reponses
+        reponses: form.reponses,
+        users: form.users
     };
 
     Sondages.findOneAndUpdate(query, updates, function (err, user) {

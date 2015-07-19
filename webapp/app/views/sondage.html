@@ -1,5 +1,8 @@
 <div class="row readit_block">
     <form name="Sondageform" ng-submit="voteSondage(sondage)">
+        <div class="alert alert-danger" ng-show="error">
+            {{ error.message }}
+        </div>
         <h3>Question : {{sondage.question}}</h3>
         <!--Réponses-->
         <div class="input-group">

@@ -9,7 +9,8 @@ var Sondages = new mongoose.Schema({
         name: String,
         rep: String,
         Numvote: { type: Number, default: 0}
-    }]
+    }],
+    users : [{type: String, default: ''}]
 });
 
 mongoose.model('Sondages', Sondages);

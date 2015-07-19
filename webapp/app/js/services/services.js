@@ -288,10 +288,31 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         var idToSend={_id:id};
         return $http.post("/sondage",idToSend);
     };
-    auth.voteSondage=function (detailVote,vote){
+    auth.voteSondage=function (detailVote,vote,res){
         angular.forEach(detailVote.reponses, function (reponse) {
             if(reponse._id==vote) reponse.Numvote++;
         });
+        var keepGoing=true;
+        var isExist=false;
+        if(detailVote.users.length!=0){
+
+            angular.forEach(detailVote.users, function (user) {
+                if(!(keepGoing && user!=auth.currentUser())){
+                    console.log(user);
+                    keepGoing=false;
+                    isExist=true;
+                }
+
+            })
+        }
+        if(isExist){
+            return res.status(200).json({message: 'Error when saving Sondage : ' + err});
+        }else{
+            detailVote.users.push(auth.currentUser());
+            console.log(detailVote);
+            return $http.post('/sondage/modify',detailVote);
+        }
+
     };
 
     auth.getUsersFriends = function(username){
