@@ -24,6 +24,7 @@ readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope,
 
         auth.getFriends($scope.userName).success(function(friends){
             $scope.friends = friends;
+
         });
 
         auth.alreadyFriends(auth.currentUser(),$scope.userName)
@@ -55,6 +56,7 @@ readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope,
             user : auth.currentUser(),
             friendsName : $scope.userName
         };
+
         auth.removeFriends(info)
             .success(function(data)
             {
@@ -73,6 +75,9 @@ readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope,
                 }
             }
         );
+        auth.getFriends($scope.userName).success(function(friends){
+            $scope.friends = friends;
+        });
     };
     $scope.changePicture = function(files) {
         //alert("test");
@@ -113,7 +118,7 @@ readIt.controller('UserPage',['$scope', '$stateParams', 'auth', function($scope,
 
 }]);
 
-readIt.controller('addRequestsCtrl',['$scope', 'auth', function($scope, auth) {
+readIt.controller('addRequestsCtrl',['$scope','$rootScope', 'auth', function($scope,$rootScope, auth) {
     var username = auth.currentUser();
     if(auth.isLoggedIn()) {
         auth.getAddRequest(username).success(function (user) {
@@ -132,9 +137,15 @@ readIt.controller('addRequestsCtrl',['$scope', 'auth', function($scope, auth) {
                         $scope.requests = user;
                         console.log(user);
                     });
-                }
-            });
+                    auth.getCountAddRequests(auth.currentUser()).success(function (data) {
+                        console.log(data);
+                        $rootScope.numberAddRequests = data;
+                    });
 
+                }
+                else console.log("déja ami");
+
+            });
 
         };
 
@@ -148,7 +159,7 @@ readIt.controller('addRequestsCtrl',['$scope', 'auth', function($scope, auth) {
                 $scope.requests = user;
             });
             auth.getCountAddRequests(auth.currentUser()).success(function (data) {
-                $scope.numberAddRequests = data;
+                $rootScope.numberAddRequests = data;
             });
         };
         auth.getAddRequest(username).success(function (user) {

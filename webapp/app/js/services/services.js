@@ -2,7 +2,7 @@
  * Created by macbookpro on 13/06/15.
  */
 var app = angular.module('readIt');
-app.factory('serviceDetails', ['$http',function($http){
+app.factory('serviceDetails', ['$http','$rootScope',function($http,$rootScope){
     var Details = {};
     Details.importCsv = function(file,fileName) {
         var fd = new FormData();
@@ -235,7 +235,8 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             params : {username :  userName}
         })
     };
-    auth.getCountMessageUnread = function(userName){
+    auth.getCountMessageUnread = function(userName,$rootScope){
+        console.log($rootScope);
         return $http.get('/messagesUnread',{
             params : {username :  userName}
         })
@@ -306,7 +307,7 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             params : {username : username}
         });
     };
-    auth.getCountAddRequests = function(username){
+    auth.getCountAddRequests = function(username,$rootScope){
         return $http.get('/user/friends/requests/count',{
             params : {username : username}
         });

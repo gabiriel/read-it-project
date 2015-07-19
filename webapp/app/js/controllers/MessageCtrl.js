@@ -2,8 +2,7 @@
  * Created by macbookpro on 07/07/15.
  */
 var app = angular.module('readIt');
-app.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,$stateParams, auth) {
-
+app.controller('messageCtrl',['$scope','$rootScope','$stateParams','auth',function($scope,$rootScope, $stateParams, auth) {
     $scope.username = $stateParams.username;
     $scope.messageMenu = [
         ['bold', 'italic', 'underline', 'strikethrough'],
@@ -55,7 +54,7 @@ app.controller('messageCtrl',['$scope','$stateParams','auth',function($scope,$st
     }
 }]);
 
-app.controller('messageListCtrl',['$scope','$state','auth',function($scope,$state, auth) {
+app.controller('messageListCtrl',['$scope','$rootScope','$state','auth',function($scope,$rootScope,$state, auth) {
     auth.getMessage(auth.currentUser()).success(function(data) {
         $scope.messages= data
             .map(function(elem){
@@ -74,25 +73,29 @@ app.controller('messageListCtrl',['$scope','$state','auth',function($scope,$stat
             });
         console.log($scope.messages);
     });
+    auth.getCountMessageUnread(auth.currentUser()).success(function(data) {
+        console.log(data);
+    });
     $scope.displayMessage = function(reciver, messageCorps)
     {
         messageCorps.reads = true;
         $scope.messageShow = messageCorps;
 
-        auth.getCountMessageUnread(auth.currentUser()).success(function(data){
-            $scope.numberMessage= data;
-        });
+
         var messageObject =
         {
             id_message : messageCorps._id,
             reciver: reciver
         };
 
-        auth.postReadMessage(messageObject).success(function(data){
-            console.log(data);
-        });
-
-
+        auth.postReadMessage(messageObject).success(function(data){});
+        var messageReadsCount=0;
+        for(var i in $scope.messages) {
+            if(!$scope.messages[i].reads) ++messageReadsCount;
+        }
+        console.log($rootScope.numberMessage);
+        console.log(messageReadsCount);
+        $rootScope.numberMessage = messageReadsCount;
     };
 
     $scope.answer = function(user){
@@ -111,8 +114,8 @@ app.controller('messageListCtrl',['$scope','$state','auth',function($scope,$stat
                 .map(function(elem){
                     return {
                         _id: elem._id,
-                        sender :elem.sender ,
-                        objet : elem.objet ,
+                        sender :elem.sender,
+                        objet : elem.objet,
                         message : elem.message ,
                         reads : elem.reads,
                         date : new Date(elem.date)

@@ -1,14 +1,12 @@
 var app = angular.module('readIt');
-app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $state, auth){
+app.controller('AuthController', ['$scope','$rootScope', '$state', 'auth', function($scope,$rootScope, $state, auth){
     setInterval(function(){
             if(auth.isLoggedIn()){
                 auth.getCountMessageUnread(auth.currentUser()).success(function(nbUnreadMsg){
-                   if(nbUnreadMsg!=0)
-                    $scope.numberMessage = nbUnreadMsg;
+                       $rootScope.numberMessage = nbUnreadMsg;
                 });
                 auth.getCountAddRequests(auth.currentUser()).success(function(nbFriendRequests){
-                    if(nbFriendRequests!=0)
-                        $scope.numberAddRequests = nbFriendRequests;
+                        $rootScope.numberAddRequests = nbFriendRequests;
                 });
             }
         },
@@ -68,13 +66,11 @@ app.controller('AuthController', ['$scope', '$state', 'auth', function($scope, $
     
     if(auth.isLoggedIn()){
         auth.getCountMessageUnread(auth.currentUser()).success(function(data){
-            if(data!=0)
-            $scope.numberMessage= data;
+            $rootScope.numberMessage= data;
         });
 
         auth.getCountAddRequests(auth.currentUser()).success(function(data){
-            if(data!=0)
-            $scope.numberAddRequests= data;
+                $rootScope.numberAddRequests= data;
         });
     }
 

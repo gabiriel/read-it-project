@@ -7,7 +7,7 @@
     <div ng-show="messages.length">
         <p>Vous avez {{messages.length}} messages</p>
         <div class="readit_block col-sm-4 col-xs-6" ng-repeat="messageCorps in messages">
-            <div class=" {{messageCorps.reads ? '' : 'unreaded'}}">
+            <div class="{{messageCorps.reads ? '' : 'unreaded'}}">
                 <p>{{messageCorps.date.toLocaleString()}}<br/>
                     De: {{messageCorps.sender}}<br/>
                     Objet : {{messageCorps.objet}}
