@@ -1,5 +1,6 @@
 var app = angular.module('readIt');
 app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails', 'auth', function($scope, $state, $stateParams, serviceDetails, auth){
+
     var user = $stateParams.user;
     $scope.imgSource ="default_user.png";
 
@@ -7,6 +8,22 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
         if(data==null)
             $state.go('search', {title: $stateParams.user});
 
+        if(!$scope.isCurrentUserPage)
+        {
+            auth.isBlock(data.username, auth.currentUser()).success(function(data){
+                if(data!="false"){
+                    $scope.add ='false';
+                    $scope.remove ='false';
+                    $scope.bloc = 'false';
+                    $scope.message = 'false';
+                    $scope.isBlock=true;
+                    if(data=="i_am_in_his_list")
+                        $scope.message_Block= "cette utilisateur vous a bloqué";
+                    else $scope.message_Block= "cette utilisateur est bloqué";
+
+                };
+            });
+        };
         $scope.user = data;
         $scope.userName = data.username;
         if($scope.user.picture == undefined) // display default user img
@@ -40,16 +57,17 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
         if(auth.isLoggedIn()){
             auth.alreadyFriends(auth.currentUser(), $scope.userName)
                 .success(function (data) {
-                    console.log(data);
                     if (data == "success") {
                         $scope.add = 'false';
                         $scope.remove = 'removeFriends';
                     }
                 }
             );
-        }
+        };
+
 
     });
+
     auth.getActivity(user)
         .success(function(data) {
             console.dir(data.ratings);
@@ -61,13 +79,13 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
                                 //    return e2.date - e1.date;
                                 //});
         });
-    $scope.removeFromFriend=function(){
+    $scope.removeFromFriend=function(username,usernameFriends){
         var info ={
             user : auth.currentUser(),
             friendsName : $scope.userName
         };
 
-        auth.removeFriends(info)
+        auth.removeFriends(username,usernameFriends)
             .success(function(data) {
                 if(data =="success")
                 {
@@ -88,9 +106,30 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
             $scope.friends = friends;
         });
     };
-    $scope.block = function(username){
+    $scope.block = function(username, usernameBlock){
+        auth.blockUser(username,usernameBlock).success(function(data){
+            auth.alreadyFriends(username,usernameBlock).success(function(isBlocked){
+                if(isBlocked=="success") {
+                    auth.removeFriends(username, usernameBlock);
+                    $scope.friends = auth.getUsersFriends(username);
+                }
+            });
+        });
+        auth.isBlock($scope.userName, auth.currentUser()).success(function(data){
+            if(data!="false"){
+                $scope.add ='false';
+                $scope.remove ='false';
+                $scope.bloc = 'false';
+                $scope.message = 'false';
+                $scope.isBlock=true;
+                if(data=="i_am_in_his_list")
+                    $scope.message_Block= "cette utilisateur vous a bloqué";
+                else $scope.message_Block= "cette utilisateur est bloqué";
 
+            };
+        });
     };
+
     $scope.changePicture = function(files) {
         auth.changePicture(auth.currentUserId(),files[0])
             .success(function(data) {
@@ -102,29 +141,39 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
     };
 
     $scope.addFriend = function(){
-
-        auth.existeUser(auth.currentUser(),$scope.userName)
-            .success(function(data)
-            {
-                if(data=="false"){
-                    var friends ={
-                        friendsUsername : $scope.userName,
-                        Username : auth.currentUser()
-                    };
-                    auth.postRequestFriends(friends);
-                    $scope.return_add_friends_valide ="valide";
-                    $scope.return_add_friends_erreur="false";
-                    $scope.message_return = "Demande d'ami envoyée";
-                    $scope.add='false';
-                }
-                else {
-                    $scope.add='false';
-                    $scope.return_add_friends_valide ="false";
-                    $scope.return_add_friends_erreur="erreur";
-                    $scope.message_return_error = "Demande d'ami déja envoyée";
-                }
+        auth.isBlock($scope.userName,auth.currentUser()).success(function(data){
+            if(data=="false"){
+                auth.existeUser(auth.currentUser(),$scope.userName)
+                    .success(function(data)
+                    {
+                        if(data=="false"){
+                            var friends ={
+                                friendsUsername : $scope.userName,
+                                Username : auth.currentUser()
+                            };
+                            auth.postRequestFriends(friends);
+                            $scope.return_add_friends_valide ="valide";
+                            $scope.return_add_friends_erreur="false";
+                            $scope.message_return = "Demande d'ami envoyée";
+                            $scope.add='false';
+                        }
+                        else {
+                            $scope.add='false';
+                            $scope.return_add_friends_valide ="false";
+                            $scope.return_add_friends_erreur="erreur";
+                            $scope.message_return_error = "Demande d'ami déja envoyée";
+                        }
+                    }
+                )
             }
-        )
+            else {
+                $scope.return_add_friends_valide ="false";
+                $scope.return_add_friends_erreur="erreur";
+                $scope.message_return_error = "ustilsateur bloqué";
+            }
+
+        });
+
     };
 
 }]);
@@ -158,7 +207,11 @@ app.controller('addRequestsCtrl', ['$scope', '$rootScope', 'auth', function($sco
                     });
 
                 }
-                else console.log("déja ami");
+                else {
+                    $scope.return_add_friends_valide ="false";
+                    $scope.return_add_friends_erreur="erreur";
+                    $scope.message_return_error = "utilisateur déja ami";
+                };
             });
         };
 

@@ -1200,7 +1200,27 @@ router.get('/user/exist',function(req,res){
     });
 
 });
+router.post('/user/block',function(req,res){
+User.findOneAndUpdate({username:req.body.username},{
+            $addToSet:{
+                blackList  :
+                {
+                    name : req.body.usernameBlock
 
+                }
+            }
+        },
+        {
+            safe: true
+        }
+
+        ,function(err,user){
+            if(user!=null)
+                console.log("user",user);
+        });
+res.end("success");
+
+});
 router.post('/user/picture/change',function(req,res) {
 
     var id = req.body.userId;
@@ -1316,4 +1336,35 @@ router.get('/user/activity',function(req,res) {
         });
 
 });
+router.get('/user/isBlock',function(req,res){
+    User.findOne({'username': req.query.username}, function(err, user){
+        if(err){ console.log(err); return; }
+
+        console.log("[Query] get Black List of " + JSON.stringify(user));
+        if(user==null) {
+            console.log("[Query] user is undefined");
+            res.end("echecUser");
+            return;
+        }
+        User.findOne({
+                username: req.query.username,
+                'blackList.name': req.query.usernameBlock
+            }
+            , function (err, user) {
+                if (user != null)
+                    res.end("is_in_my_list");
+
+            }
+        );
+        User.findOne({
+            username: req.query.usernameBlock,
+            'blackList.name': req.query.username
+        }, function (err, user) {
+            if (user != null)
+                res.end("i_am_in_his_list");
+            else     res.end("false");
+        });
+    });
+});
+
 module.exports = router;

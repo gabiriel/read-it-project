@@ -2,7 +2,7 @@
  * Created by macbookpro on 13/06/15.
  */
 var app = angular.module('readIt');
-app.factory('serviceDetails', ['$http','$rootScope',function($http,$rootScope){
+app.factory('serviceDetails', ['$http',function($http){
     var Details = {};
     Details.importCsv = function(file,fileName) {
         var fd = new FormData();
@@ -241,8 +241,7 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             params : {username :  userName}
         })
     };
-    auth.getCountMessageUnread = function(userName,$rootScope){
-        console.log($rootScope);
+    auth.getCountMessageUnread = function(userName){
         return $http.get('/messagesUnread',{
             params : {username :  userName}
         })
@@ -324,7 +323,11 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             params :{user : user, userFriends : userFriends}
         })
     };
-    auth.removeFriends = function(infoFriends){
+    auth.removeFriends = function(username,usernameFriends){
+        var infoFriends ={
+            user : username,
+            friendsName : usernameFriends
+        }
         return $http.post('/user/friends/remove',infoFriends);
     };
     auth.existeUser = function(username,currentUser){
@@ -347,9 +350,23 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             params:{userName:userName}
         })
     };
-    auth.blockUser = function(userName){
-        return $http.post('/user/block',userName);
+    auth.blockUser = function(username, usernameBlock){
+        var info ={
+            username: username,
+            usernameBlock : usernameBlock
+        };
+        return $http.post('/user/block',info);
     };
+    auth.isBlock = function(username, usernameBlock){
+        return $http.get('/user/isBlock',{
+            params :
+            {
+                username :username,
+                usernameBlock: usernameBlock
+            }
+        });
+    };
+
     return auth;
 }]);
 

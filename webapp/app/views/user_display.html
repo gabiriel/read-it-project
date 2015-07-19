@@ -11,7 +11,7 @@
                    value="sendMessage">
                     <i class="glyphicon glyphicon-envelope"></i>
                 </a>
-                <a class="ng-pristine ng-valid ng-hide" href="#" ng-click="removeFromFriend()"
+                <a class="ng-pristine ng-valid ng-hide" href="#" ng-click="removeFromFriend(auth.currentUser(),userName)"
                    ng-model="remove" ng-show="remove=='removeFriends'">
                     <i class="glyphicon glyphicon-minus"></i>
                 </a>
@@ -20,7 +20,7 @@
                     <i class="glyphicon glyphicon-plus"></i>
                 </a>
                 <a class="ng-pristine ng-valid ng-hide" href="#"
-                   ng-model="bloc" ng-show="bloc=='blocUser'" value="blocUser">
+                   ng-model="bloc" ng-show="bloc=='blocUser'" ng-click="block(userName, auth.currentUser())" value="blocUser">
                     <i class="glyphicon glyphicon-ban-circle"></i>
                 </a>
                 <span class="btn btn-default btn-file" ng-show="isCurrentUserPage">
@@ -28,6 +28,7 @@
                     <input type="file"
                            onchange="angular.element(this).scope().changePicture(this.files)" >
                 </span>
+                <div class="alert alert-danger" role="alert" ng-show="isBlock"> {{message_Block}}</div>
             </div>
         </div>
         <div class="readit_block pull-right col-xs-5 col-sm-12">
