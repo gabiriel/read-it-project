@@ -19,7 +19,7 @@ app.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, serviceD
 }]);
 
 app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
-    $scope.logged = auth.isLoggedIn();
+
     $scope.ratings = [];
     $scope.notFinished = function() {
         return $scope.oeuvre.chapters.every(function(elem) {
@@ -41,39 +41,35 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
                 alert('une erreure est survenue lors de l\'engeristrement de la lecure');
             });
     };
-    serviceDetails.getOeuvre($stateParams.id).success (function(data) {
+    serviceDetails.getOeuvre($stateParams.id).success(function(data) {
         $scope.oeuvre = data;
+
         $scope.rating = $scope.oldRating = data.ratings.reduce(function(x,y) { return x + y.rating; },0) / data.ratings.length
-                                            || 0;
+            || 0;
         $scope.ratings = data.chapters.map(function(chapter) {
             return chapter.ratings.reduce(function(c,n) {
                 return c + n.rating;
             }, 0);
         });
-        if($scope.logged) {
-            serviceDetails.getReadChapter(auth.currentUser(),$stateParams.id).success(function(data) {
-                for(var i in $scope.oeuvre.chapters) {
-                    $scope.oeuvre.chapters[i].read = data.some(function(x) {
-                        return $scope.oeuvre.chapters[i]._id == x;
+        if(auth.isLoggedIn()) {
+            serviceDetails.getReadChapter(auth.currentUser(),$stateParams.id)
+                .success(function(data) {
+                    for(var i in $scope.oeuvre.chapters) {
+                        $scope.oeuvre.chapters[i].read = data.some(function(x) {
+                            return $scope.oeuvre.chapters[i]._id == x;
+                        });
+                    }
+                    var reading = $scope.oeuvre.chapters.some(function(elem) {
+                        return elem.read;
                     });
-                }
-                var reading = $scope.oeuvre.chapters.some(function(elem) {
-                    return elem.read;
+                    var finished = $scope.oeuvre.chapters.every(function(elem) {
+                        return elem.read;
+                    });
+                    var interested = false;
                 });
-                var finished = $scope.oeuvre.chapters.every(function(elem) {
-                    return elem.read;
-                });
-                var interested = false;
-                //$scope.readingState = finished
-                //                ? 'finished'
-                //                : reading
-                //                    ? 'reading'
-                //                    : interested
-                //                        ? 'interested'
-                //                        : 'not interested'
-            });
         }
     });
+
     $scope.readAll = function() {
         serviceDetails.readAll($scope.user, $scope.oeuvre._id);
     };
@@ -109,7 +105,7 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
         $scope.clicking = false;
     };
     $scope.comment= function(){
-        if(! $scope.logged) {
+        if(!auth.isLoggedIn()) {
             $state.go('login');
             return;
         }
