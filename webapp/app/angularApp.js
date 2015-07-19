@@ -152,7 +152,13 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
         .state('oeuvre',{
             url:'/oeuvre/:id',
             templateUrl:'views/oeuvre.html',
-            controller: 'OeuvreDetailCtrl'
+            controller: 'OeuvreDetailCtrl',
+            resolve: {
+                checkParam: ['$state', '$stateParams', function ($state, $stateParams) {
+                    if(typeof $stateParams.id === 'undefined' || $stateParams.id == "")
+                        return $state.go('error', {}, {location: false});
+                }]
+            }
         })
         .state('search',{
             url:'/search/:title',
@@ -204,6 +210,6 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
                     $state.go('error');
                 }
             }]
-        })
-       ;
-    });
+        });
+    }
+);
