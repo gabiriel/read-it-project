@@ -44,11 +44,12 @@
             <a ng-click="saveRating()" ng-mouseenter="setRating(4)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 3 ? '' : '-empty'}}"></i></a>
             <a ng-click="saveRating()" ng-mouseenter="setRating(5)" ng-mouseleave="reinitRating()"><i class="glyphicon glyphicon-star{{rating > 4 ? '' : '-empty'}}"></i></a>
         </div>
-        <div class="readit_block pull-right col-xs-5 col-sm-12">
+        <div class="readit_block pull-right col-xs-5 col-sm-12" ng-show="auth.isLoggedIn()">
             <h4>Etat d'avancement</h4>
-            <div>{{oeuvre.chapters | readingStatus}}</div>
+            <div>{{oeuvre | readingStatus}}</div>
             <div ng-show="auth.isLoggedIn()">
-                <button class="btn btn-default" ng-click="interested()" ng-show="notReadOrInterested()">Intéressé</button>
+                <button class="btn btn-default" ng-click="interested()" ng-show="notReadAndNotInterested()">Intéressé</button>
+                <button class="btn btn-default" ng-click="notInterested()" ng-show="notReadAndInterested()">Pas Intéressé</button>
                 <button class="btn btn-default" ng-click="finir()" ng-show="notFinished()">Fini</button>
             </div>
         </div>

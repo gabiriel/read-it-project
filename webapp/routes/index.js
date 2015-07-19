@@ -1337,6 +1337,80 @@ router.get('/user/activity',function(req,res) {
         });
 
 });
+
+router.post('/user/remove/interested',function(req,res) {
+    var user = req.body.userId;
+    var oeuvre = req.body.oeuvreId;
+    console.log(user);
+    console.log(oeuvre);
+    User.findOneAndUpdate
+    (
+        {
+            _id: user
+        },
+        {
+            $pull:
+            {
+                interested:
+                {
+                    idOeuvre: oeuvre
+                }
+            }
+        },
+        {
+            safe: true
+        },
+        function(err,data) {
+            if(err) return res.status(424).end();
+            console.log(data);
+            res.end();
+        }
+    )
+});
+router.post('/user/add/interested',function(req,res) {
+    var user = req.body.userId;
+    var oeuvre = req.body.oeuvreId;
+    User.findOneAndUpdate
+    (
+        {
+            _id: user
+        },
+        {
+            $addToSet:
+            {
+                interested:
+                {
+                    idOeuvre: oeuvre
+                }
+            }
+        },
+        {
+            safe: true
+        },
+        function(err) {
+            if(err) return res.status(424).end();
+            res.end();
+        }
+    )
+});
+
+router.get('/user/interested',function(req,res) {
+    var user = req.query.userId;
+    var oeuvre = req.query.oeuvreId;
+    console.log('user',user);
+    console.log('oeuvre',oeuvre);
+    User
+        .find({
+            _id: user,
+            'interested.idOeuvre':oeuvre
+        })
+        .exec(function(err,data) {
+            if(err) return res.status(424).end();
+            console.log('data',data);
+            res.json({result: data.length != 0});
+        })
+});
+
 router.get('/user/isBlock',function(req,res){
     User.findOne({'username': req.query.username}, function(err, user){
         if(err){ console.log(err); return; }

@@ -150,6 +150,27 @@ app.factory('serviceDetails', ['$http',function($http){
             params : {username : username}
         });
     };
+    Details.getInterested = function(oeuvreId, userId) {
+        return $http.get('/user/interested',{
+            params : {
+                oeuvreId : oeuvreId,
+                userId : userId
+            }
+        });
+    };
+
+    Details.interested = function(oeuvreId, userId) {
+        return $http.post('/user/add/interested',{
+            oeuvreId : oeuvreId,
+            userId : userId
+        });
+    };
+    Details.notInterested = function(oeuvreId, userId) {
+        return $http.post('/user/remove/interested',{
+            oeuvreId : oeuvreId,
+            userId : userId
+        });
+    };
 
     return Details;
 }]);

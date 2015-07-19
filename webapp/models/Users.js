@@ -24,6 +24,10 @@ var UserSchema = new mongoose.Schema({
         idChapter: String,
         date: { type: Date, default: Date.now }
     }],
+    interested:[{
+        idOeuvre: String,
+        date: { type: Date, default: Date.now }
+    }],
     messages:[{
         sender : String,
         objet : String,

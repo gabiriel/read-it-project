@@ -22,14 +22,19 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
 
     $scope.ratings = [];
     $scope.notFinished = function() {
-        return $scope.oeuvre.chapters.every(function(elem) {
+        return $scope.oeuvre.chapters.some(function(elem) {
             return !elem.read;
         });
     };
-    $scope.notReadOrInterested = function() {
+    $scope.notReadAndInterested = function() {
         return $scope.oeuvre.chapters.every(function(elem) {
             return !elem.read;
-        });
+        }) && $scope.oeuvre.interested;
+    };
+    $scope.notReadAndNotInterested = function() {
+        return $scope.oeuvre.chapters.every(function(elem) {
+                return !elem.read;
+            }) && !$scope.oeuvre.interested;
     };
     $scope.finir = function() {
         serviceDetails.readAll(auth.currentUserId(), $scope.oeuvre._id)
@@ -74,8 +79,31 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
                     });
                     var interested = false;
                 });
+            serviceDetails.getInterested($scope.oeuvre._id,auth.currentUserId())
+                .success(function(data) {
+                    $scope.oeuvre.interested = data.result;
+                })
+                .error(function(err) {
+                })
         }
     });
+    $scope.interested = function() {
+        serviceDetails.interested($scope.oeuvre._id,auth.currentUserId())
+            .success(function() {
+                $scope.oeuvre.interested = true;
+            })
+            .error(function(err) {
+            })
+    };
+    $scope.notInterested = function() {
+        serviceDetails.notInterested($scope.oeuvre._id,auth.currentUserId())
+            .success(function() {
+                $scope.oeuvre.interested = false;
+            })
+            .error(function(err) {
+            })
+
+    };
 
     $scope.readAll = function() {
         serviceDetails.readAll($scope.user, $scope.oeuvre._id);
@@ -341,7 +369,6 @@ app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetai
         ['quote'],
         ['link']
     ];
-
     $scope.save = function() {
         if (!confirm('Êtes vous sûr de vouloir sauvegarder ' + $scope.name + ' ?'))
             return;
