@@ -1,73 +1,67 @@
-<div class="container" ng-controller='UserPage'>
-    <div class="row">
-        <div class="col-m-10">
-            <aside class="col-sm-3"> <!-- left Column -->
-                <div class="alert alert-success" role="alert" ng-show="return_add_friends_valide=='valide'" value="false">{{message_return}}</div>
-                <div class="alert alert-danger" role="alert" ng-show="return_add_friends_erreur=='erreur'" value="'false'"> {{message_return_error}}</div>
-                <div id="imgPanel" class="readit_block">
-                    <h2 id="userName"> {{userName}} </h2>
-                    <img  ng-src="img/UserPictures/{{user.picture}}" alt="Photo_de_profil">
-                    <div class="large">
-                        <a class="ng-pristine ng-valid ng-hide" ui-sref="message({username : userName})"
-                           ng-model="message" ng-show="message=='sendMessage'"
-                           value="sendMessage">
-                            <i class="glyphicon glyphicon-envelope"></i>
-                        </a>
-                        <a class="ng-pristine ng-valid ng-hide" href="#" ng-click="removeFromFriend()"
-                           ng-model="remove" ng-show="remove=='removeFriends'">
-                            <i class="glyphicon glyphicon-minus"></i>
-                        </a>
-                        <a class="ng-pristine ng-valid ng-hide" href="#" ng-click="addFriend()"
-                           ng-model="add" ng-show="add=='addFriends'" value="addFriend">
-                            <i class="glyphicon glyphicon-plus"></i>
-                        </a>
-                        <a class="ng-pristine ng-valid ng-hide" href="#"
-                           ng-model="bloc" ng-show="bloc=='blocUser'" value="blocUser">
-                            <i class="glyphicon glyphicon-ban-circle"></i>
-                        </a>
-                        <span class="btn btn-default btn-file" ng-show="isCurrentUserPage">
-                            <i class="glyphicon glyphicon-edit">
-                            </i>
-                            <input
-                                type="file"
-                                onchange="angular.element(this).scope().changePicture(this.files)"
-                            />
-                        </span>
-                    </div>
-                </div>
-                <div class="readit_block">
-                    <h3>Amis</h3>
-                    <div ng-hide="friends.length">
-                        <p>Aucun amis</p>
-                    </div>
-                    <ul ng-repeat="friend in friends">
-                        <li><a ui-sref="userDisplay({ user: friend.name})">{{friend.name}}</a></li>
-                    </ul>
-                </div>
-            </aside>
-            <aside class="col-sm-6"> <!-- Center Column -->
-                <div id="activite" class="readit_block" ng-model="activite">
-                    <h3>Activité</h3>
-                    <div ng-repeat="activity in activities | orderBy : '-date'">
-                        <div style="float:right;">{{activity.date | date : 'dd/MM/yyyy HH:mm'}}</div>
-                        <div ng-show="activity.name">
-                            {{user.username}} est amis avec <a ui-sref="userDisplay({user: activity.name})">{{activity.name}}</a>
-                        </div>
-                        <div ng-show="activity.idChapter && !activity.rating">
-                            {{user.username}} a lus <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.oeuvre.name}}</a>
-                        </div>
-                        <div ng-show="activity.commentaire">
-                            {{user.username}} a commenté <a ui-sref="oeuvre({id: activity.id_oeuvre})">{{activity.oeuvre.name}}</a>
-                        </div>
-                        <div ng-show="activity.rating && !activity.idChapter">
-                            {{user.username}} a noté <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.nomOeuvre}}</a> {{activity.rating}}
-                        </div>
-                        <div ng-show="activity.rating && activity.idChapter">
-                            {{user.username}} a noté <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.nomOeuvre}} {{activity.nomChapitre}}</a> {{activity.rating}}
-                        </div>
-                    </div>
-                </div>
-            </aside>
+<div class="row">
+    <aside class="col-sm-4 clearfix"> <!-- left Column -->
+        <div class="alert alert-success" role="alert" ng-show="return_add_friends_valide=='valide'" value="false">{{message_return}}</div>
+        <div class="alert alert-danger" role="alert" ng-show="return_add_friends_erreur=='erreur'" value="'false'"> {{message_return_error}}</div>
+        <div id="imgPanel" class="readit_block col-xs-6 col-sm-12">
+            <h2 id="userName">{{userName}}</h2>
+            <img ng-src="img/UserPictures/{{user.picture}}" alt="Photo_de_profil">
+            <div class="large" ng-show="auth.isLoggedIn()">
+                <a class="ng-pristine ng-valid ng-hide" ui-sref="message({username : userName})"
+                   ng-model="message" ng-show="message=='sendMessage'"
+                   value="sendMessage">
+                    <i class="glyphicon glyphicon-envelope"></i>
+                </a>
+                <a class="ng-pristine ng-valid ng-hide" href="#" ng-click="removeFromFriend()"
+                   ng-model="remove" ng-show="remove=='removeFriends'">
+                    <i class="glyphicon glyphicon-minus"></i>
+                </a>
+                <a class="ng-pristine ng-valid ng-hide" href="#" ng-click="addFriend()"
+                   ng-model="add" ng-show="add=='addFriends'" value="addFriend">
+                    <i class="glyphicon glyphicon-plus"></i>
+                </a>
+                <a class="ng-pristine ng-valid ng-hide" href="#"
+                   ng-model="bloc" ng-show="bloc=='blocUser'" value="blocUser">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                </a>
+                <span class="btn btn-default btn-file" ng-show="isCurrentUserPage">
+                    <i class="glyphicon glyphicon-edit"></i>
+                    <input type="file"
+                           onchange="angular.element(this).scope().changePicture(this.files)" >
+                </span>
+            </div>
         </div>
-    </div>
+        <div class="readit_block pull-right col-xs-5 col-sm-12">
+            <h3>Amis</h3>
+            <div ng-hide="friends.length">
+                <p>Aucun amis</p>
+            </div>
+            <ul ng-repeat="friend in friends">
+                <li><a ui-sref="userDisplay({ user: friend.name})">{{friend.name}}</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <aside class="col-sm-8"> <!-- Center Column -->
+        <div id="activite" class="readit_block" ng-model="activite">
+            <h3>Activité</h3>
+            <div ng-repeat="activity in activities | orderBy : '-date'">
+                <div class="pull-right">{{activity.date | date : 'dd/MM/yyyy HH:mm'}}</div>
+                <div ng-show="activity.name">
+                    {{user.username}} est amis avec <a ui-sref="userDisplay({user: activity.name})">{{activity.name}}</a>
+                </div>
+                <div ng-show="activity.idChapter && !activity.rating">
+                    {{user.username}} a lus <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.oeuvre.name}}</a>
+                </div>
+                <div ng-show="activity.commentaire">
+                    {{user.username}} a commenté <a ui-sref="oeuvre({id: activity.id_oeuvre})">{{activity.oeuvre.name}}</a>
+                </div>
+                <div ng-show="activity.rating && !activity.idChapter">
+                    {{user.username}} a noté <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.nomOeuvre}}</a> {{activity.rating}}
+                </div>
+                <div ng-show="activity.rating && activity.idChapter">
+                    {{user.username}} a noté <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.nomOeuvre}} {{activity.nomChapitre}}</a> {{activity.rating}}
+                </div>
+            </div>
+        </div>
+    </aside>
 </div>

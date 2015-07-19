@@ -589,14 +589,19 @@ router.get('/oeuvre/get/read',function(req,res) {
         })
 });
 
-
 router.get('/User',function(req,res){
     var currentUser = req.query.currentUser;
-    User.findOne({username: currentUser
-    },function (err, user) {
+    User.findOne({username: currentUser},function (err, user) {
+        if(err){ console.log(err); return; }
+        if(user != null) {
+            // remove secret content for better security
+            user.hashpass = "";
+            user.salt = "";
+        }
         res.json(user);
     });
 });
+
 router.get('/Users',function(req,res) {
     console.log(req.query.currentUser);
 
@@ -1097,41 +1102,40 @@ router.get('/user/friends/requests',function(req,res){
             }));
     });
 });
-router.get('/user/friends/already',function(req,res){
-    User.findOne({
-        'username': req.query.user
-    },function(err,user){
-        console.log(user);
-            if(user!=null) {
-                var i = 0;
-                User
-                    .findOne(
-                    {
-                        username: req.query.user,
-                        'friends.name': req.query.userFriends,
-                        'friends.accepted': true
-                    }
-                    , function (err, user) {
-                        if (user != null)
-                            i++;
-                    }
-                );
-                User.findOne({
-                    username: req.query.userFriends,
-                    'friends.name': req.query.user,
-                    'friends.accepted': true
-                }, function (err, user) {
-                    if (user != null)
-                        i++;
-                    if (i == 2) res.end("success");
-                    else res.end("echec");
-                });
+router.get('/user/friends/already',function(req, res){
+    User.findOne({'username': req.query.user}, function(err, user){
+        if(err){ console.log(err); return; }
+
+        console.log("[Query] get friends of " + JSON.stringify(user));
+        if(user==null) {
+            console.log("[Query] user is undefined");
+            res.end("echecUser");
+            return;
+        }
+        var i = 0;
+        User.findOne({
+                username: req.query.user,
+                'friends.name': req.query.userFriends,
+                'friends.accepted': true
             }
-        else res.end("echecUser");
-
+            , function (err, user) {
+                if (user != null)
+                    i++;
+            }
+        );
+        User.findOne({
+            username: req.query.userFriends,
+            'friends.name': req.query.user,
+            'friends.accepted': true
+        }, function (err, user) {
+            if (user != null)
+                i++;
+            if (i == 2) res.end("success");
+            else res.end("echec");
         });
-
+    });
 });
+
 router.post('/user/friends/remove',function(req,res){
     var i=0;
     User.update(
@@ -1199,19 +1203,15 @@ router.get('/user/exist',function(req,res){
 });
 
 router.post('/user/picture/change',function(req,res) {
+
     var id = req.body.userId;
     fs.rename(req.files['picture'].path, 'app/img/UserPictures/' + req.files['picture'].name, function(err, data) {
         if(err) return res.status(424).end();
+
         User.findOneAndUpdate(
-            {
-                _id:id
-            },
-            {
-                picture: req.files['picture'].name
-            },
-            {
-                safe:true
-            },
+            { _id:id},
+            { picture: req.files['picture'].name },
+            { safe:true },
             function(err,data) {
                 if(err) return res.status(424).end();
                 res.end(req.files['picture'].name);

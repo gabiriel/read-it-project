@@ -139,6 +139,18 @@ app.factory('serviceDetails', ['$http','$rootScope',function($http,$rootScope){
         });
     };
 
+    Details.getUser = function(currentUser){
+        return $http.get("/User", {
+            params: {currentUser: currentUser}
+        });
+    };
+
+    Details.getFriends = function(username){
+        return $http.get('/friends',{
+            params : {username : username}
+        });
+    };
+
     return Details;
 }]);
 
@@ -187,14 +199,6 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         }
     };
 
-    auth.getUser = function(currentUser){
-        if(auth.isLoggedIn()){
-            return $http.get("/User", {
-                params: {currentUser: currentUser}
-            });
-        }
-    };
-
     auth.register = function(user){
         return $http.post('/register', user);
     };
@@ -208,6 +212,8 @@ app.factory('auth', ['$http', '$window', function($http, $window){
     auth.logOut = function(){
         $window.localStorage.removeItem('read-it-token');
     };
+
+
     auth.searchUsers = function(searched) {
         return $http.get('/users/search',{
             params: { searched: searched }
@@ -289,11 +295,6 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         });
     };
 
-    auth.getFriends = function(username){
-        return $http.get('/friends',{
-            params : {username : username}
-        });
-    };
     auth.getUsersFriends = function(username){
         return $http.get('/user/friends',{
             params : {username : username}

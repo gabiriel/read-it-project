@@ -189,6 +189,8 @@ main#content{
   text-align: center;
 }
 #imgPanel img{
+  box-shadow: rgba(0,0,0,0.1) 5px 5px 2px;
+  margin-bottom: 1em;
   width: 200px;
   height: 200px;
 }
