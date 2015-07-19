@@ -36,6 +36,11 @@ var UserSchema = new mongoose.Schema({
         accepted :{type : Boolean, default: false},
         date: Date,
         _id:false
+    }],
+    blackList:[{
+        name : String,
+        id_user : String,
+        _id : false
     }]
 });
 

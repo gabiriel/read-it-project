@@ -346,7 +346,10 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         return $http.get('/user/activity',{
             params:{userName:userName}
         })
-    }
+    };
+    auth.blockUser = function(userName){
+        return $http.post('/user/block',userName);
+    };
     return auth;
 }]);
 

@@ -88,6 +88,9 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
             $scope.friends = friends;
         });
     };
+    $scope.block = function(username){
+
+    };
     $scope.changePicture = function(files) {
         auth.changePicture(auth.currentUserId(),files[0])
             .success(function(data) {
