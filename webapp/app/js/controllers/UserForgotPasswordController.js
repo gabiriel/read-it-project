@@ -16,7 +16,7 @@ app.controller('UserForgotPasswordController',['$scope','$location','serviceDeta
 			}
 		})
 		.error(function(data, status) {
-			alert('Repos error'+status+' - '+data);
+			alert('Repos error '+status+' - '+data);
 		});
 	};
 

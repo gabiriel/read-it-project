@@ -38,19 +38,14 @@ app.controller('messageCtrl',['$scope','$rootScope','$stateParams','auth',functi
             else if(data=="echec"){
                 $scope.message_return_valide = "false";
                 $scope.message_return_erreur = "erreur";
-                $scope.message_return_error = "l'utilisateur " + MessageBody.Username + " n'est dans votre liste d'ami, message non envoyé";
+                $scope.message_return_error = MessageBody.Username + " ne fait pas partie de votre liste d'amis, vous ne pouvez pas lui envoyer de message.";
             }
             else{
                 $scope.message_return_valide = "false";
                 $scope.message_return_erreur = "erreur";
-                $scope.message_return_error = "l'utilisateur " + MessageBody.Username + " n'a pas été trouvé, message non envoyé";
-
-
+                $scope.message_return_error = MessageBody.Username + " n'a pas été trouvé, le message ne peut être envoyé.";
             }
         });
-
-
-
     }
 }]);
 
@@ -81,9 +76,7 @@ app.controller('messageListCtrl',['$scope','$rootScope','$state','auth',function
         messageCorps.reads = true;
         $scope.messageShow = messageCorps;
 
-
-        var messageObject =
-        {
+        var messageObject = {
             id_message : messageCorps._id,
             reciver: reciver
         };

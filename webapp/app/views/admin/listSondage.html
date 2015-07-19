@@ -1,9 +1,11 @@
 <div class="row readit_block">
-    <input type="radio" ng-model="sondageCreate" value="create"> Création des sondages
-    <input type="radio" ng-model="sondageCreate" value="update"> Modification des sondages
+    <h2>Gestion des sondages</h2>
+    <hr/>
+    <input type="radio" ng-model="sondageCreate" value="create"> Création
+    <input type="radio" ng-model="sondageCreate" value="update"> Modification
 
     <div ng-show="sondageCreate=='create'">
-        <h3>Création des sondages :</h3>
+        <h3>Création des sondages</h3>
         <hr/>
         <form name="sondageForm">
 
@@ -54,6 +56,9 @@
 
         <h3> Liste des sondages : </h3>
         <hr/>
+        <div class="alert alert-info" ng-hide="sondages.length">
+            Il n'y a aucun sondage.
+        </div>
         <form name="FormListSondages">
             <div class="col-sm-offset-1" ng-repeat="sondage in sondages">
                 <input type="radio" name="radioListSondages" ng-checked="" value="Ok" ng-model="radioOk" > {{sondage.question}}

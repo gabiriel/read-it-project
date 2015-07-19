@@ -13,7 +13,7 @@ app.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, serviceD
                 $scope.oeuvres.splice($scope.oeuvres.indexOf(oeuvre),1);
             })
             .error(function(err) {
-                alert('une erreur est survenue lors de la suppresion de l\'ouevre : ' +err);
+                alert("Une erreur est survenue lors de la suppresion de l'Oeuvre : " +err);
             });
     };
 }]);
@@ -38,11 +38,15 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
                     $scope.oeuvre.chapters[i].read = true;
             })
             .error(function(data) {
-                alert('une erreure est survenue lors de l\'engeristrement de la lecure');
+                alert("Une erreur est survenue lors de l'enregistrement de la lecture");
             });
     };
+
     serviceDetails.getOeuvre($stateParams.id).success(function(data) {
         $scope.oeuvre = data;
+
+        if($scope.oeuvre.cover == undefined)
+            $scope.oeuvre.cover = "default_cover.png";
 
         $scope.rating = $scope.oldRating = data.ratings.reduce(function(x,y) { return x + y.rating; },0) / data.ratings.length
                                             || 0;
@@ -80,9 +84,6 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
         $scope.favorite = Boolean(data === 'true');
     });
 
-    //$scope.oldRating = 0;
-    //
-    //$scope.rating = $scope.oldRating;
     $scope.toggleRead = function(chapter) {
         $scope.result = 'toogle';
         chapter.read = !chapter.read;
@@ -151,7 +152,7 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
     };
     $scope.saveChapterRating = function(index) {
         if(!$scope.oeuvre.chapters[index].read) {
-            alert('vous devez avoir lu un chapitre pour pouvoir la noter');
+            alert("Vous devez avoir lu ce chapitre pour pouvoir le noter");
             $scope.reinitChapterRating(index);
             return;
         }
@@ -162,7 +163,7 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
                 $scope.oeuvre.chapters[index].rating = parseInt(data);
             })
             .error(function(err) {
-                alert('une erreur est survenue lors de l\'enregistrement de la note');
+                alert("Une erreur est survenue lors de l'enregistrement de la note");
             });
     };
     //newRating is the new rate of the user, not the new average rate
@@ -175,7 +176,7 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
     //here, rating is how much the user rate the content
     $scope.saveRating = function() {
         if(!$scope.oeuvre.chapters.some(function(item) {return item.read})) {
-            alert('vous devez avoir commencer a lire l\'oeuvre pour la noter');
+            alert("Vous devez avoir commencer à lire l'oeuvre pour la noter");
             $scope.reinitRating();
             return;
         }
@@ -186,7 +187,7 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
                 $scope.rating = data.rating;
             })
             .error(function(error) {
-                alert('erreur lors de la notation' + error);
+                alert('Erreur lors de la notation' + error);
             });
         $scope.oldRating = $scope.rating;
     };
@@ -215,7 +216,6 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
 app.controller('popular-controller',['$scope','serviceDetails',function($scope,serviceDetails) {
     serviceDetails.getPopular()
         .success(function(data) {
-            //alert(JSON.stringify(data));
             $scope.populars = data;
         })
         .error(function(data) {
@@ -225,7 +225,6 @@ app.controller('popular-controller',['$scope','serviceDetails',function($scope,s
 app.controller('wellRated-controller',['$scope','serviceDetails',function($scope,serviceDetails) {
     serviceDetails.getWellRated()
         .success(function(data) {
-            //alert(JSON.stringify(data));
             $scope.wellRated = data;
         })
         .error(function(data) {
@@ -238,24 +237,27 @@ app.controller('add-oeuvre-controller',['$scope','serviceDetails',function($scop
     $scope.chapters = [];
     $scope.categories = [];
     $scope.authors = [];
+
     $scope.addAuthor =function() {
         if($scope.newAuthor == '') return;
-        //alert(JSON.stringify($scope.authors));
         $scope.authors.push({name: $scope.newAuthor});
         $scope.newAuthor = '';
         $("#txt-author").focus();
     };
+
     $scope.addCategory = function() {
         if($scope.newCategory == '') return;
         $scope.categories.push({name: $scope.newCategory});
         $scope.newCategory = '';
         $("#txt-category").focus();
     };
+
     $scope.addChapter = function() {
         $scope.chapters.push($scope.newChapter);
         $scope.newChapter = {};
         $("#txt-chapter-name").focus();
     };
+
     $scope.commentMenu = [
         ['bold', 'italic', 'underline', 'strikethrough'],
         ['ordered-list', 'unordered-list', 'outdent', 'indent'],
@@ -263,6 +265,7 @@ app.controller('add-oeuvre-controller',['$scope','serviceDetails',function($scop
         ['quote'],
         ['link']
     ];
+
     $scope.save = function() {
         if (!confirm('Êtes vous sûr de vouloir sauvegarder ' + $scope.name + ' ?'))
             return;
@@ -315,7 +318,6 @@ app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetai
         });
     $scope.addAuthor =function() {
         if($scope.newAuthor == '') return;
-        //alert(JSON.stringify($scope.authors));
         $scope.authors.push({name: $scope.newAuthor});
         $scope.newAuthor = '';
         $("#txt-author").focus();
@@ -338,6 +340,7 @@ app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetai
         ['quote'],
         ['link']
     ];
+
     $scope.save = function() {
         if (!confirm('Êtes vous sûr de vouloir sauvegarder ' + $scope.name + ' ?'))
             return;
@@ -359,7 +362,7 @@ app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetai
             .success(function(data) {
             })
             .error(function(err) {
-                alert('une erreure est survenue lors de la sauvegarde');
+                alert('Une erreur est survenue lors de la sauvegarde');
             });
     };
 }]);

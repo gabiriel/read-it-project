@@ -17,7 +17,6 @@ readIt.directive('equalsTo', [function () {
                 return v1 == v2;
             };
             scope.$watch(check, function (isValid) {
-                // le champ est valide
                 control.$setValidity("equalsTo", isValid);
             });
         }

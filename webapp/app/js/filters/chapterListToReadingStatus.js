@@ -15,9 +15,9 @@ ReadIT.filter('readingStatus',function() {
         var finished = chapters.every(read);
 
         if (finished)
-            return 'finis';
+            return 'Terminé';
         if (reading)
-            return 'en cours';
-        return 'pas commencé';
+            return 'En cours';
+        return 'Pas commencé';
     };
 });

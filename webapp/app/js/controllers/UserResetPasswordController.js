@@ -17,17 +17,13 @@ app.controller('UserResetPasswordController',['$scope','$location','serviceDetai
                 $scope.error = false;
             } else {
                 alert(data);
-                /*
-                $location.path("/user/reset/:token");
-                $scope.erreur=data;
-                $scope.error = true;
-                */
             }
         })
             .error(function(data, status) {
-                alert('Repos error'+status+' - '+data);
+                alert('Repos error '+status+' - '+data);
             });
-    }
+    };
+
     $scope.reset=function(){
         $scope={email:''};
     }

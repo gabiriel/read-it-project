@@ -6,7 +6,7 @@
     </div>
     <div id="listOeuvres" ng-show="(oeuvres|filter:searchText).length">
         <h3>Oeuvres correspondant à la recherche :</h3>
-        <ul class="example-animate-container">
+        <ul>
             <li id="listOeuvre" ng-repeat="oeuvre in oeuvres | filter:searchText">
                 <a ui-sref="oeuvre({ id: oeuvre._id})">
                     {{oeuvre.name}}
@@ -22,7 +22,7 @@
     </div>
     <div id="users" ng-show="users.length">
         <h3>Utilisateurs correspondant à la recherche :</h3>
-        <ul class="example-animate-container">
+        <ul>
             <li ng-repeat="user in users">
                 <a ui-sref="userDisplay({ user: user.username})">
                     {{user.username}}

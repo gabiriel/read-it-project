@@ -26,7 +26,8 @@ app.controller('ContactUserController',function($scope,$http,$location){
             .error(function(data, status) {
                 alert('Repos error'+status+' - '+data);
             });
-    }
+    };
+
     $scope.reset=function(){
         $scope.user={email:'',password:''};
     }

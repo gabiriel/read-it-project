@@ -2,7 +2,7 @@
     <aside class="col-sm-4 clearfix"> <!-- left Column -->
 
         <div id="imgPanel" class="readit_block col-xs-6 col-sm-12">
-            <img  ng-src="img/Covers/{{oeuvre.cover}}" alt="Cover">
+            <img ng-src="img/Covers/{{oeuvre.cover}}" alt="Cover">
             <div class="large">
                 <a ui-sref="home"><i class="glyphicon glyphicon-shopping-cart"></i></a>
                 <a ng-click="toggleFavorite()"><i class="glyphicon {{favorite ? 'glyphicon-heart' : 'glyphicon-heart-empty'}}"></i></a>
@@ -33,10 +33,9 @@
             <h4>Etat d'avancement</h4>
             <div>{{oeuvre.chapters | readingStatus}}</div>
             <div ng-show="auth.isLoggedIn()">
-                <button class="btn btn-default" ng-click="finir()" ng-show="notFinished()">Finit</button>
                 <button class="btn btn-default" ng-click="interested()" ng-show="notReadOrInterested()">Intéressé</button>
+                <button class="btn btn-default" ng-click="finir()" ng-show="notFinished()">Fini</button>
             </div>
-            <!--<label for="rbtn-advancement-finished">Finis</label>-->
         </div>
     </aside>
     <aside class="col-sm-8"> <!-- Center Column -->

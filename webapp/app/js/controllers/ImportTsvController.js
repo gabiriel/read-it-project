@@ -9,13 +9,13 @@ app.controller('ImportTsvController',['$scope', '$state', 'serviceDetails',funct
         serviceDetails.importCsv(file,"to-import")
             .success(function(data) {
                 if(data === 'failure') {
-                    alert("echec lors de l'import");
+                    alert("Echec lors de l'import");
                     return;
                 }
                 $state.go("/");
             })
             .error(function(data) {
-                alert("erreur lors de l'import")
+                alert("Erreur lors de l'import")
             });
     };
 }]);

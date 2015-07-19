@@ -1,12 +1,12 @@
 <div class="row readit_block">
     <div id="listDemandes">
+        <h2>Demandes d'ajout :</h2>
+        <hr/>
         <div ng-hide="requests.length">
             <p class="alert alert-info">Vous n'avez aucune demande d'ajout</p>
         </div>
         <div ng-show="requests.length">
-            <h3>Liste des demandes :</h3>
-            <hr/>
-            <ul class="example-animate-container"  ng-repeat="request in requests">
+            <ul ng-repeat="request in requests">
                 <li>
                     <a href="#/user/display/{{request.name}}"
                             class="btn btn-default" >

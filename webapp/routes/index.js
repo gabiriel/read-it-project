@@ -46,7 +46,7 @@ router.get('/', function(req, res, next) {
 router.post('/register', function(req, res, next){
     var formUser = req.body;
     if(!formUser.username || !formUser.password || !formUser.email){
-        return res.status(400).json({message: 'Please fill out all fields'});
+        return res.status(400).json({message: 'Veuillez remplir tout les champs nécessaire'}).end();
     }
     var newUser = new User({
         username: formUser.username,
@@ -64,48 +64,54 @@ router.post('/register', function(req, res, next){
     }
 
     console.log("Check if user doesn't already exists");
+
     User.find({$or:[{mail: newUser.mail},{username: newUser.username}]}, function (err, userFromDB) {
-        if (err) { return res.status(400).json({message: err }); }
+        if (err) { return res.status(400).json({message: err }).end(); }
         if (userFromDB.length>0){
             console.log("User already exists !");
-            return res.status(400).json({message: 'This user already exists' });
+            return res.status(400).json({message: 'Cet utilisateur existe déja (email ou username)' }).end();
         }
-    });
-    console.log("New user !");
-    newUser.setPassword(formUser.password);
 
-    newUser.save(function (err) {
-        if (err){ return res.status(400).json({message: 'Error when saving user (' + newUser.username + ') : ' + err}); }
+        console.log("New user !");
+        newUser.setPassword(formUser.password);
 
-        console.log("Prepare email message");
-
-        var ExemplaireText = "Bonjour " +  newUser.firstname + "<br/>"
-            + "Felicitation pour votre inscription, " + "<br/>"
-            + "Voici vos coordonnées : " + "<br/>"
-            + "Username: " + newUser.username + "<br/>"
-            + "Pour plus d'informations, n'hésitez pas à nous contacter par email : "
-            + sender_email.address;
-
-        var mailOptions = {
-            from: 'Suivi Manga ✔ <' + sender_email.address + '>',
-            to: newUser.mail,
-            subject: 'Read-it - Inscription',
-            html: ExemplaireText
-        };
-
-        console.log("Sending email");
-        mailTransport.sendMail(mailOptions, function(err, response){
-            var msg = " User (" + newUser.username + ") has been registered";
-            if(err){
-                console.log('[ERROR] ' + err);
-                return res.status(400).json({message: msg + ' but an error has occured when sending email to '+ newUser.mail});
+        newUser.save(function (err) {
+            if (err){
+                return res.status(400).json({message: 'Erreur lors de la sauvegarde de (' + newUser.username + ') : ' + err}).end();
             }
-            mailTransport.close();
-            console.log("[SUCCESS] Email has been sent to <" + newUser.mail + ">");
+
+            console.log("Prepare email message");
+
+            var ExemplaireText = "Bonjour " +  newUser.firstname + "<br/>"
+                + "Felicitation pour votre inscription, " + "<br/>"
+                + "Voici vos coordonnées : " + "<br/>"
+                + "Username: " + newUser.username + "<br/>"
+                + "Pour plus d'informations, n'hésitez pas à nous contacter par email : "
+                + sender_email.address;
+
+            var mailOptions = {
+                from: 'Suivi Manga ✔ <' + sender_email.address + '>',
+                to: newUser.mail,
+                subject: 'Read-it - Inscription',
+                html: ExemplaireText
+            };
+
+            console.log("Sending email");
+            mailTransport.sendMail(mailOptions, function(err, response){
+                var msg = "L'utilisateur (" + newUser.username + ") à bien été créé";
+                if(err){
+                    console.log('[ERROR] ' + err);
+                    return res.status(400).json({message: msg + ", mais une erreur s'est produite lors de l'envoi du mail à "+ newUser.mail});
+                }
+                mailTransport.close();
+                console.log("[SUCCESS] Email has been sent to <" + newUser.mail + ">");
+            });
+
+            return res.json({message: "Le compte a bien été créé"}).end();
         });
     });
-    return res.json({alertmessage: "Le compte a été créé"});
 });
+
 router.post('/login', function(req, res, next){
     if(!req.body.email || !req.body.password){
         return res.status(400).json({message: 'Please fill out all fields'});
@@ -603,23 +609,16 @@ router.get('/User',function(req,res){
 });
 
 router.get('/Users',function(req,res) {
-    console.log(req.query.currentUser);
-
-    User.find({username:
-            {
-                $ne:req.query.currentUser
-            }
-        }
-        ,function (err, users)
-        {
+    var query = {username: { $ne:req.query.currentUser}};
+    User.find(query, function (err, users){
             res.json(users);
         }
     );
 });
+
 router.get('/users/search',function(req,res) {
     var searched = req.query.searched;
-    User.
-        find({username: {$regex: searched, $options: "i" }})
+    User.find({username: {$regex: searched, $options: "i" }})
         .exec(function(err, data) {
             if(err) {
                 console.log('error : ' + err);

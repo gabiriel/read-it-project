@@ -73,14 +73,14 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
                 {
                     $scope.return_add_friends_valide ="valide";
                     $scope.return_add_friends_erreur="false";
-                    $scope.message_return = "cette utilisateur ne fait plus parti de votre liste d'ami";
+                    $scope.message_return = "Cet utilisateur a été retiré de votre liste d'ami";
                     $scope.add='addFriends';
                     $scope.remove='false';
                 }
                 else {
                     $scope.return_add_friends_valide ="false";
                     $scope.return_add_friends_erreur="erreur";
-                    $scope.message_return_error = "une erreur est servenu au moment de la suppression";
+                    $scope.message_return_error = "Une erreur est survenue lors de la suppression";
                 }
             }
         );
@@ -111,14 +111,14 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
                     auth.postRequestFriends(friends);
                     $scope.return_add_friends_valide ="valide";
                     $scope.return_add_friends_erreur="false";
-                    $scope.message_return = "demande d'ami envoyé";
+                    $scope.message_return = "Demande d'ami envoyée";
                     $scope.add='false';
                 }
                 else {
                     $scope.add='false';
                     $scope.return_add_friends_valide ="false";
                     $scope.return_add_friends_erreur="erreur";
-                    $scope.message_return_error = "Demande d'ami déja envoyé";
+                    $scope.message_return_error = "Demande d'ami déja envoyée";
                 }
             }
         )
@@ -131,8 +131,8 @@ app.controller('addRequestsCtrl', ['$scope', '$rootScope', 'auth', function($sco
     var username = auth.currentUser();
 
     if(auth.isLoggedIn()) {
-        auth.getAddRequest(username).success(function (user) {
-            $scope.requests = user;
+        auth.getAddRequest(username).success(function (addRequests) {
+            $scope.requests = addRequests;
         });
         $scope.valideRequest = function (user, userToAdd) {
             var infoUser = {
@@ -141,15 +141,16 @@ app.controller('addRequestsCtrl', ['$scope', '$rootScope', 'auth', function($sco
             };
 
             auth.existeUser(infoUser.user,infoUser.userToAdd).success(function(data) {
-                if (data == "false")
+                if (data != "false")
                 {
                     auth.postAddFriends(infoUser);
-                    auth.getAddRequest(username).success(function (user) {
-                        $scope.requests = user;
-                        console.log(user);
+                    
+                    auth.getAddRequest(username).success(function (addRequests) {
+                        $scope.requests = addRequests;
                     });
+
                     auth.getCountAddRequests(auth.currentUser()).success(function (data) {
-                        console.log(data);
+                        console.log("count add request " + data);
                         $rootScope.numberAddRequests = data;
                     });
 

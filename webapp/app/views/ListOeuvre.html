@@ -1,16 +1,16 @@
 <div class="row readit_block">
     <div id="listOeuvres">
-        <div ng-show="auth.isAdmin()">
+        <div ng-show="auth.isAdmin()" class="readit_content">
             <button class="btn btn-default" ui-sref="import">Importer des oeuvres </button>
             <button class="btn btn-primary" ui-sref="adminAddOeuvre">Ajouter une oeuvre</button>
         </div>
-        <div ng-hide="oeuvres">
+        <div ng-hide="oeuvres.length">
             <p class="alert alert-info"> Aucune Oeuvres</p>
         </div>
-        <div ng-show="oeuvres">
+        <div ng-show="oeuvres.length">
             <h3>Liste des oeuvres :</h3>
             <hr/>
-            <ul class="example-animate-container">
+            <ul>
                 <li id="listOeuvre" ng-repeat="oeuvre in oeuvres">
                     <a class="btn" ui-sref="oeuvre({ id: oeuvre._id})"> {{oeuvre.name}}</a>
                     <span ng-show="auth.isAdmin()" class="pull-right">

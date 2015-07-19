@@ -1,12 +1,15 @@
 <div class="row readit_block">
 
-    <legend><h2 class="form-heading">Importer des oeuvres</h2></legend>
+    <h2 class="form-heading">Importer des oeuvres</h2>
+    <hr/>
 
+    <p class="readit_content">
+        Vous pouvez importer un fichier contenant des oeuvres à partir de cette interface.<br/>
+        Le fichier doit être au format <b>TSV</b> (séparation par tabulation)<br/>
+    </p>
     <form enctype="multipart/form-data">
         <input type="file" class="btn btn-default" name="to-import" file-model="fichier"/>
         <button ng-click="send()" class="btn btn-primary"><i class="glyphicon glyphicon-folder-open"></i> Importer</button>
     </form>
-
-
 
 </div>
