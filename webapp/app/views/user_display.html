@@ -45,22 +45,24 @@
     <aside class="col-sm-8"> <!-- Center Column -->
         <div id="activite" class="readit_block" ng-model="activite">
             <h3>Activité</h3>
-            <div ng-repeat="activity in activities | orderBy : '-date'">
-                <div class="pull-right">{{activity.date | date : 'dd/MM/yyyy HH:mm'}}</div>
-                <div ng-show="activity.name">
-                    {{user.username}} est amis avec <a ui-sref="userDisplay({user: activity.name})">{{activity.name}}</a>
-                </div>
-                <div ng-show="activity.idChapter && !activity.rating">
-                    {{user.username}} a lus <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.oeuvre.name}}</a>
-                </div>
-                <div ng-show="activity.commentaire">
-                    {{user.username}} a commenté <a ui-sref="oeuvre({id: activity.id_oeuvre})">{{activity.oeuvre.name}}</a>
-                </div>
-                <div ng-show="activity.rating && !activity.idChapter">
-                    {{user.username}} a noté <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.nomOeuvre}}</a> {{activity.rating}}
-                </div>
-                <div ng-show="activity.rating && activity.idChapter">
-                    {{user.username}} a noté <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.nomOeuvre}} {{activity.nomChapitre}}</a> {{activity.rating}}
+            <div id="activity_container">
+                <div ng-repeat="activity in activities | orderBy : '-date'">
+                    <div class="pull-right">{{activity.date | date : 'dd/MM/yyyy HH:mm'}}</div>
+                    <p ng-show="activity.name">
+                        <i class="glyphicon glyphicon-user"></i> Est devenu ami avec <a ui-sref="userDisplay({user: activity.name})">{{activity.name}}</a>
+                    </p>
+                    <p ng-show="activity.idChapter && !activity.rating">
+                        <i class="glyphicon glyphicon-eye-open"></i> A lu <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.oeuvre.name}}</a>
+                    </p>
+                    <p ng-show="activity.commentaire">
+                        <i class="glyphicon glyphicon-comment"></i> A commenté <a ui-sref="oeuvre({id: activity.id_oeuvre})">{{activity.oeuvre.name}}</a>
+                    </p>
+                    <p ng-show="activity.rating && !activity.idChapter">
+                        <i class="glyphicon glyphicon-star-empty"></i> A noté {{activity.rating}}/5 <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.nomOeuvre}}</a>
+                    </p>
+                    <p ng-show="activity.rating && activity.idChapter">
+                        <i class="glyphicon glyphicon-star-empty"></i> A noté {{activity.rating}}/5 <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.nomOeuvre}} {{activity.nomChapitre}}</a>
+                    </p>
                 </div>
             </div>
         </div>
