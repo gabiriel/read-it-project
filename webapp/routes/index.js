@@ -77,7 +77,7 @@ router.post('/register', function(req, res, next){
 
         newUser.save(function (err) {
             if (err){
-                return res.status(400).json({message: 'Erreur lors de la sauvegarde de (' + newUser.username + ') : ' + err}).end();
+                return res.status(400).json({message: "Erreur lors de la sauvegarde de (" + newUser.username + ") : " + err}).end();
             }
 
             console.log("Prepare email message");
@@ -114,15 +114,15 @@ router.post('/register', function(req, res, next){
 
 router.post('/login', function(req, res, next){
     if(!req.body.email || !req.body.password){
-        return res.status(400).json({message: 'Please fill out all fields'});
+        return res.status(400).json({message: 'Veuillez renseigner tout les champs'}).end();
     }
 
     passport.authenticate('local', function(err, user, info){
         if(err){ return next(err); }
         if(user){
-            return res.json({token: user.generateJWT()});
+            return res.json({token: user.generateJWT()}).end();
         } else {
-            return res.status(401).json(info);
+            return res.status(401).json(info).end();
         }
     })(req, res, next);
 });
@@ -130,11 +130,11 @@ router.post('/forgotpassword', function(req,res) {
     var formUser = req.body;
 
     User.find({mail: formUser.mail}, function (err,data) {
-        if(err){ return res.send('erreur de db - users'); }
-        if(data.length < 1){ return res.send("Cet utilisateur n'existe pas" ); }
+        if(err){ return res.send('Erreur de DB - users').end(); }
+        if(data.length < 1){ return res.send("Cet utilisateur n'existe pas").end(); }
 
         UserForgotPwd.findOneAndRemove({mail: formUser.mail}, function(err,data){
-            if(err){ return res.send('Erreur de db - forgot'); }
+            if(err){ return res.send('Erreur de DB - forgot').end(); }
             if(data.length > 0) { return res.send('Vous avez déja demandé une récupération du mot de passe'); }
             var tokenCree = crypto.randomBytes(10).toString('hex');
             console.log(tokenCree);
@@ -143,12 +143,12 @@ router.post('/forgotpassword', function(req,res) {
                 resetPasswordToken: tokenCree
             });
             tokenToSave.save(function (err) {
-                if(err){ return res.send("erreur au sauvegarder token :"+err); }
+                if(err){ return res.send("Erreur pendant la création du token :"+err).end(); }
 
-                var ExemplaireText = "Pour changer votre mot de passe, il faut cliquer "
+                var ExemplaireText = "Pour changer votre mot de passe, vous devez cliquer "
                     + "<a href=http://" + req.headers.host + "/#/user/reset/?token=" + tokenCree
                     + ">Ici</a></br>"
-                    + "<b> Attention, ce lien ne fonctionne qu'une seule fois.</b>";
+                    + "<b>" + "Attention, ce lien ne fonctionne qu'une seule fois." + "</b>";
 
                 var mailOptions = {
                     from: 'Read-it ✔ <' + sender_email.address + '>',
@@ -158,10 +158,10 @@ router.post('/forgotpassword', function(req,res) {
                 };
 
                 mailTransport.sendMail(mailOptions, function (error, response) {
-                    if (error) { return res.status(500).send("Erreur lors de l'envoie du mail : " + error); }
+                    if (error) { return res.status(500).send("Erreur lors de l'envoie du mail : " + error).end(); }
                         mailTransport.close();
                 });
-                return res.status(200).send('Vous venez de recevoir un mail afin de réinitialiser votre mot de passe');
+                return res.status(200).send('Vous venez de recevoir un mail afin de réinitialiser votre mot de passe').end();
             });
         });
     });
@@ -169,19 +169,19 @@ router.post('/forgotpassword', function(req,res) {
 router.post('/user/reset/', function(req,res) {
     var params = req.body;
     UserForgotPwd.findOneAndRemove({resetPasswordToken: params.token}, function(err, data){
-        if(err){ return res.send("erreur db"); }
-        if(!data){ return res.send("Ce lien ne fonctionne plus."); }
+        if(err){ return res.send("Erreur de DB").end(); }
+        if(!data){ return res.send("Ce lien ne fonctionne plus.").end(); }
 
         var currentUser = new User();
         User.find({mail: data.email}, function (err, user){
-            if(err){ return res.send('Erreur user database'); }
+            if(err){ return res.send("Erreur de DB du à l'utilisateur").end(); }
             currentUser = user;
         });
         currentUser.setPassword(params.password);
         User.update({mail: currentUser.mail},{salt: currentUser.salt, hashpass: currentUser.hashpass}, function(err, id, res){
-            if(err){ return res.send('Erreur user database'); }
+            if(err){ return res.send('Errer de DB').end(); }
         });
-        return res.status(200).send("Password reset");
+        return res.status(200).send("Mot de passe réinitialisé").end();
     });
 });
 router.post('/contact', function (req, res){
@@ -200,7 +200,7 @@ router.post('/contact', function (req, res){
     var mailOptions = {
         from: 'Suivi Manga Form - <' + sender_email.address + '>',
         to: sender_email.address,
-        subject: 'Formulaire de contact ReadIt' + form.mail,
+        subject: 'Formulaire de contact ReadIt : ' + form.mail,
         html: ExemplaireText
     };
 
@@ -292,19 +292,6 @@ router.get('/oeuvre', function(req,res){
         function (err, oeuvre) {
             if (err) { return res.status(424).end();}
             console.log("[Mongoose] oeuvre has been successfuly retrieved");
-            //console.log(oeuvre.chapters)
-            console.log(oeuvre);
-            for(var i in oeuvre.chapters) {
-                //on modifie oeuvre pour avoir le numero a chaque fois
-                if(oeuvre.chapters[i].ratings) {
-                    //oeuvre.chapters[i].rating = oeuvre.chapters[i].ratings.reduce(
-                    //        function(c,n) {
-                    //            return c + n;
-                    //        }, 0) / oeuvre.chapters[i].ratings.length;
-                    //oeuvre.chapters[i].ratings = undefined;
-                }
-            }
-            console.log(oeuvre);
             res.json(oeuvre);
         }
     );
@@ -318,7 +305,7 @@ router.post('/commentaire', function(req,res) {
      });
     commentaire.save(function (err) {
         if (err) { return res.status(400).end(err); }
-        res.end("success");
+        return res.end("success");
     });
 
 });
@@ -345,8 +332,7 @@ router.post('/user/favorites/add',function(req,res) {
     User.findOneAndUpdate(query, update, option, function(err, model) {
             if (err) {
                 console.log("[Mongoose] - " + err);
-                res.end('error');
-                return;
+                return res.end('error');
             }
             res.end('success');
         }
@@ -364,10 +350,9 @@ router.post('/user/favorites/remove',function(req,res) {
     User.findOneAndUpdate(query, update, option, function(err, model) {
             if (err) {
                 console.log("[Mongoose] - " + err);
-                res.end('error');
-                return;
+                return res.end('error');
             }
-            res.end('success');
+            return res.end('success');
         }
     );
 });
@@ -383,11 +368,11 @@ router.get('/user/favorites/is',function(req,res) {
         .count(function(err,count) {
             if(err) {
                 console.log("[Mongoose] - " + err);
-                res.end('false');
-                return;
+                return res.end('false');
+
             }
             console.log('[Mongoose] Favorite founded(' + count + ')');
-            res.end(String(count !== 0));
+            return res.end(String(count !== 0));
         });
 });
 
@@ -399,10 +384,9 @@ router.get('/oeuvres/popular', function(req,res) {
         .exec(function(err, populaires) {
             if(err) {
                 console.log(err);
-                res.json({failure:true});
-                return;
+                return res.json({failure:true}).end();
             }
-            res.json(populaires);
+            return res.json(populaires).end();
         });
 });
 router.post('/oeuvre/rate', function(req,res) {
@@ -439,9 +423,8 @@ router.post('/oeuvre/rate', function(req,res) {
                     'new': true
                 },
                 function(err,data) {
-                    if(err)
-                        return res.status(424).end();
-                    res.json({rating: data.ratings.reduce(function(x,y) { return x + y.rating; }, 0) /data.ratings.length});
+                    if(err) return res.status(424).end();
+                    return res.json({rating: data.ratings.reduce(function(x,y) { return x + y.rating; }, 0) /data.ratings.length});
                 });
         }
     );
@@ -465,7 +448,7 @@ router.post('/oeuvre/rating', function(req,res) {
                 return;
             }
             console.log(data);
-            res.json({ rating: data.reduce(function(x,y) { return x + y; }) /data.length || 0});
+            return res.json({ rating: data.reduce(function(x,y) { return x + y; }) /data.length || 0});
         });
 });
 router.get('/oeuvre/well_rated',function(req,res) {
@@ -475,8 +458,7 @@ router.get('/oeuvre/well_rated',function(req,res) {
             //data contains all oeuvre
             if(err) {
                 console.log(err);
-                res.json({failure:true});
-                return;
+                return res.json({failure:true}).end();
             }
             res.json(
                 data
@@ -486,9 +468,7 @@ router.get('/oeuvre/well_rated',function(req,res) {
                             name: oeuvre.name,
                             rating:
                                 oeuvre.ratings
-                                    ? oeuvre.ratings.reduce(function(x,y) { return x + y.rating; }, 0) / oeuvre.ratings.length
-                                || 0
-                                    : 0
+                                    ? oeuvre.ratings.reduce(function(x,y) { return x + y.rating; }, 0) / oeuvre.ratings.length || 0 : 0
                         }
                     })
                     .sort(function(e1,e2) {
@@ -521,10 +501,9 @@ router.post('/oeuvre/read',function(req,res) {
         function(err,data) {
             if(err) {
                 console.log('error during read saving : ' + read);
-                res.end("failure");
-                return;
+                return res.end("failure");
             }
-            res.end('success');
+            return res.end('success');
         }
     );
 });
@@ -534,9 +513,7 @@ router.post('/oeuvre/read',function(req,res) {
     var idChapter = req.body.idChapter;
     console.log(user + ' has read ' + idChapter + ' from ' + idOeuvre);
     OeuvreModel
-        .find({
-
-        })
+        .find({})
         .exec(function(data) {
             User.findOneAndUpdate(
                 {
@@ -556,8 +533,7 @@ router.post('/oeuvre/read',function(req,res) {
                 function(err,data) {
                     if(err) {
                         console.log('error during read saving : ' + read);
-                        res.end("failure");
-                        return;
+                        return res.end("failure");
                     }
                     res.end('success');
                 }
@@ -649,11 +625,10 @@ router.get('/users/search',function(req,res) {
         .exec(function(err, data) {
             if(err) {
                 console.log('error : ' + err);
-                res.end("error");
-                return;
+                return res.end("error");
             }
             console.log('data ' + data);
-            res.json(data);
+            return res.json(data).end();
         });
 });
 router.get('/usersDelete',function(req,res){
@@ -678,10 +653,10 @@ router.post("/modifyUser" ,function (req,res){
     };
 
     User.findOneAndUpdate(query, updates, function (err, user) {
-        if(err) return res.status(400).json({message: 'Error when updating user (' + formUser._id + ') : ' + err});
+        if(err) return res.status(400).json({message: "Erreur pendant la mise a jour de l'utilisateur (" + formUser._id + ") : " + err}).end();
 
         console.log("Update success");
-        res.status(200).send("l'utilisateur a été modifié");
+        return res.status(200).send("L'utilisateur a été modifié").end();
     });
 });
 
@@ -788,7 +763,9 @@ router.post('/oeuvre/create',function(req,res) {
         var i;
         for(var i in oeuvre.chapters) {
             if(req.files['image-' + i]) {
-                fs.rename(req.files['image-' + i].path, 'app/img/Covers/' + req.files['image-' + i].name, function(err, data) {if(err) return res.status(424).end();});
+                fs.rename(req.files['image-' + i].path, 'app/img/Covers/' + req.files['image-' + i].name, function(err, data) {
+                        if(err) return res.status(424).end();
+                });
                 oeuvre.chapters[i].cover = req.files['image-' + i].name;
             }
         }
@@ -938,7 +915,7 @@ router.post('/oeuvre/remove',function(req,res) {
         .remove()
         .exec(function(err,data) {
             if(err) return res.status(424).end();
-            res.end('ok');
+            return res.end('ok');
             User
                 .find()
                 .update({
@@ -948,7 +925,7 @@ router.post('/oeuvre/remove',function(req,res) {
                 })
                 .exec(function(err,data) {
                     if(err) return res.status(424).end();
-                    res.end('ok');
+                    return res.end('ok');
                 })
         });
 });
@@ -962,9 +939,9 @@ router.post('/sondage/create', function (req,res) {
     console.log("New Sondage !");
     newSondage.save(function (err,sondages) {
         if (err) {
-            return res.status(400).json({message: 'Error when saving Sondage : ' + err});
+            return res.status(400).json({message: 'Erreur lors de la sauvegarde du sondage : ' + err}).end();
         }else
-            return res.status(200).json(sondages);
+            return res.status(200).json(sondages).end();
     });
 });
 router.get('/Sondages',function(req,res) {
@@ -977,7 +954,7 @@ router.post('/sondage/delete',function(req,res){
     Sondages.findOneAndRemove({_id: req.body._id},function(err,sondages){
         if (err) {
             console.log(err);
-            return res.status(400).json({message: 'Error where removing user'});
+            return res.status(400).json({message: 'Error where removing user'}).end();
         }
 
         res.json(sondages);
@@ -993,11 +970,11 @@ router.post('/sondage/modify',function(req,res){
     };
 
     Sondages.findOneAndUpdate(query, updates, function (err, user) {
-        if (err) return res.status(400).json({message: 'Error when updating sondage (' + detail._id + ') : ' + err});
-
+        if (err){
+            return res.status(400).json({message: 'Error when updating sondage (' + detail._id + ') : ' + err}).end();
+        }
         console.log("Update success");
-        res.status(200);
-        res.end();
+        return res.status(200).end();
     })
 });
 
@@ -1005,8 +982,10 @@ router.post("/sondage", function (req,res) {
     var id = req.body._id;
     var query = {_id: id };
     Sondages.findOne(query, function (err, user) {
-        if (err) return res.status(400).json({message: 'Error when display sondage (' + id + ') : ' + err});
-        res.json(user);
+        if (err){
+            return res.status(400).json({message: 'Error when display sondage (' + id + ') : ' + err}).end();
+        }
+        return res.json(user).end();
     });
 });
 
@@ -1061,8 +1040,10 @@ router.post('/user/friends/add',function(req,res) {
             console.log("firens",user);
             if(user!=null)
                 i++;
-            if(i==2) res.end("success");
-            else res.end("echec");
+            if(i==2)
+                return res.end("success");
+            else
+                return res.end("echec");
         });
 });
 router.post('/user/friends/requestAdd',function(req,res){
@@ -1132,8 +1113,7 @@ router.get('/user/friends/already',function(req, res){
         console.log("[Query] get friends of " + JSON.stringify(user));
         if(user==null) {
             console.log("[Query] user is undefined");
-            res.end("echecUser");
-            return;
+            return res.end("echecUser");
         }
         var i = 0;
         User.findOne({
@@ -1289,13 +1269,13 @@ router.get('/user/activity',function(req,res) {
         .find({user: user})
         .lean()
         .exec(function(err, comments) {
-            if(err) return res.status(424).end();
+            if(err|| !comments) return res.status(424).end();
             User
                 .findOne({username: user})
                 .select('_id friends reads')
                 .lean()
                 .exec(function(err,users) {
-                    if(err) return res.status(424).end();
+                    if(err || !users || users.reads == undefined ) return res.status(424).end();
                     OeuvreModel
                         .find
                         ({
@@ -1314,9 +1294,7 @@ router.get('/user/activity',function(req,res) {
                                             )
                                     }
                                 },
-                                {
-                                    'chapter.$.ratings.idUser':user._id
-                                }
+                                { 'chapter.$.ratings.idUser':user._id }
                             ]
                         })
                         .lean()
@@ -1437,7 +1415,7 @@ router.post('/user/add/interested',function(req,res) {
         },
         function(err) {
             if(err) return res.status(424).end();
-            res.end();
+            return res.end();
         }
     )
 });
@@ -1474,7 +1452,7 @@ router.get('/user/isBlock',function(req,res){
             }
             , function (err, user) {
                 if (user != null)
-                    res.end("is_in_my_list");
+                    return res.end("is_in_my_list");
 
             }
         );
@@ -1483,8 +1461,8 @@ router.get('/user/isBlock',function(req,res){
             'blackList.name': req.query.username
         }, function (err, user) {
             if (user != null)
-                res.end("i_am_in_his_list");
-            else     res.end("false");
+                return res.end("i_am_in_his_list");
+            return res.end("false");
         });
     });
 });
