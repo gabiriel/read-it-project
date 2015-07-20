@@ -97,32 +97,64 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
     };
     $scope.block = function(username, usernameBlock){
         auth.blockUser(username,usernameBlock).success(function(data){
-            auth.alreadyFriends(username,usernameBlock).success(function(isBlocked){
-                if(isBlocked=="success") {
+            auth.alreadyFriends(username,usernameBlock).success(function(friends){
+                if(friends=="success") {
                     auth.removeFriends(username, usernameBlock);
                     $scope.friends = auth.getUsersFriends(username);
                 }
             });
+            auth.isBlock(auth.currentUser(), usernameBlock).success(function (dataa) {
+                if (dataa != "false") {
+                    $scope.add = 'false';
+                    $scope.remove = 'false';
+                    $scope.bloc = 'false';
+                    $scope.message = 'false';
+                    $scope.isBlocked = true;
+                    if (dataa == "i_am_in_his_list")
+                        $scope.message_Block = "Vous ne pouvez pas contacter cet utilisateur";
+                    else {
+                        $scope.message_Block = "Cet utilisateur est bloqué";
+                        $scope.unbloc ='unblocUser';
+                    }
+
+                }
+            });
         });
-        $scope.isBlock(data.username);
     };
 
-    $scope.isBlock = function(username){
-        auth.isBlock(username, auth.currentUser()).success(function(data) {
+    $scope.isBlock = function(username) {
+        auth.isBlock(auth.currentUser(), username).success(function (data) {
             if (data != "false") {
                 $scope.add = 'false';
                 $scope.remove = 'false';
                 $scope.bloc = 'false';
                 $scope.message = 'false';
-                $scope.isBlock = true;
+                $scope.isBlocked = true;
                 if (data == "i_am_in_his_list")
                     $scope.message_Block = "Vous ne pouvez pas contacter cet utilisateur";
-                else $scope.message_Block = "Cet utilisateur est bloqué";
+                else {
+                    $scope.message_Block = "Cet utilisateur est bloqué";
+                    $scope.unbloc ='unblocUser';
+                }
 
             }
         });
-    };
+    }
+    $scope.unblock = function(username, usernameBlock){
+        auth.unblockUser(username,usernameBlock).success(function(data){
+            auth.isBlock(auth.currentUser(), username).success(function (data) {
+                if (data == "false") {
+                    $scope.add ='addFriends';
+                    $scope.bloc = 'blocUser';
+                    $scope.message='sendMessage';
+                    $scope.unbloc ='false';
 
+                    $scope.isBlocked= false;
+
+                }
+            });
+        });
+    };
     $scope.changePicture = function(files) {
         auth.changePicture(auth.currentUserId(),files[0])
             .success(function(data) {

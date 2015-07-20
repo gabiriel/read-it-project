@@ -399,6 +399,13 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         };
         return $http.post('/user/block',info);
     };
+    auth.unblockUser = function(username, usernameBlock){
+        var info ={
+            username: username,
+            usernameBlock : usernameBlock
+        };
+        return $http.post('/user/unblock',info);
+    };
     auth.isBlock = function(username, usernameBlock){
         return $http.get('/user/isBlock',{
             params :

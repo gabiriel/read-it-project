@@ -764,15 +764,12 @@ router.post('/message/remove',function(req,res) {
             }
         },
         function(err,user) {
-            console.log(user);
             if(err) return res.status(424).end();
             res.end('sucess');
         });
 
 });
 router.get('/DetailUser',function(req,res) {
-    console.log(req.query.currentUser);
-
     User.find({username:
         {
             $ne:req.query.currentUser
@@ -785,7 +782,6 @@ router.get('/DetailUser',function(req,res) {
     );
 });
 router.post('/oeuvre/create',function(req,res) {
-    //console.log(req.body);
     var oeuvre = JSON.parse(req.body.oeuvre);
     fs.rename(req.files['image'].path, 'app/img/Covers/' + req.files['image'].name, function(err, data) {
         oeuvre.cover = req.files['image'].name;
@@ -1085,7 +1081,8 @@ router.post('/user/friends/requestAdd',function(req,res){
 
         ,function(err,user){
             if(user!=null)
-                console.log("user",user);
+                return res.end("success");
+            return res.end("echec");
         });
 });
 router.post('/user/friends/requestRemove',function(req,res){
@@ -1103,7 +1100,6 @@ router.post('/user/friends/requestRemove',function(req,res){
             }
         },
         function(err,user) {
-            console.log(user);
             res.end();
         });
 });
@@ -1229,7 +1225,7 @@ router.get('/user/exist',function(req,res){
 
 });
 router.post('/user/block',function(req,res){
-User.findOneAndUpdate({username:req.body.username},{
+    User.findOneAndUpdate({username:req.body.username},{
             $addToSet:{
                 blackList  :
                 {
@@ -1246,7 +1242,27 @@ User.findOneAndUpdate({username:req.body.username},{
             if(user!=null)
                 console.log("user",user);
         });
-res.end("success");
+    res.end("success");
+
+});
+router.post('/user/unblock',function(req,res){
+    User.update({username:req.body.username},{
+            $pull:{
+                blackList  :
+                {
+                    name : req.body.usernameBlock
+
+                }
+            }
+        },
+        {
+            safe: true
+        }
+
+        ,function(err,user){
+            if(user!=null)
+                res.end("success");
+        });
 
 });
 router.post('/user/picture/change',function(req,res) {
@@ -1438,7 +1454,6 @@ router.get('/user/interested',function(req,res) {
         })
         .exec(function(err,data) {
             if(err) return res.status(424).end();
-            console.log('data',data);
             res.json({result: data.length != 0});
         })
 });
