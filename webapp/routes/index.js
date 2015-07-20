@@ -151,7 +151,7 @@ router.post('/forgotpassword', function(req,res) {
                     + "<b> Attention, ce lien ne fonctionne qu'une seule fois.</b>";
 
                 var mailOptions = {
-                    from: 'Suivi Manga ✔ <' + sender_email.address + '>',
+                    from: 'Read-it ✔ <' + sender_email.address + '>',
                     to: formUser.mail,
                     subject: 'Récuperation du mot de passe',
                     html: ExemplaireText
@@ -184,6 +184,33 @@ router.post('/user/reset/', function(req,res) {
         return res.status(200).send("Password reset");
     });
 });
+router.post('/contact', function (req, res){
+    var form = req.body;
+
+    if( !(form.mail || form.subject || form.text) )
+    {
+        return res.status(400).send("Veuillez renseigner tout les champs").end();
+    }
+
+    var ExemplaireText = "Une requete venant du site web read-it" + "<br/>"
+        + "Sujet : "+ form.subject + "<br/>"
+        + "Corps du message : " + "<br/>" + form.text
+        + "De : " + form.mail;
+
+    var mailOptions = {
+        from: 'Suivi Manga Form - <' + sender_email.address + '>',
+        to: sender_email.address,
+        subject: 'Formulaire de contact ReadIt' + form.mail,
+        html: ExemplaireText
+    };
+
+    mailTransport.sendMail(mailOptions, function (error, response) {
+        if (error) { return res.status(500).send("Erreur lors de l'envoi du mail : " + error).end(); }
+        mailTransport.close();
+    });
+    return res.status(200).send('Votre mail à bien été envoyé').end();
+});
+
 /**
  * Event (calendar)
  */

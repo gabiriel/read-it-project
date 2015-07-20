@@ -3,8 +3,11 @@
  * ContactUserController
  */
 var app = angular.module('readIt');
-app.controller('ContactUserController',function($scope,$http,$location){
+app.controller('ContactUserController', function($scope, $http){
+    $scope.alertMessage = "";
+
     $scope.contact=function(){
+
         var userDetails= {
             mail : $scope.email,
             subject : $scope.subject_message,
@@ -13,23 +16,26 @@ app.controller('ContactUserController',function($scope,$http,$location){
 
         $http.post('/contact',userDetails)
             .success (function(data){
-            if (data === "OK") {
 
-                $location.path("/");
-                $scope.error = false;
-            } else {
-                $location.path("/contact");
-                $scope.erreur=data;
-                $scope.error = true;
-            }
+            $scope.modal = {
+                "title": "Read-it",
+                "content": "Votre message à bien été envoyé"
+            };
+
+            $scope.resetForm();
         })
             .error(function(data, status) {
-                alert('Repos error'+status+' - '+data);
+                $scope.modal = {
+                    "title": "Read-it - Erreur",
+                    "content": data
+                };
             });
     };
 
-    $scope.reset=function(){
-        $scope.user={email:'',password:''};
+    $scope.resetForm = function(){
+        $scope.subject_message = "";
+        $scope.text_message = "";
+        $scope.contactform = "";
     }
 
 });

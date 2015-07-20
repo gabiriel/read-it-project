@@ -72,6 +72,11 @@ li{
 #navbar a{
   cursor: pointer;
 }
+footer{
+  background-color: #dfdfdf;
+  text-align: center;
+  padding: 0.3em;
+}
 
 #btn_login:hover .glyphicon{
   color:#e2f89c;

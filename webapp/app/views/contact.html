@@ -1,6 +1,7 @@
 <div class="row readit_block">
     <h2 class="form-login-heading">Contactez-nous</h2>
     <hr/>
+
     <form class="form-login col-sm-8 col-sm-offset-2" name="contactform" ng-controller="ContactUserController">
         <!-- Email -->
         <div class="form-group"  ng-class="{'has-error':contactform.email.$invalid && contactform.email.$dirty }" >
@@ -29,7 +30,8 @@
         </div>
 
         <!--Button-->
-        <button class="btn btn-lg btn-primary btn-block" ng-click="contact()" ng-disabled="!contactform.$valid">Envoyer</button>
+        <button class="btn btn-lg btn-primary btn-block" ng-click="contact()" ng-disabled="!contactform.$valid"
+                data-animation="am-fade-and-scale" data-placement="center" bs-modal="modal">Envoyer</button>
 
     </form>
 </div>
