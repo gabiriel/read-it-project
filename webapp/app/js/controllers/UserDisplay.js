@@ -10,27 +10,16 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
 
         if(!$scope.isCurrentUserPage)
         {
-            auth.isBlock(data.username, auth.currentUser()).success(function(data){
-                if(data!="false"){
-                    $scope.add ='false';
-                    $scope.remove ='false';
-                    $scope.bloc = 'false';
-                    $scope.message = 'false';
-                    $scope.isBlock=true;
-                    if(data=="i_am_in_his_list")
-                        $scope.message_Block= "cette utilisateur vous a bloqué";
-                    else $scope.message_Block= "cette utilisateur est bloqué";
-
-                };
-            });
-        };
+            $scope.isBlock(data.username);
+        }
         $scope.user = data;
         $scope.userName = data.username;
         if($scope.user.picture == undefined) // display default user img
             $scope.user.picture = $scope.imgSource;
 
         $scope.isCurrentUserPage = false;
-        if(auth.isLoggedIn() && (auth.currentUserId() == $scope.user._id) ){
+
+        if(auth.isLoggedIn() && (auth.currentUserId() == $scope.user._id) ) {
             $scope.isCurrentUserPage = true;
         }
 
@@ -63,7 +52,7 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
                     }
                 }
             );
-        };
+        }
 
 
     });
@@ -115,18 +104,22 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
                 }
             });
         });
-        auth.isBlock($scope.userName, auth.currentUser()).success(function(data){
-            if(data!="false"){
-                $scope.add ='false';
-                $scope.remove ='false';
+        $scope.isBlock(data.username);
+    };
+
+    $scope.isBlock = function(username){
+        auth.isBlock(username, auth.currentUser()).success(function(data) {
+            if (data != "false") {
+                $scope.add = 'false';
+                $scope.remove = 'false';
                 $scope.bloc = 'false';
                 $scope.message = 'false';
-                $scope.isBlock=true;
-                if(data=="i_am_in_his_list")
-                    $scope.message_Block= "cette utilisateur vous a bloqué";
-                else $scope.message_Block= "cette utilisateur est bloqué";
+                $scope.isBlock = true;
+                if (data == "i_am_in_his_list")
+                    $scope.message_Block = "Vous ne pouvez pas contacter cet utilisateur";
+                else $scope.message_Block = "Cet utilisateur est bloqué";
 
-            };
+            }
         });
     };
 
@@ -211,7 +204,7 @@ app.controller('addRequestsCtrl', ['$scope', '$rootScope', 'auth', function($sco
                     $scope.return_add_friends_valide ="false";
                     $scope.return_add_friends_erreur="erreur";
                     $scope.message_return_error = "utilisateur déja ami";
-                };
+                }
             });
         };
 

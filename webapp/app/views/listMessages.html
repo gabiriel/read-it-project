@@ -5,7 +5,7 @@
         <p class="alert alert-info">Vous n'avez aucun message</p>
     </div>
     <div ng-show="messages.length">
-        <p>Vous avez {{messages.length}} messages</p>
+        <p>Vous avez {{messages.length}} message<span ng-show="messages.length > 1">s</span></p>
         <div class="readit_block col-sm-4 col-xs-6" ng-repeat="messageCorps in messages">
             <div class="{{messageCorps.reads ? '' : 'unreaded'}}">
                 <p>{{messageCorps.date.toLocaleString()}}<br/>
@@ -42,7 +42,7 @@
                 <a href="#/user/display/{{messageShow.sender}}">{{messageShow.sender}}</a>
             </span>
             <span class="pull-right">{{messageShow.date.toLocaleString()}}</span>
-            <span class="object">Sujet : {{messageShow.objet}}</span>
+            <span class="object">Objet : {{messageShow.objet}}</span>
             <div class="messageCorps" ng-bind-html="messageShow.message">
                 {{messageShow.message}}
             </div>

@@ -63,7 +63,7 @@
                         <i ng-repeat="category in oeuvre.categories"> {{category}}</i>
                     </span>
                 </h3>
-                <h4><i ng-repeat="ath in oeuvre.author"> {{ath}}</i></h4>
+                <h4><i ng-repeat="ath in oeuvre.author">{{ath}}<span ng-show="($index + 1 ) < oeuvre.author.length">, </span></i></h4>
             </div>
             <div class="clearfix"></div>
 
