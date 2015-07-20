@@ -52,7 +52,7 @@
                         <i class="glyphicon glyphicon-user"></i> Est devenu ami avec <a ui-sref="userDisplay({user: activity.name})">{{activity.name}}</a>
                     </p>
                     <p ng-show="activity.idChapter && !activity.rating">
-                        <i class="glyphicon glyphicon-eye-open"></i> A lu <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.oeuvre.name}}</a>
+                        <i class="glyphicon glyphicon-eye-open"></i> A lu <a ui-sref="oeuvre({id: activity.idOeuvre})">{{activity.chapter.name}}</a>
                     </p>
                     <p ng-show="activity.commentaire">
                         <i class="glyphicon glyphicon-comment"></i> A commenté <a ui-sref="oeuvre({id: activity.id_oeuvre})">{{activity.oeuvre.name}}</a>

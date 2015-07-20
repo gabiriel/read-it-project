@@ -1289,6 +1289,11 @@ router.get('/user/activity',function(req,res) {
                                 users.reads[i].oeuvre = data.filter(function(elem) {
                                     return elem._id == users.reads[i].idOeuvre;
                                 })[0];
+                                if(users.reads[i].oeuvre) {
+                                    users.reads[i].chapter = users.reads[i].oeuvre.chapters.filter(function(elem) {
+                                        return elem._id == users.reads[i].idChapter;
+                                    })[0];
+                                }
                             }
                             var ratings = [];
                             for(var i in data) {
@@ -1322,7 +1327,7 @@ router.get('/user/activity',function(req,res) {
                             }
                             res.json({
                                 comments: comments.filter(function(elem) {
-                                    return elem.oeuvre;
+                                    return elem.oeuvre && elem.chapter;
                                 }),
                                 friends: users.friends.filter(function(elem) {
                                     return elem.accepted;
