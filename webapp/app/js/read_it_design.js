@@ -5,4 +5,11 @@
 
 $(document).ready(function(){
     $("#content").css( 'marginTop', $("#menu").css("height") );
+
+    $('#navbar').on('click', 'li', function(){
+        if($(this).attr('ui-sref')){
+            $('#navbar').toggleClass('in');
+            $('main').scrollTop();
+        }
+    })
 });
