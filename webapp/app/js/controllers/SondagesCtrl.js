@@ -7,6 +7,15 @@ app.controller('SondagesCtrl', ['$scope', '$state', 'auth', function($scope, $st
     var Min_Choix = 2,
         Max_Choix = 5;
 
+    $scope.interface = "create";
+    $scope.toggleView = function(){
+        if($scope.interface == "create"){
+            $scope.interface = "update";
+        }else{
+            $scope.interface = "create";
+        }
+    };
+
     auth.getAllSondages().success(function(sondages) {
         $scope.sondages = sondages;
     });

@@ -6,6 +6,15 @@ app.controller('AdminEventController', function($scope, $filter, auth, events, s
 
     $scope.events = events.events;
 
+    $scope.interface = "create";
+    $scope.toggleView = function(){
+        if($scope.interface == "create"){
+            $scope.interface = "update";
+        }else{
+            $scope.interface = "create";
+        }
+    };
+
     $scope.colors = [
         { name: 'Bleu', value: '#6fc2f4' },
         { name: 'Noir', value: '#000'},

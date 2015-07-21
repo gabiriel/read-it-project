@@ -1,8 +1,12 @@
 <div class="row readit_block">
     <h2>Gestion d'utilisateur</h2>
-    <input type="radio" ng-model="userCreate" value="create"> Création
-    <input type="radio" ng-model="userCreate" value="delete"> Modification
-    <div ng-show="userCreate=='create'">
+
+    <div class="btn-group readit_content">
+        <button class="btn btn-{{(interface=='create') ? 'primary' : 'default'}}" ng-click="toggleView()" > Création</button>
+        <button class="btn btn-{{(interface!='create') ? 'primary' : 'default'}}" ng-click="toggleView()" > Modification</button>
+    </div>
+
+    <div ng-show="interface=='create'">
         <h3>Création d'utilisateur</h3>
         <hr/>
         <form name="userForm" ng-submit="register()">
@@ -74,24 +78,34 @@
 
     </div> <!-- user create -->
 
-    <div ng-show="userCreate=='delete'">
+    <div ng-show="interface=='update'">
         <div>
-            <legend>Liste des utilisateurs :</legend>
-            <input type="text" class="form-control col-sm-5" placeholder="Chercher un utilisateur" ng-model="userDelete">
+            <h3>Liste des utilisateurs</h3>
+            <hr/>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                <input type="text" class="form-control" placeholder="Chercher un utilisateur" ng-model="userDelete">
+            </div>
             <form name="FormListUsers">
                 <div ng-repeat="UserDisplay in Users | filter : userDelete">
-                    <input type="radio" name="radioListUsers" value="Ok" ng-model="radioOk"><div class="btn btn-default">{{UserDisplay.username}}</div>
+                    <label class="btn">
+                        <input type="radio" name="radioListUsers" value="{{UserDisplay.username}}" ng-model="radioOk">
+                        <i class="glyphicon glyphicon-user"></i> {{UserDisplay.username}}
+                    </label>
                     <div class="pull-right">
-                        <button class="glyphicon glyphicon-trash btn btn-danger" ng-click="removeUser(UserDisplay.username)" ng-show="radioOk=='Ok'"></button></button>
-                        <button class="glyphicon glyphicon-pencil btn btn-primary" ng-show="radioOk=='Ok'" value="modify" ng-model="Modifybutton" ng-click="detailsUser(UserDisplay)"></button>
+                        <button class="glyphicon glyphicon-pencil btn btn-primary"
+                                ng-click="detailsUser(UserDisplay)" ng-show="radioOk==UserDisplay.username"
+                                value="modify" ng-model="Modifybutton"></button>
+                        <button class="glyphicon glyphicon-trash btn btn-danger"
+                                ng-click="removeUser(UserDisplay.username)" ng-show="radioOk==UserDisplay.username"></button>
                     </div>
                 </div>
             </form>
         </div>
 
         <div name="Showmodifyuser" ng-show="Displaydetailsuser=='modify'">
-            <legend>Modification d'utilisateur</legend>
-
+            <h3>Modification d'utilisateur</h3>
+            <hr/>
             <form name="Modifyuserform" ng-submit="modifyDetailsUser(modifyuser)">
                 <div class="alert alert-danger" ng-show="Modifyerror">
                     {{ Modifyerror.message }}

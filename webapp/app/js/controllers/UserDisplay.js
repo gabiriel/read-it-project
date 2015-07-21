@@ -142,7 +142,8 @@ app.controller('UserDisplay',['$scope','$rootScope', '$state', '$stateParams','s
 
             }
         });
-    }
+    };
+
     $scope.unblock = function(username, usernameBlock){
         auth.unblockUser(username,usernameBlock).success(function(data){
             auth.isBlock(auth.currentUser(), username).success(function (data) {

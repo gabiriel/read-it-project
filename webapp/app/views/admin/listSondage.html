@@ -1,11 +1,14 @@
 <div class="row readit_block">
     <h2>Gestion des sondages</h2>
     <hr/>
-    <input type="radio" ng-model="sondageCreate" value="create"> Création
-    <input type="radio" ng-model="sondageCreate" value="update"> Modification
 
-    <div ng-show="sondageCreate=='create'">
-        <h3>Création des sondages</h3>
+    <div class="btn-group readit_content">
+        <button class="btn btn-{{(interface=='create') ? 'primary' : 'default'}}" ng-click="toggleView()" > Création</button>
+        <button class="btn btn-{{(interface!='create') ? 'primary' : 'default'}}" ng-click="toggleView()" > Modification</button>
+    </div>
+
+    <div ng-show="interface=='create'">
+        <h3>Création d'un sondage</h3>
         <hr/>
         <form name="sondageForm">
 
@@ -18,43 +21,47 @@
                 <span class="input-group-addon" >Question :</span>
                 <input id="question"  type="text" class="form-control"
                        name="question"
-                       placeholder="La question"
+                       placeholder="Question"
                        ng-minlength="4" ng-maxlength="50"
                        ng-model="sondage.question"
                        required>
             </div>
-            <span class="help-block" data-ng-show="sondageForm.question.$error.required && sondageForm.question.$dirty">This is required.</span>
+            <span class="help-block" data-ng-show="sondageForm.question.$error.required && sondageForm.question.$dirty">Ce champ est obligatoire.</span>
                             <span class="help-block" ng-show="!sondageForm.question.$error.required
                             && (sondageForm.question.$error.minlength || sondageForm.question.$error.maxlength)
                             && sondageForm.question.$dirty">Entre 4 et 50 caractères.</span>
 
-            <!--Réponses-->
-            <div class="input-group">
-                <span><h4>Vos réponses :</h4></span>
+            <h4>Les réponses :</h4>
+            <div class="form_block">
+                <div class="input-group" ng-repeat="reponse in reponses">
+                    <span class="control-label input-group-addon">{{reponse.name}}</span>
+                    <input class="form-control" type="text" ng-model="reponse.rep"
+                           ng-maxlength="20" required >
+                </div>
                 <div class="form-group">
-                    <button ng-click="addResponse()" ng-disabled="!sondageForm.question.$valid" class="btn btn-info">Ajouter une réponse</button>
+                    <button class="btn btn-primary"
+                            ng-show="reponses.length < 5"
+                            ng-click="addResponse()" ng-disabled="!sondageForm.question.$valid">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        Ajouter une réponse</button>
+                    <button class="btn btn-danger"
+                            ng-show="reponses.length > 2" ng-disabled="sondageForm.reponse.$valid" ng-click="removeResponse()">
+                        <i class="glyphicon glyphicon-remove"></i>
+                        Retirer une réponse
+                    </button>
                 </div>
-                <div class="form-group col-sm-12" ng-repeat="reponse in reponses">
-                    <fieldset>
-                        <label class="col-sm-3 control-label">
-                            {{reponse.name}}
-                        </label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="text" ng-model="reponse.rep"
-                                   placeholder="La réponse" ng-maxlength="20" required>
-                            <button  class="form-control glyphicon glyphicon-remove-circle" ng-disabled="sondageForm.reponse.$valid" ng-show="$last" ng-click="removeResponse()"/>
                         </div>
-                    </fieldset>
 
+            <div class="readit_content">
+                <button class="btn btn-primary" ng-click="registerDetailSondage(sondage)" ng-disabled="!sondageForm.$valid" >Créer le sondage</button>
                 </div>
-            </div>
-            <button class="btn btn-primary" ng-click="registerDetailSondage(sondage)" ng-disabled="!sondageForm.$valid" >Valider</button>
+
         </form>
     </div>
 
-    <div ng-show="sondageCreate=='update'">
+    <div ng-show="interface=='update'">
 
-        <h3> Liste des sondages : </h3>
+        <h3>Liste des sondages</h3>
         <hr/>
         <div class="alert alert-info" ng-hide="sondages.length">
             Il n'y a aucun sondage.
@@ -87,7 +94,7 @@
                         <button ng-click="addResponseToSondage()" class="btn btn-info">Ajouter une réponse</button>
                     </div>
 
-                    <div class="form-group col-sm-12" ng-repeat="reponse in modifysondage.reponses">
+                    <div class="form-group " ng-repeat="reponse in modifysondage.reponses">
                         <fieldset>
                             <label class="col-sm-3 control-label">
                                 {{reponse.name}}

@@ -18,6 +18,15 @@ app.controller('AuthController', ['$scope','$rootScope', '$state', 'auth', funct
     $scope.user = {};
     $scope.auth = auth;
 
+    $scope.interface = "create";
+    $scope.toggleView = function(){
+        if($scope.interface == "create"){
+            $scope.interface = "update";
+        }else{
+            $scope.interface = "create";
+        }
+    };
+
     $scope.register = function(){
         auth.register($scope.user).error(function(error){
             $scope.error = error;

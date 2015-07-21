@@ -1,10 +1,12 @@
 <div class="row readit_block">
     <h2>Gestion d'évenement</h2>
-    <hr/>
-    <input type="radio" ng-model="eventInterface" value="create"> Création
-    <input type="radio" ng-model="eventInterface" value="update"> Modification
 
-    <div ng-show="eventInterface=='create'">
+    <div class="btn-group readit_content">
+        <button class="btn btn-{{(interface=='create') ? 'primary' : 'default'}}" ng-click="toggleView()" > Création</button>
+        <button class="btn btn-{{(interface!='create') ? 'primary' : 'default'}}" ng-click="toggleView()" > Modification</button>
+    </div>
+
+    <div ng-show="interface=='create'">
         <h3>Créer un evenement</h3>
         <hr/>
         <ng-form class="col-sm-8 admin_block"
