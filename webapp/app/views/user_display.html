@@ -1,7 +1,5 @@
 <div class="row">
     <aside class="col-sm-4 clearfix"> <!-- left Column -->
-        <div class="alert alert-success" role="alert" ng-show="return_add_friends_valide=='valide'" value="false">{{message_return}}</div>
-        <div class="alert alert-danger" role="alert" ng-show="return_add_friends_erreur=='erreur'" value="'false'"> {{message_return_error}}</div>
         <div id="imgPanel" class="readit_block col-xs-6 col-sm-12">
             <h2 id="userName">{{userName}}</h2>
             <img ng-src="img/UserPictures/{{user.picture}}" alt="Photo_de_profil">
@@ -34,7 +32,10 @@
                 </span>
             </div>
             <div class="alert alert-danger" role="alert" ng-show="auth.isLoggedIn() && (isBlocked == true)"> {{message_Block}}</div>
+            <div class="alert alert-success" role="alert" ng-show="return_add_friends_valide=='valide'" value="false">{{message_return}}</div>
+            <div class="alert alert-danger" role="alert" ng-show="return_add_friends_erreur=='erreur'" value="'false'"> {{message_return_error}}</div>
         </div>
+
         <div class="readit_block pull-right col-xs-5 col-sm-12">
             <h3>Amis</h3>
             <div ng-hide="friends.length">

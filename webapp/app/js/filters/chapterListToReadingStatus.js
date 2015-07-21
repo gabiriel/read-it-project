@@ -2,9 +2,12 @@
  * Created by arjuna on 09/07/15.
  */
 var ReadIT = angular.module('readIt');
-ReadIT.filter('readingStatus',function() {
+ReadIT.filter('readingStatus',function(auth) {
+    if(!auth.isLoggedIn())
+        return '';
+
     return function(oeuvre) {
-        if(oeuvre.chapters == undefined)
+        if(oeuvre == undefined || oeuvre.chapters == undefined)
             return '';
 
         var read = function(elem) {
@@ -19,7 +22,7 @@ ReadIT.filter('readingStatus',function() {
         if (reading)
             return 'En cours';
         if(interested)
-            return 'interessé';
+            return 'Interessé';
         return 'Pas commencé';
     };
 });

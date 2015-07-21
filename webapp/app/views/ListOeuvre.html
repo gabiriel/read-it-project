@@ -11,7 +11,7 @@
             <h3>Liste des oeuvres :</h3>
             <hr/>
             <ul>
-                <li id="listOeuvre" ng-repeat="oeuvre in oeuvres">
+                <li ng-repeat="oeuvre in oeuvres">
                     <a class="btn" ui-sref="oeuvre({ id: oeuvre._id})"> {{oeuvre.name}}</a>
                     <span ng-show="auth.isAdmin()" class="pull-right">
                         <i class="glyphicon glyphicon-pencil btn btn-primary"

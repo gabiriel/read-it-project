@@ -28,31 +28,6 @@ app.controller('OeuvreCtrl',['$scope','$rootScope','auth','serviceDetails',funct
 app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
 
     $scope.ratings = [];
-    $scope.notFinished = function() {
-        return $scope.oeuvre.chapters.some(function(elem) {
-            return !elem.read;
-        });
-    };
-    $scope.notReadAndInterested = function() {
-        return $scope.oeuvre.chapters.every(function(elem) {
-            return !elem.read;
-        }) && $scope.oeuvre.interested;
-    };
-    $scope.notReadAndNotInterested = function() {
-        return $scope.oeuvre.chapters.every(function(elem) {
-                return !elem.read;
-            }) && !$scope.oeuvre.interested;
-    };
-    $scope.finir = function() {
-        serviceDetails.readAll(auth.currentUserId(), $scope.oeuvre._id)
-            .success(function() {
-                for(var i in $scope.oeuvre.chapters)
-                    $scope.oeuvre.chapters[i].read = true;
-            })
-            .error(function(data) {
-                alert("Une erreur est survenue lors de l'enregistrement de la lecture");
-            });
-    };
 
     serviceDetails.getOeuvre($stateParams.id).success(function(data) {
         $scope.oeuvre = data;
@@ -94,6 +69,33 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
                 })
         }
     });
+
+    $scope.notFinished = function() {
+        return $scope.oeuvre.chapters.some(function(elem) {
+            return !elem.read;
+        });
+    };
+    $scope.notReadAndInterested = function() {
+        return $scope.oeuvre.chapters.every(function(elem) {
+                return !elem.read;
+            }) && $scope.oeuvre.interested;
+    };
+    $scope.notReadAndNotInterested = function() {
+        return $scope.oeuvre.chapters.every(function(elem) {
+                return !elem.read;
+            }) && !$scope.oeuvre.interested;
+    };
+    $scope.finir = function() {
+        serviceDetails.readAll(auth.currentUserId(), $scope.oeuvre._id)
+            .success(function() {
+                for(var i in $scope.oeuvre.chapters)
+                    $scope.oeuvre.chapters[i].read = true;
+            })
+            .error(function(data) {
+                alert("Une erreur est survenue lors de l'enregistrement de la lecture");
+            });
+    };
+
     $scope.interested = function() {
         serviceDetails.interested($scope.oeuvre._id,auth.currentUserId())
             .success(function() {

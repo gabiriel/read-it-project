@@ -1083,6 +1083,9 @@ router.post('/user/friends/requestRemove',function(req,res){
 });
 router.get('/user/friends/requests/count',function(req,res){
     User.findOne({username:req.query.username},function(err,user) {
+        if(user == null){
+            return res.status(400).end();
+        }
         res.json(user.friends
             .filter(function (elem) {
                 return !elem.accepted;

@@ -96,6 +96,8 @@ footer{
 .admin_block{
   padding: 15px;
   margin: 15px 0;
+  border-radius: 8px;
+  background: #dfdfdf;
 }
 .readit_content{
   padding: 1em;
@@ -114,6 +116,7 @@ main#content{
   text-decoration: none;
   color: #6fc2f4;
 }
+.readit_li,
 .input-group{
   margin-bottom: 15px;
 }
@@ -223,9 +226,14 @@ main#content{
 /**
 * Message
 ------------------*/
+#messageScroll{
+  height: 80vh;
+  overflow-y: scroll;
+}
 #messageShow {
   border: 2px #e9ebf8 solid;
   padding: 1em;
+  margin-left: 0.1em;
 }
 .messageCorps,
 .messageContent{
