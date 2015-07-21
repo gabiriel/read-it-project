@@ -74,11 +74,9 @@ app.controller('messageListCtrl',['$scope','$rootScope','$state','auth',function
                 return elem2.date - elem1.date;
 
             });
-        console.log($scope.messages);
     });
-    auth.getCountMessageUnread(auth.currentUser()).success(function(data) {
-        console.log(data);
-    });
+    auth.getCountMessageUnread(auth.currentUser());
+
     $scope.displayMessage = function(reciver, messageCorps)
     {
         messageCorps.reads = true;
@@ -111,22 +109,21 @@ app.controller('messageListCtrl',['$scope','$rootScope','$state','auth',function
         $scope.messageShow = null;
         auth.removeMessage(infoMessage);
         auth.getMessage(auth.currentUser()).success(function(data) {
-            $scope.messages= data
-                .map(function(elem){
-                    return {
-                        _id: elem._id,
-                        sender :elem.sender,
-                        objet : elem.objet,
-                        message : elem.message ,
-                        reads : elem.reads,
-                        date : new Date(elem.date)
-                    }
-                })
-                .sort(function(elem1,elem2){
-                    return elem2.date - elem1.date;
+            $scope.messages = data
+                .map(function (elem) {
+                return {
+                    _id: elem._id,
+                    sender: elem.sender,
+                    objet: elem.objet,
+                    message: elem.message,
+                    reads: elem.reads,
+                    date: new Date(elem.date)
+                }
+            })
+            .sort(function (elem1, elem2) {
+                return elem2.date - elem1.date;
 
-                });
-            console.log($scope.messages);
+            });
         });
-    }
+    };
 }]);

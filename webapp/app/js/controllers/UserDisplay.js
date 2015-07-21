@@ -66,14 +66,10 @@ app.controller('UserDisplay',['$scope','$rootScope', '$state', '$stateParams','s
 
     auth.getActivity(user)
         .success(function(data) {
-            console.dir(data.ratings);
             $scope.activities = data.reads
                         .concat(data.friends)
                         .concat(data.comments)
                         .concat(data.ratings);
-                                //.sort(function(e1,e2) {
-                                //    return e2.date - e1.date;
-                                //});
         });
     $scope.removeFromFriend=function(username,usernameFriends){
         var info ={
