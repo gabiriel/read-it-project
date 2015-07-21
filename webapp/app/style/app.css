@@ -130,6 +130,9 @@ main#content{
 .readit_block .btn{
   margin-top: 0.2em;
 }
+.hidden{
+  display: none;
+}
 /** Form Forgot
 ------------------*/
 #forgot_view form{

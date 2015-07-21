@@ -88,8 +88,8 @@
             </div>
             <form name="FormListUsers">
                 <div ng-repeat="UserDisplay in Users | filter : userDelete">
-                    <label class="btn">
-                        <input type="radio" name="radioListUsers" value="{{UserDisplay.username}}" ng-model="radioOk">
+                    <label class="btn btn-default">
+                        <input type="radio" class="hidden" name="radioListUsers" value="{{UserDisplay.username}}" ng-model="radioOk">
                         <i class="glyphicon glyphicon-user"></i> {{UserDisplay.username}}
                     </label>
                     <div class="pull-right">

@@ -92,26 +92,32 @@ app.controller('AdminEventController', function($scope, $filter, auth, events, s
     };
 
     $scope.updateSelectedEvent = function(){
-        var calendarEvent = $scope.getFormEvent($scope.updateEventForm);
+        var formEvent = $scope.selectedEvent;
+        var calendarEvent = {
+            _id: formEvent._id,
+            allDay: true,
+            author: formEvent.author,
+            color: formEvent.backgroundColor.value,
+            textColor: formEvent.textColor.value,
+            date: formEvent.date,
+            description: formEvent.description,
+            display: formEvent.display,
+            oeuvre_id: formEvent.oeuvre._id,
+            title: formEvent.title
+        };
         events.update(calendarEvent)
             .error(function (err) {
-                $scope.alertMessage=  {type:'info',text: 'Erreur'};
-            })
-            .success(function(){
-                $state.go(
-                    $state.current,
-                    { alertMessage:{type:'info',text: 'Utilisateur modifié'} },
-                    { reload: true }
-                );
-        });
-        $scope.alertMessage = "Evenement (" + calendarEvent.title + ") sauvegardé";
+                $scope.alertMessage = "Probleme lors de la sauvegarde de l'évènement (" + calendarEvent.title + ")";
+            });
+
+        $scope.alertMessage = "Evenement (" + calendarEvent.title + ") mis à jour !";
         $scope.selectedEvent = null;
     };
 
     $scope.deleteEvent = function(event){
         var calendarEvent = event;
         events.delete(calendarEvent);
-        $scope.alertMessage = "Evenement (" + calendarEvent.title + ") supprimé";
+        $scope.alertMessage = "Evenement (" + calendarEvent.title + ") supprimé !";
         $scope.selectedEvent = null;
     };
 
@@ -119,7 +125,7 @@ app.controller('AdminEventController', function($scope, $filter, auth, events, s
 
         var txtColorValue, bkColorValue, oeuvreId;
         if(formEvent.textColor != undefined)
-            txtColorValue = formEvent.textColor.$modelValue || $scope.defaultColor.text.value;
+            txtColorValue = formEvent.textColor || $scope.defaultColor.text.value;
         if(formEvent.backgroundColor != undefined)
             bkColorValue = formEvent.backgroundColor.$modelValue || $scope.defaultColor.background.value;
         if(formEvent.oeuvre != undefined)
