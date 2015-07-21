@@ -1,6 +1,13 @@
 var app = angular.module('readIt');
-app.controller('OeuvreCtrl',['$scope','serviceDetails',function($scope, serviceDetails){
-
+app.controller('OeuvreCtrl',['$scope','$rootScope','auth','serviceDetails',function($scope,$rootScope,auth, serviceDetails){
+    if(auth.isLoggedIn()){
+        auth.getCountMessageUnread(auth.currentUser()).success(function(nbUnreadMsg){
+            $rootScope.numberMessage = nbUnreadMsg;
+        });
+        auth.getCountAddRequests(auth.currentUser()).success(function(nbFriendRequests){
+            $rootScope.numberAddRequests = nbFriendRequests;
+        });
+    }
     serviceDetails.getListOeuvre().success(function(oeuvres) {
         $scope.oeuvres = oeuvres;
     });

@@ -1,6 +1,13 @@
 var app = angular.module('readIt');
-app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails', 'auth', function($scope, $state, $stateParams, serviceDetails, auth){
-
+app.controller('UserDisplay',['$scope','$rootScope', '$state', '$stateParams','serviceDetails', 'auth', function($scope,$rootScope, $state, $stateParams, serviceDetails, auth){
+    if(auth.isLoggedIn()){
+        auth.getCountMessageUnread(auth.currentUser()).success(function(nbUnreadMsg){
+            $rootScope.numberMessage = nbUnreadMsg;
+        });
+        auth.getCountAddRequests(auth.currentUser()).success(function(nbFriendRequests){
+            $rootScope.numberAddRequests = nbFriendRequests;
+        });
+    }
     var user = $stateParams.user;
     $scope.imgSource ="default_user.png";
 
@@ -97,12 +104,7 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
     };
     $scope.block = function(username, usernameBlock){
         auth.blockUser(username,usernameBlock).success(function(data){
-            auth.alreadyFriends(username,usernameBlock).success(function(friends){
-                if(friends=="success") {
-                    auth.removeFriends(username, usernameBlock);
-                    $scope.friends = auth.getUsersFriends(username);
-                }
-            });
+
             auth.isBlock(auth.currentUser(), usernameBlock).success(function (dataa) {
                 if (dataa != "false") {
                     $scope.add = 'false';
@@ -119,6 +121,7 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
 
                 }
             });
+            $scope.friends = auth.getUsersFriends(username);
         });
     };
 
@@ -204,9 +207,15 @@ app.controller('UserDisplay',['$scope', '$state', '$stateParams','serviceDetails
 }]);
 
 app.controller('addRequestsCtrl', ['$scope', '$rootScope', 'auth', function($scope,$rootScope, auth) {
-
+    if(auth.isLoggedIn()){
+        auth.getCountMessageUnread(auth.currentUser()).success(function(nbUnreadMsg){
+            $rootScope.numberMessage = nbUnreadMsg;
+        });
+        auth.getCountAddRequests(auth.currentUser()).success(function(nbFriendRequests){
+            $rootScope.numberAddRequests = nbFriendRequests;
+        });
+    }
     var username = auth.currentUser();
-
     if(auth.isLoggedIn()) {
         auth.getAddRequest(username).success(function (addRequests) {
             $scope.requests = addRequests;

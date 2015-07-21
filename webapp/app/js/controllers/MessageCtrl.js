@@ -3,6 +3,14 @@
  */
 var app = angular.module('readIt');
 app.controller('messageCtrl',['$scope','$rootScope','$stateParams','auth',function($scope,$rootScope, $stateParams, auth) {
+    if(auth.isLoggedIn()){
+        auth.getCountMessageUnread(auth.currentUser()).success(function(nbUnreadMsg){
+            $rootScope.numberMessage = nbUnreadMsg;
+        });
+        auth.getCountAddRequests(auth.currentUser()).success(function(nbFriendRequests){
+            $rootScope.numberAddRequests = nbFriendRequests;
+        });
+    }
     $scope.username = $stateParams.username;
     $scope.messageMenu = [
         ['bold', 'italic', 'underline', 'strikethrough'],

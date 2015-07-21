@@ -1138,10 +1138,8 @@ router.get('/user/friends/already',function(req, res){
         });
     });
 });
-
 router.post('/user/friends/remove',function(req,res){
-    var i=0;
-    User.update(
+   User.update(
         {
             username: req.body.user
         },
@@ -1155,8 +1153,6 @@ router.post('/user/friends/remove',function(req,res){
             }
         },
         function(err,user) {
-            if(user!=null)
-                i++;
 
             });
     User.update(
@@ -1172,13 +1168,15 @@ router.post('/user/friends/remove',function(req,res){
                 }
             }
         },
-        function(err,user) {
+        function(err,user)
+        {
             if(user!=null)
                 i++;
             if(i==2)
                 res.end("success");
             res.end("echec");
-        });
+        }
+    );
 });
 router.get('/user/exist',function(req,res){
     var i=0;
@@ -1222,8 +1220,39 @@ router.post('/user/block',function(req,res){
             if(user!=null)
                 console.log("user",user);
         });
-    res.end("success");
+    User.findOneAndUpdate(
+        {
+            username:req.body.username
+        },
+        {
+            $pull:
+            {
+                friends:
+                {
+                    name:req.body.usernameBlock
+                }
+            }
+        }
+    );
+    User.findOneAndUpdate(
+        {
+            username:req.body.usernameBlock
+        },
+        {
+            $pull:
+            {
+                friends:
+                {
+                    name:req.body.username
 
+                }
+            }
+        },function(err,user){
+         console.log("userfriends",user);
+        }
+
+    );
+    res.end("success");
 });
 router.post('/user/unblock',function(req,res){
     User.update({username:req.body.username},{
@@ -1466,5 +1495,6 @@ router.get('/user/isBlock',function(req,res){
         });
     });
 });
+
 
 module.exports = router;
