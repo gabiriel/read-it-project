@@ -899,12 +899,10 @@ router.post('/oeuvre/update',function(req,res) {
     var links = oeuvre.links;
     var update = function(err, data) {
         for(var i in newChapters) {
-            console.log('console.log(req.files[\'image-\' + i])', console.log(req.files['image-' + i]))
             if(req.files['image-' + i]) {
                 fs.rename(req.files['image-' + i].path, 'app/img/Covers/' + req.files['image-' + i].name, function(err, data) {
                     if(err) return res.status(424).end();
                 });
-                console.log('req.files',req.files['image-' + i].name)
                 newChapters[i].cover = req.files['image-' + i].name;
             }
         }
@@ -936,10 +934,8 @@ router.post('/oeuvre/update',function(req,res) {
             updateQuery,
             function (err, data) {
                 if (err) {
-                    console.log('pull chapters',err);
                     return res.status(424).end();
                 }
-                console.log('newChapters',newChapters);
                 OeuvreModel
                     .findOneAndUpdate(
                     {
@@ -957,7 +953,6 @@ router.post('/oeuvre/update',function(req,res) {
                     },
                     function (err, data) {
                         if (err) {
-                            console.log('push chapters',err);
                             return res.status(424).end();
                         }
                         res.end();

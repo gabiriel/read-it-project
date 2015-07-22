@@ -29,7 +29,9 @@ app.controller('OeuvreCtrl',['$scope','$rootScope','auth','serviceDetails',funct
 app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$stateParams','auth','commentaireService',function($scope, serviceDetails, $state, $stateParams,auth,commentaireService){
 
     $scope.ratings = [];
-
+    $scope.displayLinks = function() {
+        $('#linksModal').modal('show');
+    };
     serviceDetails.getOeuvre($stateParams.id).success(function(data) {
         $scope.oeuvre = data;
 
@@ -309,7 +311,6 @@ app.controller('add-oeuvre-controller',['$scope','serviceDetails',function($scop
         if (!confirm('Êtes vous sûr de vouloir sauvegarder ' + $scope.name + ' ?'))
             return;
         $scope.newNumber = Math.floor($scope.newNumber) + 1;
-        alert($scope.cover);
         serviceDetails.saveOeuvre({
                 name: $scope.name,
                 chapters: $scope.chapters,
@@ -378,11 +379,9 @@ app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetai
         $("#txt-category").focus();
     };
     $scope.addLink = function() {
-        alert($scope.newLink);
         if(!$scope.newLink || $scope.newLink == '') return;
         $scope.links.push({name: $scope.newLink});
         $scope.newLink = '';
-        alert(JSON.stringify($scope.links));
         $("#txt-links").focus();
     };
 

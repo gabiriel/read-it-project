@@ -16,10 +16,30 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+        <div class="modal fade" id="linksModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Erreur</h4>
+                    </div>
+                    <div class="modal-body">
+                        Voicis les liens de nos partenaires :
+                        <ul>
+                            <li ng-repeat="lien in oeuvre.links"><a href="{{lien}}">{{lien}}</a></li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <div id="imgPanel" class="readit_block col-xs-6 col-sm-12">
             <img ng-src="img/Covers/{{oeuvre.cover || 'default_cover.png'}}" alt="Cover">
             <div class="large">
-                <a ui-sref="home"><i class="glyphicon glyphicon-shopping-cart"></i></a>
+                <a ng-click="displayLinks()" ng-show="oeuvre.links.length != 0"><i class="glyphicon glyphicon-shopping-cart"></i></a>
                 <a ng-click="toggleFavorite()"><i class="glyphicon {{favorite ? 'glyphicon-heart' : 'glyphicon-heart-empty'}}"></i></a>
             </div>
         </div>
