@@ -1,5 +1,6 @@
 var app = angular.module('readIt');
 app.controller('OeuvreCtrl',['$scope','$rootScope','auth','serviceDetails',function($scope,$rootScope,auth, serviceDetails){
+
     if(auth.isLoggedIn()){
         auth.getCountMessageUnread(auth.currentUser()).success(function(nbUnreadMsg){
             $rootScope.numberMessage = nbUnreadMsg;

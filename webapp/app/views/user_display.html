@@ -46,7 +46,21 @@
             </ul>
         </div>
     </aside>
-
+    <!--oeuvre interessé-->
+    <aside class="col-sm-8"> <!-- Center Column -->
+        <div id="interest" class="readit_block" ng-model="interest">
+            <h3>Liste des oeuvres interssante  </h3>
+            <div id="interest_containerr">
+                <div ng-repeat="oeuvre in OeuvresIntersted | orderBy : '-date'">
+                <div class="pull-right">{{oeuvre.date | date : 'dd/MM/yyyy HH:mm'}}</div>
+                <p ng-show="oeuvre.nomOeuvre">
+                    <i></i> Est interessé par <a ui-sref="oeuvre({ id: oeuvre.idOeuvre})">{{oeuvre.nomOeuvre}}</a>
+                </p>
+            </div>
+                </div>
+        </div>
+    </aside>
+    <!----------------------->
     <aside class="col-sm-8"> <!-- Center Column -->
         <div id="activite" class="readit_block" ng-model="activite">
             <h3>Activité</h3>

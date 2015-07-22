@@ -420,6 +420,14 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             }
         });
     };
+    auth.listOeuvreIntersted = function(id_user){
+        return $http.get('/user/list/intersted',{
+            params:
+            {
+                id_user : id_user
+            }
+        });
+    };
 
     return auth;
 }]);
