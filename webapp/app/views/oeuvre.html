@@ -17,7 +17,7 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
         <div id="imgPanel" class="readit_block col-xs-6 col-sm-12">
-            <img ng-src="img/Covers/{{oeuvre.cover}}" alt="Cover">
+            <img ng-src="img/Covers/{{oeuvre.cover || 'default_cover.png'}}" alt="Cover">
             <div class="large">
                 <a ui-sref="home"><i class="glyphicon glyphicon-shopping-cart"></i></a>
                 <a ng-click="toggleFavorite()"><i class="glyphicon {{favorite ? 'glyphicon-heart' : 'glyphicon-heart-empty'}}"></i></a>
@@ -106,7 +106,7 @@
                     <div id="collapse-{{chapter._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-{{chapter._id}}">
                         <div class="panel-body">
                             <div class=" col-xs-5 " ng-show="chapter.cover">
-                                <img style="width:200px;height:200px;" ng-src="img/Covers/{{chapter.cover}}" />
+                                <img style="width:200px;height:200px;" ng-src="img/Covers/{{chapter.cover || 'default_cover.png'}}" />
                             </div>
                             {{chapter.resume}}
                         </div>

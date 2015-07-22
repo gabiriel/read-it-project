@@ -885,7 +885,9 @@ router.post('/oeuvre/update',function(req,res) {
     var authors = req.body.oeuvre.author;
     var categories = req.body.oeuvre.category;
     var name = req.body.oeuvre.name;
-    var chapters = req.body.oeuvre.chapters;
+    var newChapters = req.body.oeuvre.newChapters;
+    var removedChapter = req.body.oeuvre.removedChapters;
+
     OeuvreModel.findOneAndUpdate(
         {
             _id:oeuvreId
@@ -896,12 +898,49 @@ router.post('/oeuvre/update',function(req,res) {
                 category: categories,
                 author: authors,
                 name: name
+            },
+            $push:
+            {
+                chapters:
+                {
+                    $each:newChapters
+                }
             }
         },
         function(err,data) {
-            if(err) return res.status(424).end();
-            console.log('succeded');
-            res.end('ok');
+            if(err)
+                return res.status(424).end();
+
+            OeuvreModel
+                .findOneAndUpdate(
+                    {
+                        _id:oeuvreId
+                    },
+                    {
+                        $pull:
+                        {
+                            chapters:
+                            {
+                                _id:
+                                {
+                                    $in:removedChapter.map(
+                                        function(e){
+                                            return e._id
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    },
+                    {
+                        safe:true
+                    },
+                    function(err,data) {
+                        if(err)
+                            return res.status(424).end();
+                        res.end();
+                    }
+                );
         }
     );
 });
@@ -912,7 +951,6 @@ router.post('/oeuvre/remove',function(req,res) {
         .remove()
         .exec(function(err,data) {
             if(err) return res.status(424).end();
-            return res.end('ok');
             User
                 .find()
                 .update({
@@ -1378,7 +1416,7 @@ router.get('/user/activity',function(req,res) {
                                 for(var j in data[i].chapters) {
                                     for(var h in data[i].chapters[j].ratings) {
                                         console.log('user', data[i].chapters[j].ratings[h]);
-                                        if(data[i].chapters[j].ratings[h].user = user) {
+                                        if(data[i].chapters[j].ratings[h].user == user) {
                                             ratings.push({
                                                 date: data[i].chapters[j].ratings[h].date,
                                                 rating: data[i].chapters[j].ratings[h].rating,

@@ -54,13 +54,6 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
                             return $scope.oeuvre.chapters[i]._id == x;
                         });
                     }
-                    var reading = $scope.oeuvre.chapters.some(function(elem) {
-                        return elem.read;
-                    });
-                    var finished = $scope.oeuvre.chapters.every(function(elem) {
-                        return elem.read;
-                    });
-                    var interested = false;
                 });
             serviceDetails.getInterested($scope.oeuvre._id,auth.currentUserId())
                 .success(function(data) {
@@ -72,17 +65,17 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
     });
 
     $scope.notFinished = function() {
-        return $scope.oeuvre.chapters.some(function(elem) {
+        return $scope.oeuvre && $scope.oeuvre.chapters.some(function(elem) {
             return !elem.read;
         });
     };
     $scope.notReadAndInterested = function() {
-        return $scope.oeuvre.chapters.every(function(elem) {
+        return $scope.oeuvre && $scope.oeuvre.chapters.every(function(elem) {
                 return !elem.read;
             }) && $scope.oeuvre.interested;
     };
     $scope.notReadAndNotInterested = function() {
-        return $scope.oeuvre.chapters.every(function(elem) {
+        return $scope.oeuvre && $scope.oeuvre.chapters.every(function(elem) {
                 return !elem.read;
             }) && !$scope.oeuvre.interested;
     };
@@ -341,6 +334,8 @@ app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetai
     $scope.chapters = [];
     $scope.categories = [];
     $scope.authors = [];
+    $scope.removedChapters = [];
+    $scope.newChapter = {isNew:true};
     serviceDetails.getOeuvre($stateParams.id)
         .success(function(data) {
             $scope.chapters = data.chapters;
@@ -369,8 +364,13 @@ app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetai
     };
     $scope.addChapter = function() {
         $scope.chapters.push($scope.newChapter);
-        $scope.newChapter = {};
+        $scope.newChapter = {isNew:true};
         $("#txt-chapter-name").focus();
+    };
+    $scope.removeChapter = function(chapter) {
+        var index = $scope.chapters.indexOf(chapter);
+        $scope.removedChapters.push(chapter);
+        $scope.chapters.splice(index, 1);
     };
     $scope.commentMenu = [
         ['bold', 'italic', 'underline', 'strikethrough'],
@@ -383,20 +383,26 @@ app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetai
         if (!confirm('Êtes vous sûr de vouloir sauvegarder ' + $scope.name + ' ?'))
             return;
         $scope.newNumber = Math.floor($scope.newNumber) + 1;
-        serviceDetails.updateOeuvre({
-            _id:$stateParams.id,
-            name: $scope.name,
-            chapters: $scope.chapters,
-            type: $scope.type,
-            category: $scope.categories
-                .map(function(elem) {
-                    return elem.name;
-                }),
-            author: $scope.authors
-                .map(function(elem) {
-                    return elem.name;
-                })
-        })
+        serviceDetails
+            .updateOeuvre({
+                _id:$stateParams.id,
+                name: $scope.name,
+                //chapters: $scope.chapters,
+                type: $scope.type,
+                category: $scope.categories
+                    .map(function(elem) {
+                        return elem.name;
+                    }),
+                author: $scope.authors
+                    .map(function(elem) {
+                        return elem.name;
+                    }),
+                newChapters: $scope.chapters
+                    .filter(function(e) {
+                        return e.isNew;
+                    }),
+                removedChapters: $scope.removedChapters
+            })
             .success(function(data) {
             })
             .error(function(err) {
