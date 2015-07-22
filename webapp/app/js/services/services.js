@@ -142,7 +142,6 @@ app.factory('serviceDetails', ['$http',function($http){
         }
 
         fd.append('oeuvre',JSON.stringify(oeuvre));
-        alert('update');
         return $http.post('/oeuvre/update', fd, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
