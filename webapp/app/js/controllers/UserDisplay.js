@@ -1,8 +1,7 @@
 var app = angular.module('readIt');
 app.controller('UserDisplay',['$scope','$rootScope', '$state', '$stateParams','serviceDetails', 'auth', function($scope,$rootScope, $state, $stateParams, serviceDetails, auth){
-    auth.listOeuvreIntersted(auth.currentUserId()).success(function(data){
-        $scope.OeuvresIntersted = data;
-    });
+
+
     if(auth.isLoggedIn()){
         auth.getCountMessageUnread(auth.currentUser()).success(function(nbUnreadMsg){
             $rootScope.numberMessage = nbUnreadMsg;
@@ -26,6 +25,10 @@ app.controller('UserDisplay',['$scope','$rootScope', '$state', '$stateParams','s
         $scope.userName = data.username;
         if($scope.user.picture == undefined) // display default user img
             $scope.user.picture = $scope.imgSource;
+
+        auth.listOeuvreIntersted($scope.userName).success(function(data){
+            $scope.OeuvresIntersted = data;
+        });
 
         $scope.isCurrentUserPage = false;
 

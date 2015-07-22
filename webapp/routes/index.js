@@ -1208,7 +1208,7 @@ router.get('/user/friends/already',function(req, res){
     User.findOne({'username': req.query.user}, function(err, user){
         if(err){ console.log(err); return; }
 
-        console.log("[Query] get friends of " + JSON.stringify(user.username));
+        console.log("[Query] get friends of " + JSON.stringify(user));
         if(user==null) {
             console.log("[Query] user is undefined");
             return res.end("echecUser");
@@ -1521,8 +1521,9 @@ router.post('/user/remove/interested',function(req,res) {
     )
 });
 router.get('/user/list/intersted',function(req,res){
+    console.log("username",req.query.username);
     User
-        .findOne({_id:req.query.id_user})
+        .findOne({username : req.query.username})
         .select('interested')
         .lean()
         .exec(function(err, interested) {
@@ -1598,7 +1599,7 @@ router.get('/user/isBlock',function(req,res){
     User.findOne({'username': req.query.username}, function(err, user){
         if(err){ console.log(err); return; }
 
-        console.log("[Query] get Black List of " + JSON.stringify(user.username));
+        console.log("[Query] get Black List of " + JSON.stringify(user));
         if(user==null) {
             console.log("[Query] user is undefined");
             res.end("echecUser");

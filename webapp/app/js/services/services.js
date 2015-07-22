@@ -426,11 +426,11 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             }
         });
     };
-    auth.listOeuvreIntersted = function(id_user){
+    auth.listOeuvreIntersted = function(username){
         return $http.get('/user/list/intersted',{
             params:
             {
-                id_user : id_user
+                username : username
             }
         });
     };

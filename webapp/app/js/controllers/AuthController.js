@@ -11,10 +11,6 @@ app.controller('AuthController', ['$scope','$rootScope', '$state', 'auth', funct
             }
         },
         1000 * 120 ); // every 2 minutes
-    auth.getCountAddRequests(auth.currentUser()).success(function (data) {
-        console.log("count add request " + data);
-        $rootScope.numberAddRequests = data;
-    });
     $scope.user = {};
     $scope.auth = auth;
 
