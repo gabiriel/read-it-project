@@ -293,18 +293,24 @@ app.factory('auth', ['$http', '$window', function($http, $window){
     auth.getAllSondages= function () {
         return $http.get('/Sondages');
     };
-    auth.deleteSondage = function(sondage) {
-        return $http.post('/sondage/delete',sondage);
-    };
-    auth.modifySondage= function (detail) {
+    auth.deleteSondage = function(id,idsondage) {
 
+        var _id={_id:idsondage,_idquestion:id};
+        return $http.post('/sondage/delete',_id);
+    };
+    auth.modifySondage= function (detail,id) {
         var reponses=[];
         angular.forEach(detail.reponses, function (reponse) {
             reponses.push({name:reponse.name,rep:reponse.rep})
         });
-        var questionRep=({_id:detail._id,question:detail.question,reponses:reponses});
+        var questionRep=({_id:id,_idQuestion:detail._id,question:detail.question,reponses:reponses});
         return $http.post("/sondage/modify",questionRep)
     };
+    auth.activeSondage = function (idQ,idS) {
+        var req=({_id:idS,_idQ:idQ});
+        return $http.post("/sondage/active",req);
+
+    }
     auth.getSondage = function (id) {
         var idToSend={_id:id};
         return $http.post("/sondage",idToSend);

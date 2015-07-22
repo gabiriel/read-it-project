@@ -1,22 +1,16 @@
 var app = angular.module('readIt');
-app.controller('UserForgotPasswordController',['$scope','$location','serviceDetails',function($scope,$location,$serviceDetails){
+app.controller('UserForgotPasswordController',['$scope','$location','serviceDetails','$state',function($scope,$location,$serviceDetails,$state){
 	$scope.forgot = function(){
 		var userDetails= {
 			mail : $scope.email
 		};
 	
-		$serviceDetails.forgot(userDetails).success (function(data){
-			if (data === "OK") {
-				$location.path("/");
-				$scope.error = false;
-			} else {
-				$location.path("/forgotpassword");
-				$scope.erreur=data;
-				$scope.error = true;
-			}
+		$serviceDetails.forgot(userDetails)
+			.success (function(data){
+			$state.go('home');
 		})
-		.error(function(data, status) {
-			alert('Repos error '+status+' - '+data);
+		.error(function(err) {
+			$scope.error=err;
 		});
 	};
 

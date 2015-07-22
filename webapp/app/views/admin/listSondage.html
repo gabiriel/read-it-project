@@ -63,14 +63,15 @@
 
         <h3>Liste des sondages</h3>
         <hr/>
-        <div class="alert alert-info" ng-hide="sondages.length">
+        <div class="alert alert-info" ng-show="sondages.questions.length==0">
             Il n'y a aucun sondage.
         </div>
         <form name="FormListSondages">
-            <div class="col-sm-offset-1" ng-repeat="sondage in sondages">
+            <div class="col-sm-offset-1" ng-repeat="sondage in sondages.questions">
                 <input type="radio" name="radioListSondages" ng-checked="" value="Ok" ng-model="radioOk" > {{sondage.question}}
-                <button class="col-sm-offset-3 glyphicon glyphicon-trash" ng-click="removeSondage(sondage)" ng-show="radioOk=='Ok'"></button></button>
-                <button class="glyphicon glyphicon-pencil" ng-show="radioOk=='Ok'" value="modify" ng-model="Modifybutton" ng-click="detailsSondage(sondage)"></button>
+                <button class="col-sm-offset-3 glyphicon glyphicon-trash" ng-click="removeSondage(sondage._id,sondages._id)" ng-show="radioOk=='Ok'"></button></button>
+                <button class="glyphicon glyphicon-pencil" ng-show="radioOk=='Ok'" value="modify" ng-model="Modifybutton" ng-click="detailsSondage(sondage,sondages._id)"></button>
+                <button class="glyphicon glyphicon-ok" ng-show="radioOk=='Ok'" ng-model="Activebutton" ng-click="activeSondage(sondage._id,sondages._id)"></button>
             </div>
         </form>
 

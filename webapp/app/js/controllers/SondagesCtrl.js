@@ -80,21 +80,22 @@ app.controller('SondagesCtrl', ['$scope', '$state', 'auth', function($scope, $st
             });
     };
 
-    $scope.removeSondage = function(sondage){
-        auth.deleteSondage(sondage)
+    $scope.removeSondage = function(id,idsondage){
+        auth.deleteSondage(id,idsondage)
             .success(function(){
                 $scope.retrieveSondages();
-                $state.go('home');
             });
     };
-
-    $scope.detailsSondage= function (detailSondage) {
+    var Idsondage;
+    $scope.detailsSondage= function (detailSondage,idsondage) {
         $scope.Displaydetailsondage='modify';
         $scope.modifysondage=detailSondage;
+        Idsondage=idsondage;
+
     };
 
     $scope.modifyDetailsSondage=function(detailsondage){
-        auth.modifySondage(detailsondage)
+        auth.modifySondage(detailsondage,Idsondage)
             .success(function(){
                 $scope.retrieveSondages();
                 $state.go('home');
@@ -102,6 +103,14 @@ app.controller('SondagesCtrl', ['$scope', '$state', 'auth', function($scope, $st
                 $scope.Modifyerror=err;
             });
     };
+    
+    $scope.activeSondage= function (idQuestion,idSondage) {
+        auth.activeSondage(idQuestion,idSondage)
+            .success(function () {
+                $scope.retrieveSondages();
+                //$state.go('home');
+            });
+    }
 
 }]);
 

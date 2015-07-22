@@ -130,12 +130,12 @@ router.post('/forgotpassword', function(req,res) {
     var formUser = req.body;
 
     User.find({mail: formUser.mail}, function (err,data) {
-        if(err){ return res.send('Erreur de DB - users').end(); }
-        if(data.length < 1){ return res.send("Cet utilisateur n'existe pas").end(); }
+        if(err){ return res.status(400).json({message: 'Erreur de DB - users'}).end(); }
+        if(data.length < 1){ return res.status(400).json({message: 'Cet utilisateur n\'existe pas'}).end(); }
 
         UserForgotPwd.findOneAndRemove({mail: formUser.mail}, function(err,data){
-            if(err){ return res.send('Erreur de DB - forgot').end(); }
-            if(data.length > 0) { return res.send('Vous avez déja demandé une récupération du mot de passe'); }
+            if(err){ return res.status(400).json({message: 'Erreur de DB - forgot'}).end(); }
+            //if(data.length > 0) { return res.status(400).json({message: 'Vous avez déja demandé une récupération du mot de passe'}).end(); }
             var tokenCree = crypto.randomBytes(10).toString('hex');
             console.log(tokenCree);
             var tokenToSave = new UserForgotPwd({
@@ -143,7 +143,7 @@ router.post('/forgotpassword', function(req,res) {
                 resetPasswordToken: tokenCree
             });
             tokenToSave.save(function (err) {
-                if(err){ return res.send("Erreur pendant la création du token :"+err).end(); }
+                if(err){ return res.status(400).json({message: 'Erreur pendant la création du token :'+err}).end();}
 
                 var ExemplaireText = "Pour changer votre mot de passe, vous devez cliquer "
                     + "<a href=http://" + req.headers.host + "/#/user/reset/?token=" + tokenCree
@@ -158,7 +158,7 @@ router.post('/forgotpassword', function(req,res) {
                 };
 
                 mailTransport.sendMail(mailOptions, function (error, response) {
-                    if (error) { return res.status(500).send("Erreur lors de l'envoie du mail : " + error).end(); }
+                    if (error) { return res.status(400).json({message: "Erreur lors de l'envoie du mail : " + error}).end(); }
                         mailTransport.close();
                 });
                 return res.status(200).send('Vous venez de recevoir un mail afin de réinitialiser votre mot de passe').end();
@@ -169,19 +169,21 @@ router.post('/forgotpassword', function(req,res) {
 router.post('/user/reset/', function(req,res) {
     var params = req.body;
     UserForgotPwd.findOneAndRemove({resetPasswordToken: params.token}, function(err, data){
-        if(err){ return res.send("Erreur de DB").end(); }
-        if(!data){ return res.send("Ce lien ne fonctionne plus.").end(); }
+        if(err){ return res.status(400).json({message: "Erreur de DB"}).end(); }
+        if(!data){ return res.status(400).json({message: "Ce lien ne fonctionne plus."}).end(); }
 
         var currentUser = new User();
-        User.find({mail: data.email}, function (err, user){
-            if(err){ return res.send("Erreur de DB du à l'utilisateur").end(); }
-            currentUser = user;
-        });
+
         currentUser.setPassword(params.password);
-        User.update({mail: currentUser.mail},{salt: currentUser.salt, hashpass: currentUser.hashpass}, function(err, id, res){
-            if(err){ return res.send('Errer de DB').end(); }
+        var query={mail: data.mail};
+        var update={salt: currentUser.salt, hashpass: currentUser.hashpass};
+        User.findOneAndUpdate(query, update, function (err, user) {
+            if(err) return res.status(400).json({message: "Erreur pendant la mise a jour de l'utilisateur (" + formUser._id + ") : " + err}).end();
+
+            console.log("Update success");
+            return res.status(200).end();
         });
-        return res.status(200).send("Mot de passe réinitialisé").end();
+
     });
 });
 router.post('/contact', function (req, res){
@@ -1007,38 +1009,68 @@ router.post('/sondage/create', function (req,res) {
 });
 router.get('/Sondages',function(req,res) {
     Sondages.find({},function (err, sondages){
-
-            console.log(sondages);
-            res.json(sondages.questions);
+            res.json(sondages[0]);
         }
     );
 });
 router.post('/sondage/delete',function(req,res){
-    Sondages.findOneAndRemove({_id: req.body._id},function(err,sondages){
+    console.log("Delete sondage");
+    console.log(req.body._id);
+    console.log();
+    Sondages.update(
+        {
+            _id: req.body._id
+        },
+        {
+            $pull:
+            {
+                'questions':
+                {
+                    _id: req.body._idquestion
+                }
+            }
+        },
+        function(err,sondage) {
+            if (err) return res.status(400).json({message: 'Error where removing question'}).end();
+            console.log(sondage[0]);
+            res.json(sondage[0]);
+            });
+   /* Sondages.findOneAndRemove({_id: req.body._id},function(err,sondages){
         if (err) {
             console.log(err);
             return res.status(400).json({message: 'Error where removing user'}).end();
         }
 
         res.json(sondages);
-    });
+    });*/
 });
 router.post('/sondage/modify',function(req,res){
     var form = req.body;
-    var query = {_id: form._id};
-    var updates = {
-        question: form.question,
-        reponses: form.reponses,
-        users: form.users
-    };
+    var query = {'questions._id': form._idQuestion};
 
-    Sondages.findOneAndUpdate(query, updates, function (err, user) {
+    Sondages.update(query,
+            {'$set':
+                {   'questions.$.question': form.question ,
+                    'questions.$.reponses': form.reponses,
+                    'questions.$.users': form.users
+                }
+            }, function (err, data) {
         if (err){
             return res.status(400).json({message: 'Error when updating sondage (' + detail._id + ') : ' + err}).end();
         }
         console.log("Update success");
         return res.status(200).end();
     })
+});
+
+router.post("/sondage/active", function (req,res) {
+    var data = req.body;
+    var query = {_id:data._id};
+    var update = {IdActive:data._idQ};
+    Sondages.findOneAndUpdate(query,update,function(err,data) {
+            if(err) return res.status(400).json({message: 'Error when Active Question of sondage (' + data._id + ') : ' + err}).end();
+            return res.json(data).end();
+        })
 });
 
 router.post("/sondage", function (req,res) {
@@ -1351,7 +1383,7 @@ router.post('/user/picture/change',function(req,res) {
             { picture: req.files['picture'].name },
             { safe:true },
             function(err,data) {
-                if(err) return res.status(424).end();
+                if(err) return res.status(400).end();
                 res.end(req.files['picture'].name);
             }
         )
