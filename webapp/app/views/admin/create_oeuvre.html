@@ -50,6 +50,17 @@
             </span>
         </div>
         <span class="input-group"></span>
+        <div class="input-group">
+            <span class="input-group-addon">Liens :</span>
+            <input type="text" class="form-control" id="txt-links" ng-model="newLink" ng-enter="addLink()">
+            <span class="input-group-addon" ng-click="addLink()"><i class="glyphicon glyphicon-plus"></i></span>
+        </div>
+        <div class="btn-group inline" ng-repeat="link in links">
+            <span class="btn btn-default">
+                {{link.name}} <i ng-click="links.splice($index, 1)" class="glyphicon glyphicon-remove"></i>
+            </span>
+        </div>
+        <span class="input-group"></span>
 
         <label for="txt-chapter-name">Chapitres :</label>
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">

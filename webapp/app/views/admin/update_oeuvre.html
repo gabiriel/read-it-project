@@ -17,6 +17,12 @@
                     ng-options="t for t in ['Manga','Comic','BD']">
             </select>
         </div>
+        <div class="input-group">
+            <span class="input-group-addon">Couverture</span>
+            <span class="btn btn-default btn-file">
+                Importer <input id="ubtn-cover" type="file" file-model="cover">
+            </span>
+        </div>
 
         <div class="input-group">
             <span class="input-group-addon">Auteur :</span>
@@ -38,6 +44,18 @@
         <div class="btn-group inline" ng-repeat="category in categories">
             <span class="btn btn-default">
                 {{category.name}} <i ng-click="categories.splice($index, 1)" class="glyphicon glyphicon-remove"></i>
+            </span>
+        </div>
+        <span class="input-group"></span>
+
+        <div class="input-group">
+            <span class="input-group-addon">Liens :</span>
+            <input type="text" class="form-control" id="txt-links" ng-model="newLink" ng-enter="addLink()">
+            <span class="input-group-addon" ng-click="addLink()"><i class="glyphicon glyphicon-plus"></i></span>
+        </div>
+        <div class="btn-group inline" ng-repeat="lien in links">
+            <span class="btn btn-default">
+                {{lien.name}} <i ng-click="links.splice($index, 1)" class="glyphicon glyphicon-remove"></i>
             </span>
         </div>
         <span class="input-group"></span>
@@ -66,6 +84,13 @@
                 <span class="input-group-addon" >Titre :</span>
                 <input type="text" id="txt-chapter-name" class="form-control"
                        ng-model="newChapter.name" >
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">Couverture :</span>
+                <span class="btn btn-default btn-file">
+                    Importer <input id="ubtn-cover-{{$index}}" type="file" accept="image/*" file-model="newChapter.cover">
+                </span>
             </div>
 
             <div class="input-group">

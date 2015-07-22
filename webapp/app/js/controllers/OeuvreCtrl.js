@@ -269,19 +269,26 @@ app.controller('add-oeuvre-controller',['$scope','serviceDetails',function($scop
     $scope.chapters = [];
     $scope.categories = [];
     $scope.authors = [];
-
+    $scope.links = [];
     $scope.addAuthor =function() {
-        if($scope.newAuthor == '') return;
+        if(!$scope.newAuthor || $scope.newAuthor == '') return;
         $scope.authors.push({name: $scope.newAuthor});
         $scope.newAuthor = '';
         $("#txt-author").focus();
     };
 
     $scope.addCategory = function() {
-        if($scope.newCategory == '') return;
+        if(!$scope.newCategory || $scope.newCategory == '') return;
         $scope.categories.push({name: $scope.newCategory});
         $scope.newCategory = '';
         $("#txt-category").focus();
+    };
+
+    $scope.addLink = function() {
+        if(!$scope.newLink || $scope.newLink == '') return;
+        $scope.links.push({name: $scope.newLink});
+        $scope.newLink = '';
+        $("#txt-liens").focus();
     };
 
     $scope.addChapter = function() {
@@ -314,8 +321,12 @@ app.controller('add-oeuvre-controller',['$scope','serviceDetails',function($scop
                 author: $scope.authors
                                 .map(function(elem) {
                                     return elem.name;
-                                })
-            },$scope.cover)
+                                }),
+                links:$scope.links
+                    .map(function(e) {
+                        return e.name;
+                    })
+        },$scope.cover)
             .success(function(data) {
                 $scope.name = '';
                 $scope.type= '';
@@ -336,6 +347,7 @@ app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetai
     $scope.authors = [];
     $scope.removedChapters = [];
     $scope.newChapter = {isNew:true};
+    $scope.links = [];
     serviceDetails.getOeuvre($stateParams.id)
         .success(function(data) {
             $scope.chapters = data.chapters;
@@ -346,22 +358,34 @@ app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetai
             $scope.authors = data.author.map(function(elem) {
                 return {name: elem}
             });
+            $scope.links = data.links.map(function(elem) {
+                return {name: elem}
+            });
         })
         .error(function(data) {
             alert(data);
         });
     $scope.addAuthor =function() {
-        if($scope.newAuthor == '') return;
+        if(!$scope.newAuthor || $scope.newAuthor == '') return;
         $scope.authors.push({name: $scope.newAuthor});
         $scope.newAuthor = '';
         $("#txt-author").focus();
     };
     $scope.addCategory = function() {
-        if($scope.newCategory == '') return;
+        if(!$scope.newCategory || $scope.newCategory == '') return;
         $scope.categories.push({name: $scope.newCategory});
         $scope.newCategory = '';
         $("#txt-category").focus();
     };
+    $scope.addLink = function() {
+        alert($scope.newLink);
+        if(!$scope.newLink || $scope.newLink == '') return;
+        $scope.links.push({name: $scope.newLink});
+        $scope.newLink = '';
+        alert(JSON.stringify($scope.links));
+        $("#txt-links").focus();
+    };
+
     $scope.addChapter = function() {
         $scope.chapters.push($scope.newChapter);
         $scope.newChapter = {isNew:true};
@@ -401,8 +425,12 @@ app.controller('update-oeuvre-controller',['$scope','$stateParams','serviceDetai
                     .filter(function(e) {
                         return e.isNew;
                     }),
+                links:$scope.links
+                    .map(function(e) {
+                        return e.name;
+                    }),
                 removedChapters: $scope.removedChapters
-            })
+            },$scope.cover)
             .success(function(data) {
             })
             .error(function(err) {

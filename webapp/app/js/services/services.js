@@ -128,9 +128,24 @@ app.factory('serviceDetails', ['$http',function($http){
             idOeuvre: idOeuvre
         });
     };
-    Details.updateOeuvre = function(oeuvre) {
-        return $http.post('/oeuvre/update', {
-            oeuvre: oeuvre
+    Details.updateOeuvre = function(oeuvre,cover) {
+        var fd = new FormData();
+        if(cover)
+            fd.append('image', cover);
+
+        for(var i in oeuvre.newChapters) {
+            alert(oeuvre.newChapters[i].cover);
+            if(oeuvre.newChapters[i].cover) {
+                fd.append('image-' + i, oeuvre.newChapters[i].cover);
+                oeuvre.newChapters[i].cover = undefined;
+            }
+        }
+
+        fd.append('oeuvre',JSON.stringify(oeuvre));
+        alert('update');
+        return $http.post('/oeuvre/update', fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
         });
     };
     Details.removeOeuvre = function(idOeuvre) {

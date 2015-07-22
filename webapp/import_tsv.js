@@ -34,8 +34,8 @@ var OeuvreSchema = new  mongoose.Schema({
     chapters : [ChapterSchema],
     ratings : [RatingSchema],
     accessCount : Number,
-    cover:String
-
+    cover:String,
+    links: [String]
 });
 var OeuvreModel = mongoose.model('Oeuvre', OeuvreSchema);
 /* GET home page. */

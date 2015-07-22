@@ -757,13 +757,12 @@ router.get('/DetailUser',function(req,res) {
 });
 router.post('/oeuvre/create',function(req,res) {
     var oeuvre = JSON.parse(req.body.oeuvre);
-    fs.rename(req.files['image'].path, 'app/img/Covers/' + req.files['image'].name, function(err, data) {
-        oeuvre.cover = req.files['image'].name;
+    var save = function(err, data) {
         var i;
         for(var i in oeuvre.chapters) {
             if(req.files['image-' + i]) {
                 fs.rename(req.files['image-' + i].path, 'app/img/Covers/' + req.files['image-' + i].name, function(err, data) {
-                        if(err) return res.status(424).end();
+                    if(err) return res.status(424).end();
                 });
                 oeuvre.chapters[i].cover = req.files['image-' + i].name;
             }
@@ -775,7 +774,13 @@ router.post('/oeuvre/create',function(req,res) {
             }
             res.end('success');
         });
-    });
+    };
+    if(req.files['image']) {
+        oeuvre.cover = req.files['image'].name;
+        fs.rename(req.files['image'].path, 'app/img/Covers/' + req.files['image'].name, save);
+    }else {
+        save('','');
+    }
 });
 router.post('/oeuvre/rate/chapter',function(req,res) {
 
@@ -883,68 +888,89 @@ router.post('/oeuvre/read/all',function(req,res) {
         });
 });
 router.post('/oeuvre/update',function(req,res) {
-    var oeuvreId = req.body.oeuvre._id;
-    var authors = req.body.oeuvre.author;
-    var categories = req.body.oeuvre.category;
-    var name = req.body.oeuvre.name;
-    var newChapters = req.body.oeuvre.newChapters;
-    var removedChapter = req.body.oeuvre.removedChapters;
-
-    OeuvreModel.findOneAndUpdate(
-        {
-            _id:oeuvreId
-        },
-        {
-            $set:
-            {
+    var oeuvre = JSON.parse(req.body.oeuvre);
+//    console.log('oeuvre',JSON.stringify(req.body.oeuvre));
+    var oeuvreId = oeuvre._id;
+    var authors = oeuvre.author;
+    var categories = oeuvre.category;
+    var name = oeuvre.name;
+    var newChapters = oeuvre.newChapters;
+    var removedChapter = oeuvre.removedChapters;
+    var links = oeuvre.links;
+    var update = function(err, data) {
+        for(var i in newChapters) {
+            console.log('console.log(req.files[\'image-\' + i])', console.log(req.files['image-' + i]))
+            if(req.files['image-' + i]) {
+                fs.rename(req.files['image-' + i].path, 'app/img/Covers/' + req.files['image-' + i].name, function(err, data) {
+                    if(err) return res.status(424).end();
+                });
+                console.log('req.files',req.files['image-' + i].name)
+                newChapters[i].cover = req.files['image-' + i].name;
+            }
+        }
+        var updateQuery = {
+            $set: {
                 category: categories,
                 author: authors,
-                name: name
+                name: name,
+                links: links
             },
-            $push:
-            {
-                chapters:
-                {
-                    $each:newChapters
+            $pull: {
+                chapters: {
+                    _id: {
+                        $in: removedChapter.map(
+                            function (e) {
+                                return e._id
+                            }
+                        )
+                    }
                 }
             }
-        },
-        function(err,data) {
-            if(err)
-                return res.status(424).end();
-
-            OeuvreModel
-                .findOneAndUpdate(
+        };
+        if(req.files['image'])
+            updateQuery.$set.cover = req.files['image'].name;
+        OeuvreModel.findOneAndUpdate(
+            {
+                _id: oeuvreId
+            },
+            updateQuery,
+            function (err, data) {
+                if (err) {
+                    console.log('pull chapters',err);
+                    return res.status(424).end();
+                }
+                console.log('newChapters',newChapters);
+                OeuvreModel
+                    .findOneAndUpdate(
                     {
-                        _id:oeuvreId
+                        _id: oeuvreId
                     },
                     {
-                        $pull:
-                        {
-                            chapters:
-                            {
-                                _id:
-                                {
-                                    $in:removedChapter.map(
-                                        function(e){
-                                            return e._id
-                                        }
-                                    )
-                                }
+                        $push: {
+                            chapters: {
+                                $each: newChapters
                             }
                         }
                     },
                     {
-                        safe:true
+                        safe: true
                     },
-                    function(err,data) {
-                        if(err)
+                    function (err, data) {
+                        if (err) {
+                            console.log('push chapters',err);
                             return res.status(424).end();
+                        }
                         res.end();
                     }
                 );
-        }
-    );
+            }
+        );
+    };
+    if(req.files['image']) {
+        fs.rename(req.files['image'].path, 'app/img/Covers/' + req.files['image'].name, update);
+    }else {
+        update('','');
+    }
 });
 router.post('/oeuvre/remove',function(req,res) {
     var oeuvreId = req.body.idOeuvre;
