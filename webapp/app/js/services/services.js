@@ -315,21 +315,26 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         });
         var keepGoing=true;
         var isExist=false;
+        console.log(detailVote.users);
         if(detailVote.users.length!=0){
-
+            console.log("users !=0");
             angular.forEach(detailVote.users, function (user) {
                 if(!(keepGoing && user!=auth.currentUser())){
+                    console.log("user:");
                     console.log(user);
                     keepGoing=false;
                     isExist=true;
                 }
 
-            })
+            });
         }
         if(isExist){
             return res.status(200).json({message: 'Error when saving Sondage : ' + err});
         }else{
+            console.log("user");
+            console.log(auth.currentUser());
             detailVote.users.push(auth.currentUser());
+            console.log("detail vote");
             console.log(detailVote);
             return $http.post('/sondage/modify',detailVote);
         }

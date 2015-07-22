@@ -928,22 +928,50 @@ router.post('/oeuvre/remove',function(req,res) {
 });
 
 router.post('/sondage/create', function (req,res) {
-    var form = req.body;
-    var newSondage = new Sondages({
-        question: form.question,
-        reponses: form.reponses
-    });
-    console.log("New Sondage !");
-    newSondage.save(function (err,sondages) {
-        if (err) {
-            return res.status(400).json({message: 'Erreur lors de la sauvegarde du sondage : ' + err}).end();
-        }else
-            return res.status(200).json(sondages).end();
+    var questionForm = req.body;
+    Sondages.find({}, function (err,data) {
+        if(err)return res.status(400).json({message: 'Erreur lors de la chargement de données de la BD : ' + err}).end();
+        else if(data.length==0){
+            console.log("New Sondage !");
+            var newSondage = new Sondages({
+                questions:questionForm
+            });
+            newSondage.save(function (err,sondages) {
+                if (err) {
+                    return res.status(400).json({message: 'Erreur lors de la sauvegarde du sondage : ' + err}).end();
+                } else{
+                    var query = {_id: sondages._id};
+                    var updates = {
+                        IdActive:sondages.questions[0]._id
+                    };
+                    Sondages.findOneAndUpdate(query, updates, function (err, data) {
+                        if (err){
+                            return res.status(400).json({message: 'Error when insert question active (' + sondages._id + ') : ' + err}).end();
+                        }
+                        return res.status(200).json(data).end();
+                    })
+                }
+
+            });
+
+        }
+        else{
+            var query = { _id: data[0]._id};
+            var update = { $push: {questions: questionForm} };
+            Sondages.findOneAndUpdate(query, update, function(err, model) {
+                    if (err) res.status(400).json({message: 'Erreur lors de l\'ajouter le question de la BD : ' + err}).end();
+                    return res.status(200).json(data).end();
+                }
+            );
+
+        }
     });
 });
 router.get('/Sondages',function(req,res) {
     Sondages.find({},function (err, sondages){
-            res.json(sondages);
+
+            console.log(sondages);
+            res.json(sondages.questions);
         }
     );
 });
