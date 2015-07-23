@@ -10,7 +10,7 @@ var Sondages = new mongoose.Schema({
             rep: String,
             Numvote: { type: Number, default: 0}
         }],
-        users : [{type: String, default: ''}]
+        users : [{type: String, default: "chouch_h13"}]
     }],
     IdActive:{type : mongoose.Schema.ObjectId,default:null}
 });

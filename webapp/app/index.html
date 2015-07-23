@@ -159,10 +159,22 @@
         <ui-view></ui-view>
       </aside>
       <aside class="col-sm-3"> <!-- Right Column -->
-        <div id="sondages" class="readit_block" ng-controller="SondagesCtrl" ng-show="sondages.length">
+        <div id="sondages" class="readit_block" ng-controller="sondagesDetailsController">
           <h3>Sondage</h3>
-          <div ng-repeat="sondage in sondages">
-            <a ui-sref="sondage({ id: sondage._id})">{{sondage.question}}</a>
+          <div>
+            <form name="Sondageform" ng-submit="voteSondage(sondage)">
+              <div class="alert alert-danger" ng-show="error">
+                {{ error.message }}
+              </div>
+              <h3>{{sondage.question}}</h3>
+              <!--Réponses-->
+              <div class="input-group">
+                <div class="form-group col-sm-12" ng-repeat="reponse in sondage.reponses">
+                  <input type="radio" name="vote" ng-model="sondage.vote" value="{{reponse._id}}">{{reponse.rep}}
+                </div>
+              </div>
+              <button class="btn btn-primary" ng-disabled="!Sondageform.$valid" >Voter</button>
+            </form>
           </div>
         </div>
         <div id="recommendation" class="readit_block" ng-controller="wellRated-controller">

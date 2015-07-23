@@ -325,9 +325,10 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         return $http.post("/sondage/active",req);
 
     }
-    auth.getSondage = function (id) {
-        var idToSend={_id:id};
-        return $http.post("/sondage",idToSend);
+    auth.getSondage = function (user) {
+
+        var user={user:user};
+        return $http.post("/sondage",user);
     };
     auth.voteSondage=function (detailVote,vote,res){
         angular.forEach(detailVote.reponses, function (reponse) {
@@ -335,9 +336,8 @@ app.factory('auth', ['$http', '$window', function($http, $window){
         });
         var keepGoing=true;
         var isExist=false;
-        console.log(detailVote.users);
-        if(detailVote.users.length!=0){
-            console.log("users !=0");
+
+        if(detailVote.users!=null){
             angular.forEach(detailVote.users, function (user) {
                 if(!(keepGoing && user!=auth.currentUser())){
                     console.log("user:");
@@ -349,14 +349,13 @@ app.factory('auth', ['$http', '$window', function($http, $window){
             });
         }
         if(isExist){
-            return res.status(200).json({message: 'Error when saving Sondage : ' + err});
+            return ({message: 'Vous avez déjà voté : ' + err}).end();
         }else{
-            console.log("user");
-            console.log(auth.currentUser());
+            detailVote.users=[];
             detailVote.users.push(auth.currentUser());
-            console.log("detail vote");
-            console.log(detailVote);
-            return $http.post('/sondage/modify',detailVote);
+            var details={detail:detailVote};
+
+            return $http.post('/sondage/vote',details);
         }
 
     };

@@ -186,11 +186,6 @@ angular.module('readIt', ['ui.router', 'ui.calendar', 'ngAnimate', 'ngSanitize',
                 }
             }]
         })
-        .state('sondage',{
-            url:'/sondage/:id',
-            templateUrl:'views/sondage.html',
-            controller: 'sondagesDetailsController'
-        })
         .state('friendAskList', {
             url: '/friends/requests',
             templateUrl: 'views/addRequests.html',

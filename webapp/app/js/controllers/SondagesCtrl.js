@@ -115,18 +115,16 @@ app.controller('SondagesCtrl', ['$scope', '$state', 'auth', function($scope, $st
 }]);
 
 app.controller('sondagesDetailsController',['$scope','auth','$stateParams','$state',function($scope,auth,$stateParams,$state) {
-    var id=$stateParams.id;
-    auth.getSondage(id)
+
+    auth.getSondage(auth.currentUser())
         .success(function (data) {
             $scope.sondage=data;
         })
         .error(function (err) {
-            $scope.erreur=err;
+            $scope.error=err;
         });
     $scope.voteSondage= function (detailVote) {
         var vote =$scope.sondage.vote;
-        console.log(detailVote);
-        console.log(vote);
 
         auth.voteSondage(detailVote,vote)
             .success(function () {

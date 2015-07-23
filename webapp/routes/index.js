@@ -1036,8 +1036,6 @@ router.get('/Sondages',function(req,res) {
 });
 router.post('/sondage/delete',function(req,res){
     console.log("Delete sondage");
-    console.log(req.body._id);
-    console.log();
     Sondages.update(
         {
             _id: req.body._id
@@ -1053,17 +1051,8 @@ router.post('/sondage/delete',function(req,res){
         },
         function(err,sondage) {
             if (err) return res.status(400).json({message: 'Error where removing question'}).end();
-            console.log(sondage[0]);
             res.json(sondage[0]);
             });
-   /* Sondages.findOneAndRemove({_id: req.body._id},function(err,sondages){
-        if (err) {
-            console.log(err);
-            return res.status(400).json({message: 'Error where removing user'}).end();
-        }
-
-        res.json(sondages);
-    });*/
 });
 router.post('/sondage/modify',function(req,res){
     var form = req.body;
@@ -1095,14 +1084,28 @@ router.post("/sondage/active", function (req,res) {
 });
 
 router.post("/sondage", function (req,res) {
-    var id = req.body._id;
-    var query = {_id: id };
-    Sondages.findOne(query, function (err, user) {
-        if (err){
-            return res.status(400).json({message: 'Error when display sondage (' + id + ') : ' + err}).end();
-        }
-        return res.json(user).end();
-    });
+    var user = req.body.user;
+       Sondages.find({}, function (err,data) {
+           if(err) return res.status(400).json({message: 'Error when choose Question of sondage '}).end();
+           if(data.length!=0){
+               for(var q in data[0].questions) {
+                   if((data[0].questions[q]._id).toString()==(data[0].IdActive).toString()){
+                       return res.json(data[0].questions[q]).end();
+                   }
+
+               }
+           }
+
+       });
+});
+router.post('/sondage/vote', function (req,res) {
+   var sondage= req.body;
+
+    Sondages.update({},{questions:sondage.detail}, function (err,data) {
+        if(err) return res.status(400).json({message: 'Error when save vote of sondage '}).end();
+        return res.status(200);
+    })
+
 });
 
 router.get('/friends',function(req,res){
