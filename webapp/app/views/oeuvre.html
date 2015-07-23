@@ -21,12 +21,12 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Erreur</h4>
+                        <h4 class="modal-title">Liens</h4>
                     </div>
                     <div class="modal-body">
                         Voicis les liens de nos partenaires :
                         <ul>
-                            <li ng-repeat="lien in oeuvre.links"><a href="{{lien}}">{{lien}}</a></li>
+                            <li ng-repeat="lien in oeuvre.links"><a href="{{lien}}">{{lien | prettyUrl}}</a></li>
                         </ul>
                     </div>
                     <div class="modal-footer">
@@ -89,7 +89,7 @@
 
             <div id="resume" ng-show="oeuvre.chapters && oeuvre.chapters[0].resume">
                 <h4>Résumé :</h4>
-                <p>{{oeuvre.chapters[0].resume}}</p>
+                <p ng-bind-html="oeuvre.chapters[0].resume"></p>
             </div>
         </div>
 
@@ -128,7 +128,7 @@
                             <div class=" col-xs-5 " ng-show="chapter.cover">
                                 <img style="width:200px;height:200px;" ng-src="img/Covers/{{chapter.cover || 'default_cover.png'}}" />
                             </div>
-                            {{chapter.resume}}
+                            <div ng-bind-html="chapter.resume"></div>
                         </div>
                     </div>
                 </div>

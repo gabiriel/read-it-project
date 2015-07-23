@@ -120,8 +120,10 @@ app.controller('OeuvreDetailCtrl',['$scope','serviceDetails', '$state','$statePa
     $scope.toggleRead = function(chapter) {
         $scope.result = 'toogle';
         chapter.read = !chapter.read;
-        if(chapter.read)
+        if(chapter.read) {
+            $scope.oeuvre.interested = false;
             serviceDetails.readChapter(auth.currentUser(), $scope.oeuvre._id, chapter._id,chapter.read);
+        }
         else
             serviceDetails.unreadChapter(auth.currentUser(), $scope.oeuvre._id, chapter._id,chapter.read);
     };

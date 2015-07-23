@@ -495,6 +495,11 @@ router.post('/oeuvre/read',function(req,res) {
                     idOeuvre: idOeuvre,
                     idChapter: idChapter
                 }
+            },
+            $pull: {
+                interested: {
+                    idOeuvre: idOeuvre
+                }
             }
         },
         {
